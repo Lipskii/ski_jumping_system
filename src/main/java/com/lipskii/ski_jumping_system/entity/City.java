@@ -23,6 +23,9 @@ public class City implements Comparable<City> {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<SkiClub> skiClubs;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Venue> venues;
+
     public City() {
     }
 
@@ -61,6 +64,14 @@ public class City implements Comparable<City> {
 
     public void setSkiClubs(List<SkiClub> skiClubs) {
         this.skiClubs = skiClubs;
+    }
+
+    public List<Venue> getVenues() {
+        return venues;
+    }
+
+    public void setVenues(List<Venue> venues) {
+        this.venues = venues;
     }
 
     @Override

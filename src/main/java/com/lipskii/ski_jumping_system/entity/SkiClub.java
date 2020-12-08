@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "ski_club")
@@ -18,7 +19,10 @@ public class SkiClub implements Comparable<SkiClub> {
     @JoinColumn(name = "city_idcity")
     private City city;
 
-    @Column(name="established")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "ski_club", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Venue> venues;
+
+    @Column(name = "established")
     private int established;
 
     public SkiClub() {
@@ -65,6 +69,14 @@ public class SkiClub implements Comparable<SkiClub> {
 
     public void setEstablished(int established) {
         this.established = established;
+    }
+
+    public List<Venue> getVenues() {
+        return venues;
+    }
+
+    public void setVenues(List<Venue> venues) {
+        this.venues = venues;
     }
 
     @Override

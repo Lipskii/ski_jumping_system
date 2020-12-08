@@ -14,10 +14,10 @@ public class Country implements Comparable<Country> {
     @Column(name = "idcountry")
     private int id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="code")
+    @Column(name = "code")
     private String code;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "country", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
