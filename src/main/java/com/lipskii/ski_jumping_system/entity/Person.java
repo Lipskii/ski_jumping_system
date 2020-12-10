@@ -19,6 +19,10 @@ public class Person implements Comparable<Person> {
     @Column(name = "last_name")
     private String lastName;
 
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "gender_idgender")
+    private Gender gender;
+
     @Column(name = "birthday")
     private Date birthday;
 

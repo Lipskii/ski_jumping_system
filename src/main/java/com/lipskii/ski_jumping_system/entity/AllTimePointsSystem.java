@@ -54,6 +54,24 @@ public class AllTimePointsSystem {
     @Column(name = "pos_14")
     private BigDecimal pos14;
 
+    @Column(name = "pos_15")
+    private BigDecimal pos15;
+
+    @Column(name = "pos_16")
+    private BigDecimal pos16;
+
+    @Column(name = "pos_17")
+    private BigDecimal pos17;
+
+    @Column(name = "pos_18")
+    private BigDecimal pos18;
+
+    @Column(name = "pos_19")
+    private BigDecimal pos189;
+
+    @Column(name = "pos_20")
+    private BigDecimal pos20;
+
     public AllTimePointsSystem() {
     }
 
@@ -197,6 +215,54 @@ public class AllTimePointsSystem {
         this.pos14 = pos14;
     }
 
+    public BigDecimal getPos15() {
+        return pos15;
+    }
+
+    public void setPos15(BigDecimal pos15) {
+        this.pos15 = pos15;
+    }
+
+    public BigDecimal getPos16() {
+        return pos16;
+    }
+
+    public void setPos16(BigDecimal pos16) {
+        this.pos16 = pos16;
+    }
+
+    public BigDecimal getPos17() {
+        return pos17;
+    }
+
+    public void setPos17(BigDecimal pos17) {
+        this.pos17 = pos17;
+    }
+
+    public BigDecimal getPos18() {
+        return pos18;
+    }
+
+    public void setPos18(BigDecimal pos18) {
+        this.pos18 = pos18;
+    }
+
+    public BigDecimal getPos189() {
+        return pos189;
+    }
+
+    public void setPos189(BigDecimal pos189) {
+        this.pos189 = pos189;
+    }
+
+    public BigDecimal getPos20() {
+        return pos20;
+    }
+
+    public void setPos20(BigDecimal pos20) {
+        this.pos20 = pos20;
+    }
+
     @Override
     public String toString() {
         return "AllTimePointsSystem{" +
@@ -215,6 +281,12 @@ public class AllTimePointsSystem {
                 ", pos12=" + pos12 +
                 ", pos13=" + pos13 +
                 ", pos14=" + pos14 +
+                ", pos15=" + pos15 +
+                ", pos16=" + pos16 +
+                ", pos17=" + pos17 +
+                ", pos18=" + pos18 +
+                ", pos189=" + pos189 +
+                ", pos20=" + pos20 +
                 '}';
     }
 }
