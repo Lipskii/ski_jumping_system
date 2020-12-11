@@ -153,31 +153,31 @@ public class Competition {
     @JoinColumn(name = "weather_idsecond_round_weather")
     private Weather secondRoundWeather;
 
-    @Column(name = "first_round_air_temp_start")
+    @Column(name = "second_round_air_temp_start")
     private BigDecimal secondRoundAirTempStart;
 
-    @Column(name = "first_round_air_temp_finish")
+    @Column(name = "second_round_air_temp_finish")
     private BigDecimal secondRoundAirTempFinish;
 
-    @Column(name = "first_round_snow_temp_start")
+    @Column(name = "second_round_snow_temp_start")
     private BigDecimal secondRoundSnowTempStart;
 
-    @Column(name = "first_round_snow_temp_finish")
+    @Column(name = "second_round_snow_temp_finish")
     private BigDecimal secondRoundSnowTempFinish;
 
-    @Column(name = "first_round_humidity_start")
+    @Column(name = "second_round_humidity_start")
     private BigDecimal secondRoundHumidityStart;
 
-    @Column(name = "first_round_humidity_finish")
+    @Column(name = "second_round_humidity_finish")
     private BigDecimal secondRoundHumidityFinish;
 
-    @Column(name = "first_round_min_wind")
+    @Column(name = "second_round_min_wind")
     private BigDecimal secondRoundMinWind;
 
-    @Column(name = "first_round_max_wind")
+    @Column(name = "second_round_max_wind")
     private BigDecimal secondRoundMaxWind;
 
-    @Column(name = "first_round_avg_wind")
+    @Column(name = "second_round_avg_wind")
     private BigDecimal secondRoundAvgWind;
 
     @Column(name = "third_round_start_time")

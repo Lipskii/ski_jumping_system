@@ -23,17 +23,22 @@ public class SkiJumper implements Comparable<SkiJumper> {
     @JoinColumn(name = "skis_idskis")
     private Skis skis;
 
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "ski_club_idski_club")
+    private SkiClub skiClub;
+
     @Column(name = "all_time_points")
     private BigDecimal all_time_points;
 
     public SkiJumper() {
     }
 
-    public SkiJumper(Person person, boolean isActive, Skis skis) {
+    public SkiJumper(Person person, boolean isActive, Skis skis, SkiClub skiClub, BigDecimal all_time_points) {
         this.person = person;
         this.isActive = isActive;
         this.skis = skis;
-        this.all_time_points = BigDecimal.valueOf(0);
+        this.skiClub = skiClub;
+        this.all_time_points = all_time_points;
     }
 
     public int getId() {
@@ -76,6 +81,14 @@ public class SkiJumper implements Comparable<SkiJumper> {
         this.all_time_points = all_time_points;
     }
 
+    public SkiClub getSkiClub() {
+        return skiClub;
+    }
+
+    public void setSkiClub(SkiClub skiClub) {
+        this.skiClub = skiClub;
+    }
+
     @Override
     public int compareTo(SkiJumper o) {
         return person.compareTo(o.person);
@@ -88,6 +101,7 @@ public class SkiJumper implements Comparable<SkiJumper> {
                 ", person=" + person +
                 ", isActive=" + isActive +
                 ", skis=" + skis +
+                ", skiClub=" + skiClub +
                 ", all_time_points=" + all_time_points +
                 '}';
     }

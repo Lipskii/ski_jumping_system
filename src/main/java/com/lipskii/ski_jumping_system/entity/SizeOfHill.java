@@ -33,7 +33,7 @@ public class SizeOfHill {
     @Column(name = "max_distance_t_k")
     private int maxDistanceTK;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "size_of_hill", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "sizeOfHill", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Hill> hills;
 
     public SizeOfHill() {

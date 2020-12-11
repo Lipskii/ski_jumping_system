@@ -1,7 +1,6 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 
 @Entity
@@ -23,9 +22,14 @@ public class Person implements Comparable<Person> {
     @JoinColumn(name = "gender_idgender")
     private Gender gender;
 
-    @Column(name = "birthday")
-    private Date birthday;
+    @Column(name = "birthdate_day")
+    private int birthdate_day;
 
+    @Column(name = "birthdate_month")
+    private int birthdate_month;
+
+    @Column(name = "birthdate_year")
+    private int birthdate_year;
     /**
      * Current country that athlete represents with his fis license.
      */
@@ -43,10 +47,34 @@ public class Person implements Comparable<Person> {
     public Person() {
     }
 
-    public Person(String firstName, String lastName, Date birthday, Country country, City city) {
+
+    public Person(int id, String firstName, String lastName, Gender gender, Country country, City city) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthday = birthday;
+        this.gender = gender;
+        this.country = country;
+        this.city = city;
+    }
+
+    public Person(int id, String firstName, String lastName, Gender gender, int birthdate_year, Country country, City city) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.birthdate_year = birthdate_year;
+        this.country = country;
+        this.city = city;
+    }
+
+    public Person(int id, String firstName, String lastName, Gender gender, int birthdate_day, int birthdate_month, int birthdate_year, Country country, City city) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.birthdate_day = birthdate_day;
+        this.birthdate_month = birthdate_month;
+        this.birthdate_year = birthdate_year;
         this.country = country;
         this.city = city;
     }
@@ -75,14 +103,6 @@ public class Person implements Comparable<Person> {
         this.lastName = lastName;
     }
 
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
     public Country getCountry() {
         return country;
     }
@@ -100,6 +120,37 @@ public class Person implements Comparable<Person> {
         this.city = city;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public int getBirthdate_day() {
+        return birthdate_day;
+    }
+
+    public void setBirthdate_day(int birthdate_day) {
+        this.birthdate_day = birthdate_day;
+    }
+
+    public int getBirthdate_month() {
+        return birthdate_month;
+    }
+
+    public void setBirthdate_month(int birthdate_month) {
+        this.birthdate_month = birthdate_month;
+    }
+
+    public int getBirthdate_year() {
+        return birthdate_year;
+    }
+
+    public void setBirthdate_year(int birthdate_year) {
+        this.birthdate_year = birthdate_year;
+    }
 
     @Override
     public int compareTo(Person o) {
@@ -115,7 +166,10 @@ public class Person implements Comparable<Person> {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", birthday=" + birthday +
+                ", gender=" + gender +
+                ", birthdate_day=" + birthdate_day +
+                ", birthdate_month=" + birthdate_month +
+                ", birthdate_year=" + birthdate_year +
                 ", country=" + country +
                 ", city=" + city +
                 '}';

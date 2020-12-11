@@ -19,11 +19,11 @@ public class SkiClub implements Comparable<SkiClub> {
     @JoinColumn(name = "city_idcity")
     private City city;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "ski_club", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "skiClub", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Venue> venues;
 
-    @Column(name = "established")
-    private int established;
+//    @Column(name = "established")
+//    private int established;
 
     public SkiClub() {
     }
@@ -33,11 +33,7 @@ public class SkiClub implements Comparable<SkiClub> {
         this.city = city;
     }
 
-    public SkiClub(String name, City city, int established) {
-        this.name = name;
-        this.city = city;
-        this.established = established;
-    }
+
 
     public int getId() {
         return id;
@@ -63,13 +59,13 @@ public class SkiClub implements Comparable<SkiClub> {
         this.city = city;
     }
 
-    public int getEstablished() {
-        return established;
-    }
-
-    public void setEstablished(int established) {
-        this.established = established;
-    }
+//    public int getEstablished() {
+//        return established;
+//    }
+//
+//    public void setEstablished(int established) {
+//        this.established = established;
+//    }
 
     public List<Venue> getVenues() {
         return venues;
