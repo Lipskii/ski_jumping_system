@@ -22,7 +22,7 @@ public class HillVersion {
     private int first_year;
 
     @Column(name = "last_year")
-    private int last_year;
+    private Integer last_year;
 
     @Column(name = "k_point")
     private BigDecimal kPoint;
@@ -60,7 +60,7 @@ public class HillVersion {
     /**
      * Speed at the end of the inrun.
      */
-    @Column(name = "v0")
+    @Column(name = "vo")
     private BigDecimal v0;
 
     /**

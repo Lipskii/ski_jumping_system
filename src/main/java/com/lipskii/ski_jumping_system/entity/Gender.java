@@ -1,7 +1,5 @@
 package com.lipskii.ski_jumping_system.entity;
 
-import jdk.jfr.Enabled;
-
 import javax.persistence.*;
 
 @Entity

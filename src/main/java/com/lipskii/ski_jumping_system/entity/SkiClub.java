@@ -33,8 +33,6 @@ public class SkiClub implements Comparable<SkiClub> {
         this.city = city;
     }
 
-
-
     public int getId() {
         return id;
     }

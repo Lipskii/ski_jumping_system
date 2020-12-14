@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class CountryService implements ServiceInterface {
 
-    private CountryRepository countryRepository;
+    private final CountryRepository countryRepository;
 
     @Autowired
     public CountryService(CountryRepository countryRepository) {

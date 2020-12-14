@@ -7,13 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ConnectionTest {
 
-    private CountryService countryService;
+    private final CountryService countryService;
+
+    public ConnectionTest(CountryService countryService) {
+        this.countryService = countryService;
+    }
 
     @GetMapping("/connection_test")
     public String connectionTest(){
 
-        System.out.println(countryService.findAll());
         return "helloworld";
-
     }
 }

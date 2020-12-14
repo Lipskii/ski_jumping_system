@@ -1,6 +1,9 @@
 package com.lipskii.ski_jumping_system.entity;
 
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -21,9 +24,11 @@ public class City implements Comparable<City> {
     private Region region;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<SkiClub> skiClubs;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Venue> venues;
 
     public City() {

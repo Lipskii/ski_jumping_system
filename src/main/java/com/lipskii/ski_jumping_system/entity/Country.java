@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
-import org.springframework.stereotype.Controller;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Country implements Comparable<Country> {
     private String code;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "country", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Region> regions;
 
     public Country() {
