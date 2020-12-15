@@ -162,16 +162,6 @@ public class Person implements Comparable<Person> {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", gender=" + gender +
-                ", birthdate_day=" + birthdate_day +
-                ", birthdate_month=" + birthdate_month +
-                ", birthdate_year=" + birthdate_year +
-                ", country=" + country +
-                ", city=" + city +
-                '}';
+        return firstName + lastName + country.getName();
     }
 }

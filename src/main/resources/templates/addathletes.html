@@ -1,0 +1,72 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <title>Add Athletes</title>
+
+
+</head>
+<body>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Country</th>
+        <th>City</th>
+        <th>New City</th>
+        <th>Region</th>
+        <th>Birthdate day</th>
+        <th>Birthdate month</th>
+        <th>Birthdate year</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="person : ${peopleData}">
+
+        <td><input type="text" th:value="${person.getFirstName()}"></td>
+        <td><input type="text" th:value="${person.getLastName()}"></td>
+        <td th:text="${person.getCountry()}"/>
+        <td>
+            <select>
+                <option th:each="city : ${cities}"
+                        th:value="${city.getId()}"
+                        th:text="${city.getName() + ', ' + city.region.getName() + ', ' + city.region.country.getCode()}" />
+            </select>
+        </td>
+        <td><input type="text" th:value="${person.getCity()}"></td>
+        <td>
+            <select>
+                <option th:each="region : ${regions}"
+                        th:value="${region.getId()}"
+                        th:text="${region.getName()}" />
+            </select>
+        </td>
+        <td th:text="${person.getBirthdate_day()}"/>
+        <td th:text="${person.getBirthdate_month()}"/>
+        <td th:text="${person.getBirthdate_year()}"/>
+
+        <!--        <td>-->
+        <!--            <input type="button" value="Siema">-->
+        <!--        </td>-->
+
+    </tr>
+    </tbody>
+</table>
+
+
+</table>
+
+</body>
+
+</html>

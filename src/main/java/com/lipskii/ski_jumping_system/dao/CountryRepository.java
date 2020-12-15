@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CountryRepository extends CrudRepository<Country, Integer> {
 
+    boolean existsCountryByName(String name);
+
 }
