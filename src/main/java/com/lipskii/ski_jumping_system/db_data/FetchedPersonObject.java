@@ -47,4 +47,17 @@ public class FetchedPersonObject {
     public String getBirthdate_year() {
         return birthdate_year;
     }
+
+    @Override
+    public String toString() {
+        return "FetchedPersonObject{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", birthdate_day='" + birthdate_day + '\'' +
+                ", birthdate_month='" + birthdate_month + '\'' +
+                ", birthdate_year='" + birthdate_year + '\'' +
+                '}';
+    }
 }

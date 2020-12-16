@@ -39,6 +39,10 @@ public class City implements Comparable<City> {
         this.region = region;
     }
 
+    public City(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

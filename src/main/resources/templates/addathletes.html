@@ -12,61 +12,139 @@
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <title>Add Athletes</title>
 
+    <style>
+        div.scroll {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+        }
+    </style>
+
 
 </head>
 <body>
+<div class="container">
+    <br>
+    <br>
+    <form th:action="@{addathletes}" th:object="${searchUri}" method="post">
+        Select country:
+        <select th:field="*{code}">
+            <option th:each="country : ${countries}"
+                    th:value="${country.getCode()}"
+                    th:text="${country.getName()}"></option>
+        </select>
+        &nbsp;
+        &nbsp;
+        Select decade of birth:
+        <select th:field="*{decade}">
+            <option value="1900-1909" th:text="1900s"></option>
+            <option value="1910-1919" th:text="1910s"></option>
+            <option value="1920-1929" th:text="1920s"></option>
+            <option value="1930-1939" th:text="1930s"></option>
+            <option value="1940-1949" th:text="1940s"></option>
+            <option value="1950-1959" th:text="1950s"></option>
+            <option value="1960-1969" th:text="1960s"></option>
+            <option value="1970-1979" th:text="1970s"></option>
+            <option value="1980-1989" th:text="1980s"></option>
+            <option value="1990-1999" th:text="1990s"></option>
+            <option value="2000-2009" th:text="2000s"></option>
+            <option value="2010-2019" th:text="2010s"></option>
+        </select>
+        &nbsp;
+        &nbsp;
+        <button type="submit">Search</button>
+    </form>
+    <br>
+    <br>
+</div>
 
-<table class="table table-bordered table-striped">
-    <thead class="thead-dark">
-    <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Country</th>
-        <th>City</th>
-        <th>New City</th>
-        <th>Region</th>
-        <th>Birthdate day</th>
-        <th>Birthdate month</th>
-        <th>Birthdate year</th>
-    </tr>
-    </thead>
+<div class="scroll">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Country</th>
+            <th>Fis City</th>
+            <th>City</th>
+            <th>City not on the list?</th>
+            <th>New City</th>
+            <th>Region</th>
+            <th>Birthdate day</th>
+            <th>Birthdate month</th>
+            <th>Birthdate year</th>
+        </tr>
+        </thead>
 
-    <tbody>
-    <tr th:each="person : ${peopleData}">
-
-        <td><input type="text" th:value="${person.getFirstName()}"></td>
-        <td><input type="text" th:value="${person.getLastName()}"></td>
-        <td th:text="${person.getCountry()}"/>
-        <td>
-            <select>
-                <option th:each="city : ${cities}"
-                        th:value="${city.getId()}"
-                        th:text="${city.getName() + ', ' + city.region.getName() + ', ' + city.region.country.getCode()}" />
-            </select>
-        </td>
-        <td><input type="text" th:value="${person.getCity()}"></td>
-        <td>
-            <select>
-                <option th:each="region : ${regions}"
-                        th:value="${region.getId()}"
-                        th:text="${region.getName()}" />
-            </select>
-        </td>
-        <td th:text="${person.getBirthdate_day()}"/>
-        <td th:text="${person.getBirthdate_month()}"/>
-        <td th:text="${person.getBirthdate_year()}"/>
-
-        <!--        <td>-->
-        <!--            <input type="button" value="Siema">-->
-        <!--        </td>-->
-
-    </tr>
-    </tbody>
-</table>
+        <tbody>
+        <tr th:each="person : ${peopleData}">
 
 
-</table>
+            <!--First Name-->
+            <td><input type="text" th:value="${person.getFirstName()}"></td>
+            <!--Last Name-->
+            <td><input type="text" th:value="${person.getLastName()}"></td>
+            <!--Country-->
+            <td th:text="${person.getCountry()}"/>
+            <!--Fis City-->
+            <td th:text="${person.getCity()}"/>
+            <!--City-->
+            <td>
+                <select>
+                    <option th:each="city : ${cities}"
+                            th:value="${city.getId()}"
+                            th:text="${city.getName() + ', ' + city.region.getName() + ', ' + city.region.country.getCode()}"/>
+                </select>
+            </td>
+            <!--New City?-->
+            <td>
+                <input type="checkbox" th:id="${person.toString()}" onclick="myFunction(this.id)">
+            </td>
+            <!--New City TODO fix issue with th:field-->
+            <td>
+                <form th:action="@{addcity}" th:id="${person.toString()}+newCityText" th:object="${city}" method="post"
+                      style="display:none">
 
+                    <input type="text">
+                    <select>
+                        <option th:each="region : ${regions}"
+                                th:value="${region}"
+                                th:text="${region.getName()}"/>
+                    </select>
+                    <button type="submit">Add</button>
+                </form>
+            </td>
+            <!--Region-->
+            <td>
+            </td>
+            <!--Birthdate-->
+            <td th:text="${person.getBirthdate_day()}"/>
+            <td th:text="${person.getBirthdate_month()}"/>
+            <td th:text="${person.getBirthdate_year()}"/>
+        </tr>
+        </tbody>
+    </table>
+
+
+    </table>
+</div>
 </body>
 
+<script>
+
+
+    function myFunction(id) {
+        // Get the checkbox
+        var checkBox = document.getElementById(id);
+        // Get the output text
+        var form = document.getElementById(id + "newCityText");
+
+        if (checkBox.checked) {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+</script>
 </html>
