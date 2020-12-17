@@ -101,13 +101,13 @@
             <td>
                 <input type="checkbox" th:id="${person.toString()}" onclick="myFunction(this.id)">
             </td>
-            <!--New City TODO fix issue with th:field-->
+            <!--New City-->
             <td>
                 <form th:action="@{addcity}" th:id="${person.toString()}+newCityText" th:object="${city}" method="post"
                       style="display:none">
 
-                    <input type="text">
-                    <select>
+                    <input type="text" th:field="*{name}">
+                    <select th:field="*{region}">
                         <option th:each="region : ${regions}"
                                 th:value="${region}"
                                 th:text="${region.getName()}"/>

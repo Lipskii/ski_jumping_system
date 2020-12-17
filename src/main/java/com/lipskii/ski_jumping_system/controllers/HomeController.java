@@ -45,7 +45,6 @@ public class HomeController {
 
     @PostMapping("/addathletes")
     public String addAthletes(@ModelAttribute("searchUri") FisSearchUri searchUri, Model model){
-        System.out.println("POST");
 
         String searchLink = "https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&" +
                 "firstname=&sectorcode=JP" +
@@ -67,6 +66,8 @@ public class HomeController {
         List<City> cities = cityService.findCityByCountry(searchUri.getCode());
         model.addAttribute("cities",cities);
 
+        model.addAttribute("city",new City());
+
         List<Country> countries = countryService.findAll();
         model.addAttribute("countries",countries);
 
@@ -77,7 +78,7 @@ public class HomeController {
     public String addAthletes(Model model){
         System.out.println("GET");
 
-       ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&birthyear=2020&skiclub=&skis=&nationcode=POL&fiscode=&status=&search=true");
+       ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&birthyear=2000&skiclub=&skis=&nationcode=POL&fiscode=&status=&search=true");
        model.addAttribute("peopleData",fetchedPersonObjectList);
 
        List<Region> regions = regionService.findAll();
@@ -98,7 +99,6 @@ public class HomeController {
 
     @GetMapping("/addathletes/{code}")
     public String addAthletes(Model model, @PathVariable String code){
-        System.out.println("GET");
 
         ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&birthyear=2020&skiclub=&skis=&nationcode=POL&fiscode=&status=&search=true");
         model.addAttribute("peopleData",fetchedPersonObjectList);
@@ -111,6 +111,8 @@ public class HomeController {
 
         List<Country> countries = countryService.findAll();
         model.addAttribute("countries",countries);
+
+        System.out.println((City) model.getAttribute("city"));
 
         model.addAttribute("city",new City());
 
