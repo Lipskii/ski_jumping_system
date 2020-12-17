@@ -9,4 +9,6 @@ public interface CountryRepository extends CrudRepository<Country, Integer> {
 
     boolean existsCountryByName(String name);
 
+    Country findFirstByIdGreaterThan(int id);
+
 }

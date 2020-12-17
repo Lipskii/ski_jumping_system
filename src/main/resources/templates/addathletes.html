@@ -14,7 +14,7 @@
 
     <style>
         div.scroll {
-            width: 100%;
+            width: 2200px;
             overflow-x: auto;
             overflow-y: hidden;
             white-space: nowrap;
@@ -59,6 +59,8 @@
     <br>
 </div>
 
+
+
 <div class="scroll">
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
@@ -68,12 +70,13 @@
             <th>Country</th>
             <th>Fis City</th>
             <th>City</th>
-            <th>City not on the list?</th>
+            <th>New City?</th>
             <th>New City</th>
-            <th>Region</th>
             <th>Birthdate day</th>
             <th>Birthdate month</th>
             <th>Birthdate year</th>
+            <th>Ski jumper?</th>
+            <th>Ski jumper</th>
         </tr>
         </thead>
 
@@ -99,7 +102,7 @@
             </td>
             <!--New City?-->
             <td>
-                <input type="checkbox" th:id="${person.toString()}" onclick="myFunction(this.id)">
+                <input type="checkbox" th:id="${person.toString()}" onclick="myFunction1(this.id)">
             </td>
             <!--New City-->
             <td>
@@ -109,19 +112,25 @@
                     <input type="text" th:field="*{name}">
                     <select th:field="*{region}">
                         <option th:each="region : ${regions}"
-                                th:value="${region}"
+                                th:value="${region.id}"
                                 th:text="${region.getName()}"/>
                     </select>
                     <button type="submit">Add</button>
                 </form>
             </td>
-            <!--Region-->
-            <td>
-            </td>
             <!--Birthdate-->
             <td th:text="${person.getBirthdate_day()}"/>
             <td th:text="${person.getBirthdate_month()}"/>
             <td th:text="${person.getBirthdate_year()}"/>
+            <!--Ski Jumper?-->
+            <td>
+                <input type="checkbox" th:id="${person.toString()}+newSkiJumperBox" onclick="myFunction2(this.id)">
+            </td>
+            <!--Ski Jumper-->
+            <td>
+                <input type="checkbox" th:id="${person.toString()}+newSkiJumperCheckBox" name="isActive" style="display:none">
+                <label for="isActive" th:id="${person.toString()}+newSkiJumperCheckBoxLabel" style="display:none">Is Active?</label>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -134,7 +143,7 @@
 <script>
 
 
-    function myFunction(id) {
+    function myFunction1(id) {
         // Get the checkbox
         var checkBox = document.getElementById(id);
         // Get the output text
@@ -144,6 +153,23 @@
             form.style.display = "block";
         } else {
             form.style.display = "none";
+        }
+    }
+
+    function myFunction2(id) {
+        // Get the checkbox
+        var checkBox = document.getElementById(id);
+        // Get the output text
+        id = id.substring(0,id.length-15);
+        var form = document.getElementById(id + "newSkiJumperCheckBox");
+        var label = document.getElementById(id + "newSkiJumperCheckBoxLabel" )
+
+        if (checkBox.checked) {
+            form.style.display = "block";
+            label.style.display = "block";
+        } else {
+            form.style.display = "none";
+            label.style.display = "none";
         }
     }
 </script>

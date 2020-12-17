@@ -37,4 +37,8 @@ public class RegionService implements ServiceInterface {
     public void deleteById(int id) {
         regionRepository.deleteById(id);
     }
+
+    public List<Region> findRegionByCountryCode(String code){
+        return regionRepository.findAllByCountryCode(code);
+    }
 }

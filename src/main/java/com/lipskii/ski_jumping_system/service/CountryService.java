@@ -53,4 +53,8 @@ public class CountryService implements ServiceInterface {
     public void deleteById(int id) {
         countryRepository.deleteById(id);
     }
+
+    public Country findFirstById(){
+        return countryRepository.findFirstByIdGreaterThan(-1);
+    }
 }

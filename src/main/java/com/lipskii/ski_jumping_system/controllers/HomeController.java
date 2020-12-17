@@ -43,6 +43,40 @@ public class HomeController {
         return "helloworld";
     }
 
+    @GetMapping("/addregions")
+    public String addRegions(Model model){
+
+        List<Country> countries = countryService.findAll();
+        countries.remove(0);
+        model.addAttribute("countries",countries);
+
+        System.out.println(countryService.findFirstById());
+        model.addAttribute("selectedCountry",countryService.findFirstById());
+
+        List<Region> regions = regionService.findAll();
+        model.addAttribute("regions",regions);
+
+        model.addAttribute("region",new Region());
+
+        return "addregions";
+    }
+
+    @PostMapping("/addregions")
+    public String addRegions(@ModelAttribute("region") Region region, Model model){
+
+        regionService.save(region);
+
+        List<Region> regions = regionService.findAll();
+        model.addAttribute("regions",regions);
+
+        List<Country> countries = countryService.findAll();
+        model.addAttribute("countries",countries);
+
+        model.addAttribute("selectedCountry",region.getCountry());
+
+        return "addregions";
+    }
+
     @PostMapping("/addathletes")
     public String addAthletes(@ModelAttribute("searchUri") FisSearchUri searchUri, Model model){
 
@@ -60,16 +94,20 @@ public class HomeController {
         ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch(searchLink);
         model.addAttribute("peopleData",fetchedPersonObjectList);
 
-        List<Region> regions = regionService.findAll();
+        List<Country> countries = countryService.findAll();
+        model.addAttribute("countries",countries);
+
+        List<Region> regions = regionService.findRegionByCountryCode(searchUri.getCode());
         model.addAttribute("regions",regions);
 
         List<City> cities = cityService.findCityByCountry(searchUri.getCode());
         model.addAttribute("cities",cities);
 
+        model.addAttribute("searchUri",searchUri);
+
         model.addAttribute("city",new City());
 
-        List<Country> countries = countryService.findAll();
-        model.addAttribute("countries",countries);
+
 
         return "addathletes";
     }
@@ -78,7 +116,7 @@ public class HomeController {
     public String addAthletes(Model model){
         System.out.println("GET");
 
-       ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&birthyear=2000&skiclub=&skis=&nationcode=POL&fiscode=&status=&search=true");
+       ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&birthyear=2020&skiclub=&skis=&nationcode=POL&fiscode=&status=&search=true");
        model.addAttribute("peopleData",fetchedPersonObjectList);
 
        List<Region> regions = regionService.findAll();
@@ -100,6 +138,7 @@ public class HomeController {
     @GetMapping("/addathletes/{code}")
     public String addAthletes(Model model, @PathVariable String code){
 
+
         ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&birthyear=2020&skiclub=&skis=&nationcode=POL&fiscode=&status=&search=true");
         model.addAttribute("peopleData",fetchedPersonObjectList);
 
@@ -112,8 +151,6 @@ public class HomeController {
         List<Country> countries = countryService.findAll();
         model.addAttribute("countries",countries);
 
-        System.out.println((City) model.getAttribute("city"));
-
         model.addAttribute("city",new City());
 
         model.addAttribute("searchUri", new FisSearchUri());
@@ -123,8 +160,8 @@ public class HomeController {
 
     @PostMapping("/addcity")
     public String addCity(@ModelAttribute("city") City city){
-
-       // System.out.println(city.getRegion().getCountry().getCode());
-        return "redirect:/addathletes";
+        System.out.println(city.getRegion().getCountry().getCode());
+        System.out.println("CITY " + city);
+        return "redirect:/addathletes/" + city.getRegion().getCountry().getCode();
     }
 }
