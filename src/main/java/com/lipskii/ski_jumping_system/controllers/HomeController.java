@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Controller
@@ -64,6 +63,7 @@ public class HomeController {
     @PostMapping("/addregions")
     public String addRegions(@ModelAttribute("region") Region region, Model model){
 
+        region.setName(region.getName().trim());
         regionService.save(region);
 
         List<Region> regions = regionService.findAll();

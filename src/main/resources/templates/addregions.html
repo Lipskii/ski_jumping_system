@@ -33,7 +33,7 @@
 <div class="container">
 <form th:action="@{/addregions}" th:object="${region}" method="post">
     Region name:
-    <input type="text" th:field="*{name}">
+    <input type="text" th:field="*{name}" value=" ">
     <br>
     <br>
     Country:

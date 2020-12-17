@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface RegionRepository extends JpaRepository<Region,Integer> {
 
-    List<Region> findAllByCountryCode(String code);
+    List<Region> findAllByCountryCodeOrderByNameAsc(String code);
 }

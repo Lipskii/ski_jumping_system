@@ -39,6 +39,6 @@ public class RegionService implements ServiceInterface {
     }
 
     public List<Region> findRegionByCountryCode(String code){
-        return regionRepository.findAllByCountryCode(code);
+        return regionRepository.findAllByCountryCodeOrderByNameAsc(code);
     }
 }
