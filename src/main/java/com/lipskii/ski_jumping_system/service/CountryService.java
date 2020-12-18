@@ -57,4 +57,8 @@ public class CountryService implements ServiceInterface {
     public Country findFirstById(){
         return countryRepository.findFirstByIdGreaterThan(-1);
     }
+
+    public Country findCountryByCode(String code){
+        return countryRepository.findCountryByCode(code);
+    }
 }

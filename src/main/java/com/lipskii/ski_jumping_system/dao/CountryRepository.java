@@ -11,4 +11,6 @@ public interface CountryRepository extends CrudRepository<Country, Integer> {
 
     Country findFirstByIdGreaterThan(int id);
 
+    Country findCountryByCode(String code);
+
 }

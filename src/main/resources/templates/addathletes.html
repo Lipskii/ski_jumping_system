@@ -30,6 +30,7 @@
     <form th:action="@{addathletes}" th:object="${searchUri}" method="post">
         Select country:
         <select th:field="*{code}">
+            <option th:value="${selectedCountry.getCode()}" th:text="${selectedCountry.getName()}"></option>
             <option th:each="country : ${countries}"
                     th:value="${country.getCode()}"
                     th:text="${country.getName()}"></option>

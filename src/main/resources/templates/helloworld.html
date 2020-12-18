@@ -10,10 +10,10 @@
 
 <body>
 
-<p th:text="'Time on the server is class='" />
-
 <br> <br>
-<a href="/addathletes">Add athletes</a>
+<a th:href="@{/addathletes(selectedCountryId=501)}">Add athletes</a>
+<br> <br>
+<a href="/addregions">Add regions</a>
 
 <br> <br>
 <a href="/addregions">Add regions</a>
