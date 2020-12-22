@@ -103,7 +103,7 @@
             </td>
             <!--New City?-->
             <td>
-                <input type="checkbox" th:id="${person.toString()}" onclick="myFunction1(this.id)">
+                <input type="checkbox" th:id="${person.toString()}" onclick="newCityVisible(this.id)">
             </td>
             <!--New City-->
             <td>
@@ -125,12 +125,13 @@
             <td th:text="${person.getBirthdate_year()}"/>
             <!--Ski Jumper?-->
             <td>
-                <input type="checkbox" th:id="${person.toString()}+newSkiJumperBox" onclick="myFunction2(this.id)">
+                <input type="checkbox" th:id="${person.toString()}+newSkiJumperBox" onclick="newSkiJumperVisible(this.id)">
             </td>
             <!--Ski Jumper-->
             <td>
                 <input type="checkbox" th:id="${person.toString()}+newSkiJumperCheckBox" name="isActive" style="display:none">
                 <label for="isActive" th:id="${person.toString()}+newSkiJumperCheckBoxLabel" style="display:none">Is Active?</label>
+
             </td>
         </tr>
         </tbody>
@@ -144,33 +145,33 @@
 <script>
 
 
-    function myFunction1(id) {
+    function newCityVisible(id) {
         // Get the checkbox
-        var checkBox = document.getElementById(id);
+        var checkBox = document.getElementById(id)
         // Get the output text
-        var form = document.getElementById(id + "newCityText");
+        var form = document.getElementById(id + "newCityText")
 
         if (checkBox.checked) {
-            form.style.display = "block";
+            form.style.display = "block"
         } else {
-            form.style.display = "none";
+            form.style.display = "none"
         }
     }
 
-    function myFunction2(id) {
+    function newSkiJumperVisible(id) {
         // Get the checkbox
-        var checkBox = document.getElementById(id);
+        var checkBox = document.getElementById(id)
         // Get the output text
-        id = id.substring(0,id.length-15);
-        var form = document.getElementById(id + "newSkiJumperCheckBox");
+        id = id.substring(0,id.length-15)
+        var form = document.getElementById(id + "newSkiJumperCheckBox")
         var label = document.getElementById(id + "newSkiJumperCheckBoxLabel" )
 
         if (checkBox.checked) {
-            form.style.display = "block";
-            label.style.display = "block";
+            form.style.display = "block"
+            label.style.display = "block"
         } else {
-            form.style.display = "none";
-            label.style.display = "none";
+            form.style.display = "none"
+            label.style.display = "none"
         }
     }
 </script>

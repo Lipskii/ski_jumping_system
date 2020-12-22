@@ -1,14 +1,17 @@
 package com.lipskii.ski_jumping_system.controllers;
 
 import com.lipskii.ski_jumping_system.db_data.FetchPeople;
+import com.lipskii.ski_jumping_system.db_data.FetchSkiClubs;
 import com.lipskii.ski_jumping_system.db_data.FetchedPersonObject;
 import com.lipskii.ski_jumping_system.db_data.FisSearchUri;
 import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.Region;
+import com.lipskii.ski_jumping_system.entity.SkiClub;
 import com.lipskii.ski_jumping_system.service.CityService;
 import com.lipskii.ski_jumping_system.service.CountryService;
 import com.lipskii.ski_jumping_system.service.RegionService;
+import com.lipskii.ski_jumping_system.service.SkiClubService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +19,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+//TODO Change addAthletes!!
 @Controller
 public class HomeController {
 
@@ -25,15 +31,18 @@ public class HomeController {
     private final CountryService countryService;
     private final FetchPeople fetchPeople;
     private final RegionService regionService;
+    private final SkiClubService skiClubService;
     protected final Logger log = Logger.getLogger(getClass().getName());
 
 
     @Autowired
-    public HomeController(CityService cityService, CountryService countryService, FetchPeople fetchPeople, RegionService regionService) {
+    public HomeController(CityService cityService, CountryService countryService, FetchPeople fetchPeople,
+                          RegionService regionService, SkiClubService skiClubService) {
         this.cityService = cityService;
         this.countryService = countryService;
         this.fetchPeople = fetchPeople;
         this.regionService = regionService;
+        this.skiClubService = skiClubService;
     }
 
     @GetMapping("/")
@@ -104,14 +113,12 @@ public class HomeController {
         Country country = countryService.findCountryByCode(searchUri.getCode());
         model.addAttribute("selectedCountry",country);
 
-        List<City> cities = cityService.findCityByCountry(searchUri.getCode());
+        List<City> cities = cityService.findCitiesByCountry(searchUri.getCode());
         model.addAttribute("cities",cities);
 
         model.addAttribute("searchUri",searchUri);
 
         model.addAttribute("city",new City());
-
-
 
         return "addathletes";
     }
@@ -131,7 +138,7 @@ public class HomeController {
         List<Region> regions = regionService.findAll();
         model.addAttribute("regions",regions);
 
-        List<City> cities = cityService.findCityByCountry("POL");
+        List<City> cities = cityService.findCitiesByCountry("POL");
         model.addAttribute("cities",cities);
 
         Country country = countryService.findById(selectedCountryId).get();
@@ -145,7 +152,6 @@ public class HomeController {
 
         model.addAttribute("searchUri", new FisSearchUri());
 
-       // System.out.println(model.toString());
         return "addathletes";
     }
 
@@ -165,7 +171,7 @@ public class HomeController {
         List<Region> regions = regionService.findAll();
         model.addAttribute("regions",regions);
 
-        List<City> cities = cityService.findCityByCountry(code);
+        List<City> cities = cityService.findCitiesByCountry(code);
         model.addAttribute("cities",cities);
 
         List<Country> countries = countryService.findAll();
@@ -178,12 +184,11 @@ public class HomeController {
         return "addathletes";
     }
 
-
     //TODO Fix bug with mapping
     @PostMapping("/addcity")
     public String addCity(@ModelAttribute("city") City city, Model model, @ModelAttribute("searchUri") FisSearchUri searchUri) {
 
-        cityService.save(city);
+        //cityService.save(city);
 
         String searchLink = "https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&" +
                 "firstname=&sectorcode=JP" +
@@ -195,6 +200,7 @@ public class HomeController {
                 "&fiscode=" +
                 "&status=" +
                 "&search=true";
+
 
         ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch(searchLink);
         model.addAttribute("peopleData",fetchedPersonObjectList);
@@ -208,7 +214,7 @@ public class HomeController {
         Country country = countryService.findCountryByCode(searchUri.getCode());
         model.addAttribute("selectedCountry",country);
 
-        List<City> cities = cityService.findCityByCountry(searchUri.getCode());
+        List<City> cities = cityService.findCitiesByCountry(searchUri.getCode());
         model.addAttribute("cities",cities);
 
         model.addAttribute("searchUri",searchUri);
@@ -216,5 +222,45 @@ public class HomeController {
         model.addAttribute("city",new City());
 
         return "redirect:/addathletes?selectedCountryId=501";
+    }
+
+    @GetMapping("/addskiclubs")
+    public String addSkiClubs(Model model, @RequestParam("code") String code){
+        FetchSkiClubs fetchSkiClubs = new FetchSkiClubs("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&" +
+                "birthyear=" +
+                "&skiclub=" +
+                "&skis=&nationcode=" + code +
+                "&fiscode=&status=&search=true");
+
+        model.addAttribute("skiClubs",fetchSkiClubs.getSkiClubs());
+
+        model.addAttribute("cities",cityService.findCitiesByCountryOrderByName(code));
+
+        model.addAttribute("regions",regionService.findRegionByCountryCode(code));
+
+        model.addAttribute("city",new City());
+
+        model.addAttribute("skiClub", new SkiClub());
+
+        model.addAttribute("skiClubsDB",skiClubService.findAllByCountryCode(code));
+
+        return "addskiclubs";
+    }
+
+    @PostMapping("/addskiclubs")
+    public String addSkiClubs(@ModelAttribute("skiClub") SkiClub skiClub){
+
+        skiClub.setName(skiClub.getName().replaceAll(",",""));
+        skiClubService.save(skiClub);
+
+        return "redirect:/addskiclubs?code="+skiClub.getCity().getRegion().getCountry().getCode();
+    }
+
+    @PostMapping("/addskiclubsNewCity")
+    public String addSkiClubsNewCity(@ModelAttribute("city") City city){
+        cityService.save(city);
+        log.log(Level.INFO,"City :" + city + "saved to db");
+
+        return "redirect:/addskiclubs?code=" + city.getRegion().getCountry().getCode();
     }
 }

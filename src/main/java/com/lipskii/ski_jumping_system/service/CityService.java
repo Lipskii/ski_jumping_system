@@ -38,8 +38,12 @@ public class CityService implements ServiceInterface {
         log.log(Level.INFO,"City: " + obj.toString() + " saved");
     }
 
-    public List<City> findCityByCountry(String code){
+    public List<City> findCitiesByCountry(String code){
         return cityRepository.findAllByRegionCountryCode(code);
+    }
+
+    public List<City> findCitiesByCountryOrderByName(String code){
+        return cityRepository.findAllByRegionCountryCodeOrderByName(code);
     }
 
     @Override

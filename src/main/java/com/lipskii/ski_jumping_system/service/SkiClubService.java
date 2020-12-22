@@ -37,4 +37,8 @@ public class SkiClubService implements ServiceInterface {
     public void deleteById(int id) {
         skiClubRepository.deleteById(id);
     }
+
+    public List<SkiClub> findAllByCountryCode(String code){
+        return skiClubRepository.findAllByCityRegionCountryCodeOrderByName(code);
+    }
 }

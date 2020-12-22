@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>Add ski clubs</title>
+</head>
+<body>
+
+<form th:action="@{addskiclubs}" th:object="${skiClub}" id="clubForm" method="post">
+
+    <div>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Club</th>
+                <th>Existing Clubs</th>
+                <th>DB Club Name</th>
+                <th>City</th>
+                <th>Add new City?</th>
+                <th>Save club into db?</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="club : ${skiClubs}">
+                <td th:text="${club}"></td>
+                <td>
+                    <select>
+                        <option th:each="skiClub : ${skiClubsDB}" th:text="${skiClub.name}"></option>
+                    </select>
+                </td>
+                <td>
+                    <input th:field="*{name}" type="text" th:value="${club}">
+                </td>
+                <td>
+                    <select th:field="*{city}" form="clubForm">
+                        <option th:each="city : ${cities}"
+                                th:value="${city.id}"
+                                th:text="${city.name}"></option>
+                    </select>
+                </td>
+                <td>
+                    <input type="checkbox" th:id="${club}" name="addCity" onclick="newCityVisible(id)">
+                    <!--suppress XmlInvalidId -->
+                    <label for="addCity" th:id="${club}+label">new city?</label>
+
+                    <form th:action="@{addskiclubsNewCity}" th:object="${city}" method="post">
+                        <input type="text" th:field="*{name}" th:id="${club}+newCityText" disabled>
+                        <select th:field="*{region}" th:id="${club}+selectRegion" disabled>
+                            <option th:each="region : ${regions}"
+                                    th:value="${region.id}"
+                                    th:text="${region.name}">
+                            </option>
+                        </select>
+                        <button type="submit" th:id="${club}+addButton" disabled>Add</button>
+                    </form>
+                </td>
+                <td>
+                    <button type="submit" form="clubForm">Save</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+<script>
+
+    function newCityVisible(id) {
+        const checkBox = document.getElementById(id);
+        const newCityText = document.getElementById(id + "newCityText");
+        const selectRegion = document.getElementById(id + "selectRegion");
+        const addButton = document.getElementById(id + "addButton");
+
+        if (checkBox.checked) {
+            newCityText.removeAttribute("disabled")
+            selectRegion.removeAttribute("disabled")
+            addButton.removeAttribute("disabled")
+        } else {
+            newCityText.setAttribute("disabled", "disabled")
+            selectRegion.setAttribute("disabled", "disabled")
+            addButton.setAttribute("disabled", "disabled")
+        }
+
+    }
+</script>
+</html>
