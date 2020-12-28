@@ -11,34 +11,34 @@
 </head>
 <body>
 
-<form th:action="@{addskiclubs}" th:object="${skiClub}" id="clubForm" method="post">
 
     <div>
+
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
             <tr>
                 <th>Club</th>
                 <th>Existing Clubs</th>
-                <th>DB Club Name</th>
+<!--                <th>DB Club Name</th>-->
                 <th>City</th>
                 <th>Add new City?</th>
-                <th>Save club into db?</th>
+                <th></th>
             </tr>
             </thead>
 
             <tbody>
             <tr th:each="club : ${skiClubs}">
-                <td th:text="${club}"></td>
+                <td th:text="${club}" th:id="${club}+clubName"></td>
                 <td>
                     <select>
                         <option th:each="skiClub : ${skiClubsDB}" th:text="${skiClub.name}"></option>
                     </select>
                 </td>
+<!--                <td>-->
+<!--                    <input th:field="*{name}" type="text" th:value="${club}" th:id="${club}+clubNameTextField">-->
+<!--                </td>-->
                 <td>
-                    <input th:field="*{name}" type="text" th:value="${club}">
-                </td>
-                <td>
-                    <select th:field="*{city}" form="clubForm">
+                    <select th:field="*{city}" th:id="${club}+citySelect">
                         <option th:each="city : ${cities}"
                                 th:value="${city.id}"
                                 th:text="${city.name}"></option>
@@ -61,16 +61,44 @@
                     </form>
                 </td>
                 <td>
-                    <button type="submit" form="clubForm">Save</button>
+                    <input type="button" th:value="Add" th:id="${club}"  onclick="addSkiClubToSelect(id)">
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
+    <div>
+        <form th:action="@{addskiclubs}" th:object="${skiClubsToInsert}" method="post">
+            <select id="addedSkiClubsSelect">
+            </select>
+            <input type="button" value="Delete entry" onclick="removeSkiClubFromSelect()">
+            <button type="submit">Save Clubs to DB</button>
+        </form>
+
+    </div>
 
 </body>
 
 <script>
+
+    <!--TODO sort options alphabetically -->
+    function addSkiClubToSelect(id){
+        const clubName = document.getElementById(id+ "clubName")
+        var addedSkiClubsSelect = document.getElementById("addedSkiClubsSelect");
+        const citySelected = document.getElementById(id+ "citySelect")
+
+        if(clubName.value !== "" && citySelected.value > -1){
+            var option = document.createElement("option")
+            option.value = clubName.innerText.trim() + "," + citySelected.value
+            option.text = clubName.innerText.trim()
+            addedSkiClubsSelect.add(option)
+        }
+    }
+
+    function removeSkiClubFromSelect(){
+        var addedSkiClubsSelect = document.getElementById("addedSkiClubsSelect");
+        addedSkiClubsSelect.remove(addedSkiClubsSelect.selectedIndex)
+    }
 
     function newCityVisible(id) {
         const checkBox = document.getElementById(id);
