@@ -10,46 +10,49 @@
     <title>Add ski clubs</title>
 </head>
 <body>
+<form th:action="@{addskiclubs}" th:object="${skiClub}" id="clubForm" method="post">
 
+<div>
 
-    <div>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Club</th>
+            <th>DB Club Name</th>
+            <th>Existing Clubs</th>
+            <th>City</th>
+            <th>Add new City?</th>
+            <th></th>
+        </tr>
+        </thead>
 
-        <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-            <tr>
-                <th>Club</th>
-                <th>Existing Clubs</th>
-<!--                <th>DB Club Name</th>-->
-                <th>City</th>
-                <th>Add new City?</th>
-                <th></th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr th:each="club : ${skiClubs}">
-                <td th:text="${club}" th:id="${club}+clubName"></td>
-                <td>
-                    <select>
-                        <option th:each="skiClub : ${skiClubsDB}" th:text="${skiClub.name}"></option>
-                    </select>
-                </td>
-<!--                <td>-->
-<!--                    <input th:field="*{name}" type="text" th:value="${club}" th:id="${club}+clubNameTextField">-->
-<!--                </td>-->
-                <td>
-                    <select th:field="*{city}" th:id="${club}+citySelect">
-                        <option th:each="city : ${cities}"
-                                th:value="${city.id}"
-                                th:text="${city.name}"></option>
-                    </select>
-                </td>
-                <td>
-                    <input type="checkbox" th:id="${club}" name="addCity" onclick="newCityVisible(id)">
-                    <!--suppress XmlInvalidId -->
-                    <label for="addCity" th:id="${club}+label">new city?</label>
-
-                    <form th:action="@{addskiclubsNewCity}" th:object="${city}" method="post">
+        <tbody>
+        <tr th:each="club : ${skiClubs}">
+            <td th:text="${club}" th:id="${club}+clubName"></td>
+            <td>
+                <input type="text" th:form="clubForm" th:field="*{name}">
+            </td>
+            <td>
+                <select>
+                    <option th:each="skiClub : ${skiClubsDB}" th:text="${skiClub.name}"></option>
+                </select>
+            </td>
+            <!--                <td>-->
+            <!--                    <input th:field="*{name}" type="text" th:value="${club}" th:id="${club}+clubNameTextField">-->
+            <!--                </td>-->
+            <td>
+                <select th:field="*{city}" th:id="${club}+citySelect" th:form="clubForm">
+                    <option th:each="city : ${cities}"
+                            th:value="${city.id}"
+                            th:text="${city.name}"></option>
+                </select>
+            </td>
+            <td>
+                <input type="checkbox" th:id="${club}" name="addCity" onclick="newCityVisible(id)">
+                <!--suppress XmlInvalidId -->
+                <label for="addCity" th:id="${club}+label">new city?</label>
+                <div id="newCity">
+                    <form th:action="@{addskiclubsnewcity}" th:object="${city}" method="post" target="votary">
                         <input type="text" th:field="*{name}" th:id="${club}+newCityText" disabled>
                         <select th:field="*{region}" th:id="${club}+selectRegion" disabled>
                             <option th:each="region : ${regions}"
@@ -59,46 +62,20 @@
                         </select>
                         <button type="submit" th:id="${club}+addButton" disabled>Add</button>
                     </form>
-                </td>
-                <td>
-                    <input type="button" th:value="Add" th:id="${club}"  onclick="addSkiClubToSelect(id)">
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div>
-        <form th:action="@{addskiclubs}" th:object="${skiClubsToInsert}" method="post">
-            <select id="addedSkiClubsSelect">
-            </select>
-            <input type="button" value="Delete entry" onclick="removeSkiClubFromSelect()">
-            <button type="submit">Save Clubs to DB</button>
-        </form>
-
-    </div>
+                </div>
+            </td>
+            <td>
+                <button type="submit" form="clubForm">Save</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<iframe name="votary" style="display:none;"></iframe>
 
 </body>
 
 <script>
-
-    <!--TODO sort options alphabetically -->
-    function addSkiClubToSelect(id){
-        const clubName = document.getElementById(id+ "clubName")
-        var addedSkiClubsSelect = document.getElementById("addedSkiClubsSelect");
-        const citySelected = document.getElementById(id+ "citySelect")
-
-        if(clubName.value !== "" && citySelected.value > -1){
-            var option = document.createElement("option")
-            option.value = clubName.innerText.trim() + "," + citySelected.value
-            option.text = clubName.innerText.trim()
-            addedSkiClubsSelect.add(option)
-        }
-    }
-
-    function removeSkiClubFromSelect(){
-        var addedSkiClubsSelect = document.getElementById("addedSkiClubsSelect");
-        addedSkiClubsSelect.remove(addedSkiClubsSelect.selectedIndex)
-    }
 
     function newCityVisible(id) {
         const checkBox = document.getElementById(id);

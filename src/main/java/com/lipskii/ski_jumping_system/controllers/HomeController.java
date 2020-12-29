@@ -249,6 +249,8 @@ public class HomeController {
 
         model.addAttribute("code",code);
 
+        model.addAttribute("skiClub",new SkiClub());
+
         model.addAttribute("skiClubsToInsert", new ArrayList<String>());
 
         model.addAttribute("skiClubsDB",skiClubService.findAllByCountryCode(code));
@@ -257,18 +259,19 @@ public class HomeController {
     }
 
     @PostMapping("/addskiclubs")
-    public String addSkiClubs(@ModelAttribute("skiClubsToInsert") ArrayList<String> inputArrayList,
-                              @ModelAttribute("code") String code){
+    public String addSkiClubs(@ModelAttribute("skiClub") SkiClub skiClub){
 
-        System.out.println(inputArrayList);
-//        skiClub.setName(skiClub.getName().replaceAll(",",""));
-//        skiClubService.save(skiClub);
+        skiClub.setName(skiClub.getName().replaceAll(",","").trim());
 
-        return "redirect:/addskiclubs?code="+code;
+        skiClubService.save(skiClub);
+
+
+        return "redirect:/addskiclubs?code="+skiClub.getCity().getRegion().getCountry().getCode();
     }
 
-    @PostMapping("/addskiclubsNewCity")
+    @PostMapping("/addskiclubsnewcity")
     public String addSkiClubsNewCity(@ModelAttribute("city") City city){
+        System.out.println(city);
         cityService.save(city);
         log.log(Level.INFO,"City :" + city + "saved to db");
 
