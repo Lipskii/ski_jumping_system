@@ -34,13 +34,14 @@ Add city:
 
 Add ski club:
 <form th:action="@{insertskiclubs}" th:object="${newSkiClub}" method="post" target="votary">
-    <select th:field="*{name}">
+    <select th:field="*{name}" onclick="feedbackLabelHidden()">
         <option th:each="skiClubName : ${skiClubsFromFis}" th:value="${skiClubName}" th:text="${skiClubName}"></option>
     </select>
-    <select th:field="*{city}">
+    <select th:field="*{city}" onclick="feedbackLabelHidden()">
         <option th:each="city : ${cities}" th:value="${city.id}" th:text="${city.name}"></option>
     </select>
-    <button type="submit">Save</button>
+    <button type="submit" onclick="feedbackLabelVisible()">Save</button>
+    <label id="clubAddedFeedbackLabel" style="visibility: hidden">Club Saved!</label>
 </form>
 <br>
 
@@ -64,4 +65,14 @@ Clubs already in database from this country:
 
 <iframe name="votary" style="display:none;"></iframe>
 </body>
+<script>
+
+    function feedbackLabelVisible() {
+        document.getElementById("clubAddedFeedbackLabel").style.visibility = "visible"
+    }
+
+    function feedbackLabelHidden() {
+        document.getElementById("clubAddedFeedbackLabel").style.visibility = "hidden"
+    }
+</script>
 </html>
