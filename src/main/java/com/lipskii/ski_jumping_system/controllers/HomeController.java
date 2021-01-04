@@ -230,51 +230,50 @@ public class HomeController {
     }
 
 
-
-    @GetMapping("/addskiclubs")
-    public String addSkiClubs(Model model, @RequestParam("code") String code){
+    @GetMapping("/insertskiclubs")
+    public String insertSkiClubs(Model model, @RequestParam("code") String code){
         FetchSkiClubs fetchSkiClubs = new FetchSkiClubs("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&" +
                 "birthyear=" +
                 "&skiclub=" +
                 "&skis=&nationcode=" + code +
                 "&fiscode=&status=&search=true");
 
-        model.addAttribute("skiClubs",fetchSkiClubs.getSkiClubs().toArray(new String[0]));
+        model.addAttribute("countries", countryService.findAll());
+        model.addAttribute("country",new Country());
+        model.addAttribute("newCity",new City());
 
+        model.addAttribute("skiClubsInDB",skiClubService.findAllByCountryCode(code));
+        model.addAttribute("skiClubsFromFis",fetchSkiClubs.getSkiClubs().toArray(new String[0]));
         model.addAttribute("cities",cityService.findCitiesByCountryOrderByName(code));
+        model.addAttribute("regions",regionService.findRegionsByCountryCode(code));
+        model.addAttribute("newSkiClub",new SkiClub());
 
-        model.addAttribute("regions",regionService.findRegionByCountryCode(code));
-
-        model.addAttribute("city",new City());
-
-        model.addAttribute("code",code);
-
-        model.addAttribute("skiClub",new SkiClub());
-
-        model.addAttribute("skiClubsToInsert", new ArrayList<String>());
-
-        model.addAttribute("skiClubsDB",skiClubService.findAllByCountryCode(code));
-
-        return "addskiclubs";
+        return "insertskiclubs";
     }
 
-    @PostMapping("/addskiclubs")
-    public String addSkiClubs(@ModelAttribute("skiClub") SkiClub skiClub){
+    @PostMapping("/insertskiclubs")
+    public String insertSkiClubs(@ModelAttribute("newSkiClub") SkiClub skiClub){
 
-        skiClub.setName(skiClub.getName().replaceAll(",","").trim());
-
+        log.log(Level.INFO,"Saving " + skiClub + " into database");
         skiClubService.save(skiClub);
 
-
-        return "redirect:/addskiclubs?code="+skiClub.getCity().getRegion().getCountry().getCode();
+        return "redirect:/insertskiclubs?code=" + skiClub.getCity().getRegion().getCountry().getCode();
     }
 
-    @PostMapping("/addskiclubsnewcity")
-    public String addSkiClubsNewCity(@ModelAttribute("city") City city){
-        System.out.println(city);
-        cityService.save(city);
-        log.log(Level.INFO,"City :" + city + "saved to db");
+    @PostMapping("/insertskiclubs/changecode")
+    public String insertSkiClubsChangeCode(@ModelAttribute("country") Country country){
 
-        return "redirect:/addskiclubs?code=" + city.getRegion().getCountry().getCode();
+        log.log(Level.INFO,"Reloading insertskiclubs with code = " + country.getCode());
+        country = countryService.findById(country.getId()).get();
+        return "redirect:/insertskiclubs?code=" + country.getCode();
+    }
+
+    @PostMapping("/insertskiclubs/addcity")
+    public String insertSkiClubsAddCity(@ModelAttribute("city") City city){
+
+        log.log(Level.INFO,"Saving " + city + " into database");
+        cityService.save(city);
+
+        return "redirect:/insertskiclubs?code=" + city.getRegion().getCountry().getCode();
     }
 }
