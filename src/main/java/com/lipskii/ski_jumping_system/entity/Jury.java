@@ -1,5 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,10 +13,12 @@ public class Jury {
     @Column(name = "idjury")
     private int id;
 
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "jury_type_idjury_type")
     private JuryType juryType;
 
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "person_idperson")
     private Person person;

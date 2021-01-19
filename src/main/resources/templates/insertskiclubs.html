@@ -23,7 +23,7 @@ Select country:
 
 
 Add city:
-<form th:action="@{'insertskiclubs/addcity'}" th:object="${newCity}" method="post">
+<form th:action="@{'insertskiclubs/addcity'}" th:object="${newCity}" method="post" target="votary">
     <input type="text" th:field="*{name}" placeholder="City name">
     <select th:field="*{region}">
         <option th:each="region : ${regions}" th:value="${region.id}" th:text="${region.name}"></option>
@@ -34,7 +34,8 @@ Add city:
 
 Add ski club:
 <form th:action="@{insertskiclubs}" th:object="${newSkiClub}" method="post" target="votary">
-    <select th:field="*{name}" onclick="feedbackLabelHidden()">
+    <label id="nameToCopyLabel">Name to Copy</label>
+    <select th:field="*{name}" id="selectSkiClubName" onclick="feedbackLabelHidden(); nameToCopy()">
         <option th:each="skiClubName : ${skiClubsFromFis}" th:value="${skiClubName}" th:text="${skiClubName}"></option>
     </select>
     <select th:field="*{city}" onclick="feedbackLabelHidden()">
@@ -73,6 +74,11 @@ Clubs already in database from this country:
 
     function feedbackLabelHidden() {
         document.getElementById("clubAddedFeedbackLabel").style.visibility = "hidden"
+    }
+
+    function nameToCopy(){
+        const selected = document.getElementById("selectSkiClubName")
+        document.getElementById("nameToCopyLabel").textContent = selected.value
     }
 </script>
 </html>

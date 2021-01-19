@@ -1,5 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -19,10 +21,12 @@ public class SkiJumper implements Comparable<SkiJumper> {
     @Column(name = "is_active")
     private boolean isActive;
 
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "skis_idskis")
     private Skis skis;
 
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "ski_club_idski_club")
     private SkiClub skiClub;

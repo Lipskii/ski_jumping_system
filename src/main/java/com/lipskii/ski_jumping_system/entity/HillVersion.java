@@ -1,6 +1,8 @@
 package com.lipskii.ski_jumping_system.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -14,12 +16,13 @@ public class HillVersion {
     @Column(name = "idhill_version")
     private int id;
 
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "hill_idhill")
     private Hill hill;
 
     @Column(name = "first_year")
-    private int first_year;
+    private Integer first_year;
 
     @Column(name = "last_year")
     private Integer last_year;
@@ -192,7 +195,7 @@ public class HillVersion {
     public HillVersion() {
     }
 
-    public HillVersion(Hill hill, int first_year, int last_year, BigDecimal kPoint,
+    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint,
                        BigDecimal hillSize, BigDecimal inrunLength, BigDecimal e,
                        BigDecimal inrunAngle, BigDecimal r1, BigDecimal takeOffLength,
                        BigDecimal takeOffAngle, BigDecimal takeOffHeight, BigDecimal v0,
@@ -254,19 +257,19 @@ public class HillVersion {
         this.hill = hill;
     }
 
-    public int getFirst_year() {
+    public Integer getFirst_year() {
         return first_year;
     }
 
-    public void setFirst_year(int first_year) {
+    public void setFirst_year(Integer first_year) {
         this.first_year = first_year;
     }
 
-    public int getLast_year() {
+    public Integer getLast_year() {
         return last_year;
     }
 
-    public void setLast_year(int last_year) {
+    public void setLast_year(Integer last_year) {
         this.last_year = last_year;
     }
 

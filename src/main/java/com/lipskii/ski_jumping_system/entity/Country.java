@@ -1,5 +1,6 @@
 package com.lipskii.ski_jumping_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -21,6 +22,7 @@ public class Country implements Comparable<Country> {
     @Column(name = "code")
     private String code;
 
+    @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "country", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Region> regions;

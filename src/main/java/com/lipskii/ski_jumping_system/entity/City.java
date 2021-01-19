@@ -1,6 +1,8 @@
 package com.lipskii.ski_jumping_system.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -19,14 +21,17 @@ public class City implements Comparable<City> {
     @Column(name = "name")
     private String name;
 
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "region_idregion")
     private Region region;
 
+    @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<SkiClub> skiClubs;
 
+    @JsonManagedReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Venue> venues;

@@ -1,5 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 //TODO Finish it after changes to db.
@@ -15,6 +17,7 @@ public class Series {
     @Column(name = "name")
     private String name;
 
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "all_time_points_system_idall_time_points_system")
     private AllTimePointsSystem allTimePointsSystem;

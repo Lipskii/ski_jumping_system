@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-//TODO Change addAthletes!!
 @Controller
 public class HomeController {
 
@@ -48,232 +47,249 @@ public class HomeController {
         return "helloworld";
     }
 
-    @GetMapping("/addregions")
-    public String addRegions(Model model) {
-
-        List<Country> countries = countryService.findAll();
-        countries.remove(0);
-        model.addAttribute("countries", countries);
-
-        System.out.println(countryService.findFirstById());
-        model.addAttribute("selectedCountry", countryService.findFirstById());
-
-        List<Region> regions = regionService.findAll();
-        model.addAttribute("regions", regions);
-
-        model.addAttribute("region", new Region());
-
-        return "addregions";
-    }
-
-    @PostMapping("/addregions")
-    public String addRegions(@ModelAttribute("region") Region region, Model model) {
-
-        region.setName(region.getName().trim());
-        regionService.save(region);
-
-        List<Region> regions = regionService.findAll();
-        model.addAttribute("regions", regions);
-
-        List<Country> countries = countryService.findAll();
-        model.addAttribute("countries", countries);
-
-        model.addAttribute("selectedCountry", region.getCountry());
-
-        return "addregions";
-    }
-
-//    @PostMapping("/addathletes")
-//    public String addAthletes(@ModelAttribute("searchUri") FisSearchUri searchUri, Model model){
-//
-//        //TODO remove duplicate code
-//        String searchLink = "https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&" +
-//                "firstname=&sectorcode=JP" +
-//                "&gendercode=M" +
-//                "&birthyear=" + searchUri.getDecade() +
-//                "&skiclub=" +
-//                "&skis=" +
-//                "&nationcode=" + searchUri.getCode() +
-//                "&fiscode=" +
-//                "&status=" +
-//                "&search=true";
-//
-//        ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch(searchLink);
-//        model.addAttribute("peopleData",fetchedPersonObjectList);
+//    @GetMapping("/addregions")
+//    public String addRegions(Model model) {
 //
 //        List<Country> countries = countryService.findAll();
-//        model.addAttribute("countries",countries);
+//        countries.remove(0);
+//        model.addAttribute("countries", countries);
 //
-//        List<Region> regions = regionService.findRegionByCountryCode(searchUri.getCode());
-//        model.addAttribute("regions",regions);
+//        System.out.println(countryService.findFirstById());
+//        model.addAttribute("selectedCountry", countryService.findFirstById());
 //
-//        Country country = countryService.findCountryByCode(searchUri.getCode());
-//        model.addAttribute("selectedCountry",country);
+//        List<Region> regions = regionService.findAll();
+//        model.addAttribute("regions", regions);
 //
-//        List<City> cities = cityService.findCitiesByCountry(searchUri.getCode());
-//        model.addAttribute("cities",cities);
+//        model.addAttribute("region", new Region());
 //
-//        model.addAttribute("searchUri",searchUri);
-//
-//        model.addAttribute("city",new City());
-//
-//        return "addathletes";
+//        return "addregions";
 //    }
+//
+//    @PostMapping("/addregions")
+//    public String addRegions(@ModelAttribute("region") Region region, Model model) {
+//
+//        region.setName(region.getName().trim());
+//        regionService.save(region);
+//
+//        List<Region> regions = regionService.findAll();
+//        model.addAttribute("regions", regions);
+//
+//        List<Country> countries = countryService.findAll();
+//        model.addAttribute("countries", countries);
+//
+//        model.addAttribute("selectedCountry", region.getCountry());
+//
+//        return "addregions";
+//    }
+//
+////    @PostMapping("/addathletes")
+////    public String addAthletes(@ModelAttribute("searchUri") FisSearchUri searchUri, Model model){
+////
+////        //TODO remove duplicate code
+////        String searchLink = "https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&" +
+////                "firstname=&sectorcode=JP" +
+////                "&gendercode=M" +
+////                "&birthyear=" + searchUri.getDecade() +
+////                "&skiclub=" +
+////                "&skis=" +
+////                "&nationcode=" + searchUri.getCode() +
+////                "&fiscode=" +
+////                "&status=" +
+////                "&search=true";
+////
+////        ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch(searchLink);
+////        model.addAttribute("peopleData",fetchedPersonObjectList);
+////
+////        List<Country> countries = countryService.findAll();
+////        model.addAttribute("countries",countries);
+////
+////        List<Region> regions = regionService.findRegionByCountryCode(searchUri.getCode());
+////        model.addAttribute("regions",regions);
+////
+////        Country country = countryService.findCountryByCode(searchUri.getCode());
+////        model.addAttribute("selectedCountry",country);
+////
+////        List<City> cities = cityService.findCitiesByCountry(searchUri.getCode());
+////        model.addAttribute("cities",cities);
+////
+////        model.addAttribute("searchUri",searchUri);
+////
+////        model.addAttribute("city",new City());
+////
+////        return "addathletes";
+////    }
+////
+////    @GetMapping("/addathletes")
+////    public String addAthletes(Model model, @RequestParam("selectedCountryId") int selectedCountryId){
+////
+////        System.out.println("GET");
+////        ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP" +
+////                "&gendercode=M" +
+////                "&birthyear=2020" +
+////                "&skiclub=&skis=" +
+////                "&nationcode=POL" +
+////                "&fiscode=&status=&search=true");
+////        model.addAttribute("peopleData",fetchedPersonObjectList);
+////
+////        List<Region> regions = regionService.findAll();
+////        model.addAttribute("regions",regions);
+////
+////        List<City> cities = cityService.findCitiesByCountry("POL");
+////        model.addAttribute("cities",cities);
+////
+////        Country country = countryService.findById(selectedCountryId).get();
+////        System.out.println("SELECTED COUNTRY: " + country);
+////        model.addAttribute("selectedCountry",country);
+////
+////        List<Country> countries = countryService.findAll();
+////        model.addAttribute("countries",countries);
+////
+////        model.addAttribute("city",new City());
+////
+////        model.addAttribute("searchUri", new FisSearchUri());
+////
+////        return "addathletes";
+////    }
+////
+////    @GetMapping("/addathletes?{code}*{decade}")
+////    public String addAthletes(Model model, @PathVariable("code") String code, @PathVariable("decade") String decade){
+////
+////        System.out.println("CODE" + code);
+////        System.out.println("decade" + decade);
+////        ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&" +
+////                "birthyear=" + decade +
+////                "&skiclub=&skis=" +
+////                "&nationcode=" + code +
+////                "&fiscode=&status=&search=true");
+////
+////        model.addAttribute("peopleData",fetchedPersonObjectList);
+////
+////        List<Region> regions = regionService.findAll();
+////        model.addAttribute("regions",regions);
+////
+////        List<City> cities = cityService.findCitiesByCountry(code);
+////        model.addAttribute("cities",cities);
+////
+////        List<Country> countries = countryService.findAll();
+////        model.addAttribute("countries",countries);
+////
+////        model.addAttribute("city",new City());
+////
+////        model.addAttribute("searchUri", new FisSearchUri());
+////
+////        return "addathletes";
+////    }
+//
+////    //TODO Fix bug with mapping
+////    @PostMapping("/addcity")
+////    public String addCity(@ModelAttribute("city") City city, Model model, @ModelAttribute("searchUri") FisSearchUri searchUri) {
+////
+////        //cityService.save(city);
+////
+////        String searchLink = "https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&" +
+////                "firstname=&sectorcode=JP" +
+////                "&gendercode=M" +
+////                "&birthyear=" + searchUri.getDecade() +
+////                "&skiclub=" +
+////                "&skis=" +
+////                "&nationcode=" + searchUri.getCode() +
+////                "&fiscode=" +
+////                "&status=" +
+////                "&search=true";
+////
+////
+////        ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch(searchLink);
+////        model.addAttribute("peopleData",fetchedPersonObjectList);
+////
+////        List<Country> countries = countryService.findAll();
+////        model.addAttribute("countries",countries);
+////
+////        List<Region> regions = regionService.findRegionByCountryCode(searchUri.getCode());
+////        model.addAttribute("regions",regions);
+////
+////        Country country = countryService.findCountryByCode(searchUri.getCode());
+////        model.addAttribute("selectedCountry",country);
+////
+////        List<City> cities = cityService.findCitiesByCountry(searchUri.getCode());
+////        model.addAttribute("cities",cities);
+////
+////        model.addAttribute("searchUri",searchUri);
+////
+////        model.addAttribute("city",new City());
+////
+////        return "redirect:/addathletes?selectedCountryId=501";
+////    }
+//
 //
 //    @GetMapping("/addathletes")
-//    public String addAthletes(Model model, @RequestParam("selectedCountryId") int selectedCountryId){
+//    public String addAthletes(Model model, @RequestParam("id") int selectedCountryId, @RequestParam("decade") String decade){
 //
-//        System.out.println("GET");
-//        ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP" +
-//                "&gendercode=M" +
-//                "&birthyear=2020" +
-//                "&skiclub=&skis=" +
-//                "&nationcode=POL" +
-//                "&fiscode=&status=&search=true");
-//        model.addAttribute("peopleData",fetchedPersonObjectList);
-//
-//        List<Region> regions = regionService.findAll();
-//        model.addAttribute("regions",regions);
-//
-//        List<City> cities = cityService.findCitiesByCountry("POL");
-//        model.addAttribute("cities",cities);
-//
-//        Country country = countryService.findById(selectedCountryId).get();
-//        System.out.println("SELECTED COUNTRY: " + country);
-//        model.addAttribute("selectedCountry",country);
-//
-//        List<Country> countries = countryService.findAll();
-//        model.addAttribute("countries",countries);
-//
-//        model.addAttribute("city",new City());
-//
-//        model.addAttribute("searchUri", new FisSearchUri());
 //
 //        return "addathletes";
 //    }
 //
-//    @GetMapping("/addathletes?{code}*{decade}")
-//    public String addAthletes(Model model, @PathVariable("code") String code, @PathVariable("decade") String decade){
 //
-//        System.out.println("CODE" + code);
-//        System.out.println("decade" + decade);
-//        ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&" +
-//                "birthyear=" + decade +
-//                "&skiclub=&skis=" +
-//                "&nationcode=" + code +
-//                "&fiscode=&status=&search=true");
-//
-//        model.addAttribute("peopleData",fetchedPersonObjectList);
-//
-//        List<Region> regions = regionService.findAll();
-//        model.addAttribute("regions",regions);
-//
-//        List<City> cities = cityService.findCitiesByCountry(code);
-//        model.addAttribute("cities",cities);
-//
-//        List<Country> countries = countryService.findAll();
-//        model.addAttribute("countries",countries);
-//
-//        model.addAttribute("city",new City());
-//
-//        model.addAttribute("searchUri", new FisSearchUri());
-//
-//        return "addathletes";
-//    }
-
-//    //TODO Fix bug with mapping
-//    @PostMapping("/addcity")
-//    public String addCity(@ModelAttribute("city") City city, Model model, @ModelAttribute("searchUri") FisSearchUri searchUri) {
-//
-//        //cityService.save(city);
-//
-//        String searchLink = "https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&" +
-//                "firstname=&sectorcode=JP" +
-//                "&gendercode=M" +
-//                "&birthyear=" + searchUri.getDecade() +
+//    @GetMapping("/insertskiclubs")
+//    public String insertSkiClubs(Model model, @RequestParam("code") String code){
+//        FetchSkiClubs fetchSkiClubs = new FetchSkiClubs("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&" +
+//                "birthyear=" +
 //                "&skiclub=" +
-//                "&skis=" +
-//                "&nationcode=" + searchUri.getCode() +
-//                "&fiscode=" +
-//                "&status=" +
-//                "&search=true";
+//                "&skis=&nationcode=" + code +
+//                "&fiscode=&status=&search=true");
 //
+//        model.addAttribute("countries", countryService.findAll());
+//        model.addAttribute("country",new Country());
+//        model.addAttribute("newCity",new City());
 //
-//        ArrayList<FetchedPersonObject> fetchedPersonObjectList = fetchPeople.fetchPeopleFromFisSearch(searchLink);
-//        model.addAttribute("peopleData",fetchedPersonObjectList);
+//        model.addAttribute("skiClubsInDB",skiClubService.findAllByCountryCode(code));
+//        model.addAttribute("skiClubsFromFis",fetchSkiClubs.getSkiClubs().toArray(new String[0]));
+//        model.addAttribute("cities",cityService.findCitiesByCountryOrderByName(code));
+//        model.addAttribute("regions",regionService.findRegionsByCountryCode(code));
+//        model.addAttribute("newSkiClub",new SkiClub());
 //
-//        List<Country> countries = countryService.findAll();
-//        model.addAttribute("countries",countries);
-//
-//        List<Region> regions = regionService.findRegionByCountryCode(searchUri.getCode());
-//        model.addAttribute("regions",regions);
-//
-//        Country country = countryService.findCountryByCode(searchUri.getCode());
-//        model.addAttribute("selectedCountry",country);
-//
-//        List<City> cities = cityService.findCitiesByCountry(searchUri.getCode());
-//        model.addAttribute("cities",cities);
-//
-//        model.addAttribute("searchUri",searchUri);
-//
-//        model.addAttribute("city",new City());
-//
-//        return "redirect:/addathletes?selectedCountryId=501";
+//        return "insertskiclubs";
 //    }
-
-
-    @GetMapping("/addathletes")
-    public String addAthletes(Model model, @RequestParam("id") int selectedCountryId, @RequestParam("decade") String decade){
-
-
-        return "addathletes";
-    }
-
-
-    @GetMapping("/insertskiclubs")
-    public String insertSkiClubs(Model model, @RequestParam("code") String code){
-        FetchSkiClubs fetchSkiClubs = new FetchSkiClubs("https://www.fis-ski.com/DB/ski-jumping/biographies.html?lastname=&firstname=&sectorcode=JP&gendercode=M&" +
-                "birthyear=" +
-                "&skiclub=" +
-                "&skis=&nationcode=" + code +
-                "&fiscode=&status=&search=true");
-
-        model.addAttribute("countries", countryService.findAll());
-        model.addAttribute("country",new Country());
-        model.addAttribute("newCity",new City());
-
-        model.addAttribute("skiClubsInDB",skiClubService.findAllByCountryCode(code));
-        model.addAttribute("skiClubsFromFis",fetchSkiClubs.getSkiClubs().toArray(new String[0]));
-        model.addAttribute("cities",cityService.findCitiesByCountryOrderByName(code));
-        model.addAttribute("regions",regionService.findRegionsByCountryCode(code));
-        model.addAttribute("newSkiClub",new SkiClub());
-
-        return "insertskiclubs";
-    }
-
-    @PostMapping("/insertskiclubs")
-    public String insertSkiClubs(@ModelAttribute("newSkiClub") SkiClub skiClub){
-
-        log.log(Level.INFO,"Saving " + skiClub + " into database");
-        skiClubService.save(skiClub);
-
-        return "redirect:/insertskiclubs?code=" + skiClub.getCity().getRegion().getCountry().getCode();
-    }
-
-    @PostMapping("/insertskiclubs/changecode")
-    public String insertSkiClubsChangeCode(@ModelAttribute("country") Country country){
-
-        log.log(Level.INFO,"Reloading insertskiclubs with code = " + country.getCode());
-        country = countryService.findById(country.getId()).get();
-        return "redirect:/insertskiclubs?code=" + country.getCode();
-    }
-
-    @PostMapping("/insertskiclubs/addcity")
-    public String insertSkiClubsAddCity(@ModelAttribute("city") City city){
-
-        log.log(Level.INFO,"Saving " + city + " into database");
-        cityService.save(city);
-
-        return "redirect:/insertskiclubs?code=" + city.getRegion().getCountry().getCode();
-    }
+//
+//    @PostMapping("/insertskiclubs")
+//    public String insertSkiClubs(@ModelAttribute("newSkiClub") SkiClub skiClub){
+//
+//        skiClub.setName(skiClub.getName().trim());
+//        log.log(Level.INFO,"Saving " + skiClub + " into database");
+//        skiClubService.save(skiClub);
+//
+//        return "redirect:/insertskiclubs?code=" + skiClub.getCity().getRegion().getCountry().getCode();
+//    }
+//
+//    @PostMapping("/insertskiclubs/changecode")
+//    public String insertSkiClubsChangeCode(@ModelAttribute("country") Country country){
+//
+//        log.log(Level.INFO,"Reloading insertskiclubs with code = " + country.getCode());
+//        country = countryService.findById(country.getId()).get();
+//        return "redirect:/insertskiclubs?code=" + country.getCode();
+//    }
+//
+//    @PostMapping("/insertskiclubs/addcity")
+//    public String insertSkiClubsAddCity(@ModelAttribute("city") City city){
+//
+//        city.setName(city.getName().trim());
+//        log.log(Level.INFO,"Saving " + city + " into database");
+//        cityService.save(city);
+//
+//        return "redirect:/insertskiclubs?code=" + city.getRegion().getCountry().getCode();
+//    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
