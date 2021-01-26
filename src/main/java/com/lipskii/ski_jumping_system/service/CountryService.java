@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.CountryRepository;
+import com.lipskii.ski_jumping_system.dto.CountryDTO;
 import com.lipskii.ski_jumping_system.entity.Country;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 public class CountryService implements ServiceInterface {
@@ -24,6 +26,10 @@ public class CountryService implements ServiceInterface {
     @Override
     public List<Country> findAll() {
         return (List<Country>) countryRepository.findAll();
+    }
+
+    public List<CountryDTO> findAllDTO(){
+        return countryRepository.findAll().stream().map(this::convertToCountryDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -60,5 +66,17 @@ public class CountryService implements ServiceInterface {
 
     public Country findCountryByCode(String code){
         return countryRepository.findCountryByCode(code);
+    }
+
+    public Country findCountryByName(String name){
+        return countryRepository.findCountryByName(name);
+    }
+
+    private CountryDTO convertToCountryDTO(Country country) {
+        CountryDTO countryDTO = new CountryDTO();
+        countryDTO.setId(country.getId());
+        countryDTO.setName(country.getName());
+        countryDTO.setCode(country.getCode());
+        return countryDTO;
     }
 }

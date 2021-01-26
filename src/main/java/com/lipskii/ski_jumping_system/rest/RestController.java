@@ -1,21 +1,23 @@
 package com.lipskii.ski_jumping_system.rest;
 
 
-import com.lipskii.ski_jumping_system.entity.DisqualificationType;
-import com.lipskii.ski_jumping_system.entity.SkiClub;
+import com.lipskii.ski_jumping_system.dto.CountryDTO;
+import com.lipskii.ski_jumping_system.dto.SkiClubDTO;
+import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RequestMapping("/api")
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
     private final AllTimePointsSystemService allTimePointsSystemService;
     private final CityService cityService;
+    private final CountryService countryService;
     private final CompetitionService competitionService;
     private final DisqualificationTypeService disqualificationTypeService;
     private final GenderService genderService;
@@ -36,9 +38,10 @@ public class RestController {
     private final WeatherService weatherService;
 
     @Autowired
-    public RestController(AllTimePointsSystemService allTimePointsSystemService, CityService cityService, CompetitionService competitionService, DisqualificationTypeService disqualificationTypeService, GenderService genderService, HillService hillService, HillVersionService hillVersionService, JudgeService judgeService, JuryService juryService, JuryTypeService juryTypeService, PersonService personService, RegionService regionService, ResultService resultService, SeasonService seasonService, SeriesService seriesService, SizeOfHillService sizeOfHillService, SkiClubService skiClubService, SkisService skisService, VenueService venueService, WeatherService weatherService) {
+    public RestController(CountryService countryService, AllTimePointsSystemService allTimePointsSystemService, CityService cityService, CompetitionService competitionService, DisqualificationTypeService disqualificationTypeService, GenderService genderService, HillService hillService, HillVersionService hillVersionService, JudgeService judgeService, JuryService juryService, JuryTypeService juryTypeService, PersonService personService, RegionService regionService, ResultService resultService, SeasonService seasonService, SeriesService seriesService, SizeOfHillService sizeOfHillService, SkiClubService skiClubService, SkisService skisService, VenueService venueService, WeatherService weatherService) {
         this.allTimePointsSystemService = allTimePointsSystemService;
         this.cityService = cityService;
+        this.countryService = countryService;
         this.competitionService = competitionService;
         this.disqualificationTypeService = disqualificationTypeService;
         this.genderService = genderService;
@@ -60,11 +63,24 @@ public class RestController {
     }
 
 
-
-
     @GetMapping("/skiClubs")
-    public List<SkiClub> getSkiClubs(){
+    public List<SkiClubDTO> getSkiClubs(){
+        return skiClubService.getAllClubsDTO();
+    }
 
-        return skiClubService.findAll();
+    @GetMapping("/skiClubs/{country}")
+    public List<SkiClubDTO> getSkiClubsByCountry(@PathVariable("country") String country){
+
+        return skiClubService.getClubsByCountryDTO(countryService.findCountryByName(country));
+    }
+
+    @GetMapping("/countries")
+    public List<CountryDTO> getCountries(){
+        return countryService.findAllDTO();
+    }
+
+    @GetMapping("/cities")
+    public List<City> getCities(){
+        return cityService.findAll();
     }
 }
