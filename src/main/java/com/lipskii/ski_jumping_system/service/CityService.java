@@ -1,7 +1,10 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.CityRepository;
+import com.lipskii.ski_jumping_system.dto.CityDTO;
+import com.lipskii.ski_jumping_system.dto.CountryDTO;
 import com.lipskii.ski_jumping_system.entity.City;
+import com.lipskii.ski_jumping_system.entity.Country;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Service
 public class CityService implements ServiceInterface {
@@ -51,6 +55,10 @@ public class CityService implements ServiceInterface {
         cityRepository.deleteById(id);
     }
 
+    public List<CityDTO> getCitiesByCountry(Country country){
+        return cityRepository.findAllByRegionCountryOrderByName(country).stream().map(this::convertToCityDTO).collect(Collectors.toList());
+    }
+
     public void saveIfNotExists(City city) {
 
         log.log(Level.INFO,"Checking if city: " + city + " exists in db");
@@ -64,5 +72,14 @@ public class CityService implements ServiceInterface {
         } else{
             log.log(Level.INFO,"City: " + city + " already exists in db");
         }
+    }
+
+    private CityDTO convertToCityDTO(City city) {
+        CityDTO cityDTO = new CityDTO();
+        cityDTO.setId(city.getId());
+        cityDTO.setName(city.getName());
+        cityDTO.setRegion(city.getRegion().getName());
+        cityDTO.setCountry(city.getRegion().getCountry().getName());
+        return cityDTO;
     }
 }

@@ -1,14 +1,22 @@
 package com.lipskii.ski_jumping_system.rest;
 
 
+import com.lipskii.ski_jumping_system.dto.CityDTO;
 import com.lipskii.ski_jumping_system.dto.CountryDTO;
+import com.lipskii.ski_jumping_system.dto.RegionDTO;
 import com.lipskii.ski_jumping_system.dto.SkiClubDTO;
 import com.lipskii.ski_jumping_system.entity.City;
+import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
@@ -64,23 +72,43 @@ public class RestController {
 
 
     @GetMapping("/skiClubs")
-    public List<SkiClubDTO> getSkiClubs(){
+    public List<SkiClubDTO> getSkiClubs() {
         return skiClubService.getAllClubsDTO();
     }
 
     @GetMapping("/skiClubs/{country}")
-    public List<SkiClubDTO> getSkiClubsByCountry(@PathVariable("country") String country){
+    public List<SkiClubDTO> getSkiClubsByCountry(@PathVariable("country") String country) {
 
         return skiClubService.getClubsByCountryDTO(countryService.findCountryByName(country));
     }
 
     @GetMapping("/countries")
-    public List<CountryDTO> getCountries(){
+    public List<CountryDTO> getCountries() {
         return countryService.findAllDTO();
     }
 
     @GetMapping("/cities")
-    public List<City> getCities(){
+    public List<City> getCities() {
         return cityService.findAll();
     }
+
+    @GetMapping("/cities/{country}")
+    public List<CityDTO> getCitiesByCountry(@PathVariable("country") String country) {
+        return cityService.getCitiesByCountry(countryService.findCountryByName(country));
+    }
+
+    @GetMapping("/regions/{country}")
+    public List<RegionDTO> getRegionsByCountry(@PathVariable("country") String country) {
+        return regionService.findRegionsByCountry(countryService.findCountryByName(country));
+    }
+
+    @PostMapping("/country")
+    public ResponseEntity addCity(@RequestBody Map<String,String> body) {
+
+        City city = new City(body.get("name"),regionService.findRegionByName(body.get("region")));
+        cityService.save(city);
+
+        return ResponseEntity.ok(city);
+    }
+
 }
