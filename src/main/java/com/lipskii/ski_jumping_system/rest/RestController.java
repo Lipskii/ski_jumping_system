@@ -7,6 +7,7 @@ import com.lipskii.ski_jumping_system.dto.RegionDTO;
 import com.lipskii.ski_jumping_system.dto.SkiClubDTO;
 import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.entity.Country;
+import com.lipskii.ski_jumping_system.entity.SkiClub;
 import com.lipskii.ski_jumping_system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -102,13 +103,28 @@ public class RestController {
         return regionService.findRegionsByCountry(countryService.findCountryByName(country));
     }
 
-    @PostMapping("/country")
-    public ResponseEntity addCity(@RequestBody Map<String,String> body) {
+    @PostMapping("/city")
+    public ResponseEntity addCity(@RequestBody Map<String, String> body) {
 
-        City city = new City(body.get("name"),regionService.findRegionByName(body.get("region")));
+        City city = new City(body.get("name"), regionService.findRegionByName(body.get("region")));
         cityService.save(city);
 
         return ResponseEntity.ok(city);
+    }
+
+    @PostMapping("/skiClub")
+    public ResponseEntity addSkiClub(@RequestBody Map<String, String> body) {
+        System.out.println(body);
+
+        if (cityService.findById(Integer.parseInt(body.get("cityId").trim())).isPresent()) {
+            City city = cityService.findById(Integer.parseInt(body.get("cityId").trim())).get();
+            SkiClub skiClub = new SkiClub(body.get("name").trim(), city);
+            skiClubService.save(skiClub);
+            return ResponseEntity.ok(skiClub);
+        }
+
+        return (ResponseEntity) ResponseEntity.notFound();
+
     }
 
 }

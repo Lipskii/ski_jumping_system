@@ -17,4 +17,6 @@ public interface CityRepository extends JpaRepository<City,Integer> {
     List<City> findAllByRegionCountryCodeOrderByName(String code);
 
     List<City> findAllByRegionCountryOrderByName(Country country);
+
+    City findByName(String name);
 }

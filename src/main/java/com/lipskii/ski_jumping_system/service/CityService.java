@@ -82,4 +82,8 @@ public class CityService implements ServiceInterface {
         cityDTO.setCountry(city.getRegion().getCountry().getName());
         return cityDTO;
     }
+
+    public City findCityByName(String cityName) {
+        return cityRepository.findByName(cityName);
+    }
 }
