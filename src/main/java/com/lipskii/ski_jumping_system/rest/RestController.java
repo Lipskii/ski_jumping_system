@@ -5,13 +5,10 @@ import com.lipskii.ski_jumping_system.dto.*;
 import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,6 +99,11 @@ public class RestController {
         return regionService.findRegionsByCountry(countryService.findCountryByName(country));
     }
 
+    @GetMapping("/skis")
+    public List<SkisDTO> getSkis(){
+        return skisService.findAll();
+    }
+
     @GetMapping("/skiJumper/{country}")
     public List<SkiJumperDTO> getSkiJumpersByCountry(@PathVariable("country") String country) {
         return skiJumperService.getSkiJumpersByCountry(country);
@@ -109,20 +111,22 @@ public class RestController {
 
     @PostMapping("/skiJumper")
     public ResponseEntity addSkiJumper(@RequestBody Map<String, String> body) {
-        Person person = new Person(body.get("firstName"),
-                body.get("lastName"),
-                genderService.findById(Integer.parseInt("gender")).get(),
+
+        System.out.println(body.toString());
+
+        Person person = new Person(body.get("firstName").trim(),
+                body.get("lastName").trim(),
+                genderService.findById(Integer.parseInt(body.get("gender"))).get(),
                 Integer.parseInt(body.get("birthdateDay")),
                 Integer.parseInt(body.get("birthdateMonth")),
                 Integer.parseInt(body.get("birthdateYear")),
                 countryService.findCountryByName(body.get("country")),
-                cityService.findCityByName(body.get("city"))
+                cityService.findById(Integer.parseInt(body.get("city"))).get()
         );
 
         personService.save(person);
 
         boolean isActive = true;
-
         if(body.get("isActive").equals("false")){
             isActive = false;
         }
@@ -130,14 +134,15 @@ public class RestController {
         SkiJumper skiJumper = new SkiJumper(
                 person,
                 isActive,
-                skisService.findById(Integer.parseInt("skis")).get(),
-                skiClubService.findById(Integer.parseInt("skiClub")).get(),
+                skisService.findById(Integer.parseInt(body.get("skis"))).get(),
+                skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
                 BigDecimal.ZERO
         );
 
 
         skiJumperService.save(skiJumper);
-        return null;
+
+        return ResponseEntity.ok(skiJumper);
     }
 
     @PostMapping("/city")
@@ -161,7 +166,6 @@ public class RestController {
         }
 
         return (ResponseEntity) ResponseEntity.notFound();
-
     }
 
 }
