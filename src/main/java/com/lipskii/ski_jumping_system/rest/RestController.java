@@ -1,13 +1,8 @@
 package com.lipskii.ski_jumping_system.rest;
 
 
-import com.lipskii.ski_jumping_system.dto.CityDTO;
-import com.lipskii.ski_jumping_system.dto.CountryDTO;
-import com.lipskii.ski_jumping_system.dto.RegionDTO;
-import com.lipskii.ski_jumping_system.dto.SkiClubDTO;
-import com.lipskii.ski_jumping_system.entity.City;
-import com.lipskii.ski_jumping_system.entity.Country;
-import com.lipskii.ski_jumping_system.entity.SkiClub;
+import com.lipskii.ski_jumping_system.dto.*;
+import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,12 +38,14 @@ public class RestController {
     private final SeriesService seriesService;
     private final SizeOfHillService sizeOfHillService;
     private final SkiClubService skiClubService;
+    private final SkiJumperService skiJumperService;
     private final SkisService skisService;
     private final VenueService venueService;
     private final WeatherService weatherService;
 
+
     @Autowired
-    public RestController(CountryService countryService, AllTimePointsSystemService allTimePointsSystemService, CityService cityService, CompetitionService competitionService, DisqualificationTypeService disqualificationTypeService, GenderService genderService, HillService hillService, HillVersionService hillVersionService, JudgeService judgeService, JuryService juryService, JuryTypeService juryTypeService, PersonService personService, RegionService regionService, ResultService resultService, SeasonService seasonService, SeriesService seriesService, SizeOfHillService sizeOfHillService, SkiClubService skiClubService, SkisService skisService, VenueService venueService, WeatherService weatherService) {
+    public RestController(AllTimePointsSystemService allTimePointsSystemService, CityService cityService, CountryService countryService, CompetitionService competitionService, DisqualificationTypeService disqualificationTypeService, GenderService genderService, HillService hillService, HillVersionService hillVersionService, JudgeService judgeService, JuryService juryService, JuryTypeService juryTypeService, PersonService personService, RegionService regionService, ResultService resultService, SeasonService seasonService, SeriesService seriesService, SizeOfHillService sizeOfHillService, SkiClubService skiClubService, SkiJumperService skiJumperService, SkisService skisService, VenueService venueService, WeatherService weatherService) {
         this.allTimePointsSystemService = allTimePointsSystemService;
         this.cityService = cityService;
         this.countryService = countryService;
@@ -66,6 +64,7 @@ public class RestController {
         this.seriesService = seriesService;
         this.sizeOfHillService = sizeOfHillService;
         this.skiClubService = skiClubService;
+        this.skiJumperService = skiJumperService;
         this.skisService = skisService;
         this.venueService = venueService;
         this.weatherService = weatherService;
@@ -101,6 +100,44 @@ public class RestController {
     @GetMapping("/regions/{country}")
     public List<RegionDTO> getRegionsByCountry(@PathVariable("country") String country) {
         return regionService.findRegionsByCountry(countryService.findCountryByName(country));
+    }
+
+    @GetMapping("/skiJumper/{country}")
+    public List<SkiJumperDTO> getSkiJumpersByCountry(@PathVariable("country") String country) {
+        return skiJumperService.getSkiJumpersByCountry(country);
+    }
+
+    @PostMapping("/skiJumper")
+    public ResponseEntity addSkiJumper(@RequestBody Map<String, String> body) {
+        Person person = new Person(body.get("firstName"),
+                body.get("lastName"),
+                genderService.findById(Integer.parseInt("gender")).get(),
+                Integer.parseInt(body.get("birthdateDay")),
+                Integer.parseInt(body.get("birthdateMonth")),
+                Integer.parseInt(body.get("birthdateYear")),
+                countryService.findCountryByName(body.get("country")),
+                cityService.findCityByName(body.get("city"))
+        );
+
+        personService.save(person);
+
+        boolean isActive = true;
+
+        if(body.get("isActive").equals("false")){
+            isActive = false;
+        }
+
+        SkiJumper skiJumper = new SkiJumper(
+                person,
+                isActive,
+                skisService.findById(Integer.parseInt("skis")).get(),
+                skiClubService.findById(Integer.parseInt("skiClub")).get(),
+                BigDecimal.ZERO
+        );
+
+
+        skiJumperService.save(skiJumper);
+        return null;
     }
 
     @PostMapping("/city")
