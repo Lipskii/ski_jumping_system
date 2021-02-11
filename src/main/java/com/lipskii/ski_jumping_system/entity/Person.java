@@ -83,6 +83,16 @@ public class Person implements Comparable<Person> {
         this.city = city;
     }
 
+    public Person(String firstName, String lastName, Gender gender, int birthdate_day, int birthdate_month, int birthdate_year, Country country) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.birthdate_day = birthdate_day;
+        this.birthdate_month = birthdate_month;
+        this.birthdate_year = birthdate_year;
+        this.country = country;
+    }
+
     public int getId() {
         return id;
     }

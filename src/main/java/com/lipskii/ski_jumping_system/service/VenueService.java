@@ -1,12 +1,16 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.VenueRepository;
+import com.lipskii.ski_jumping_system.dto.SkisDTO;
+import com.lipskii.ski_jumping_system.dto.VenueDTO;
+import com.lipskii.ski_jumping_system.entity.Skis;
 import com.lipskii.ski_jumping_system.entity.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VenueService implements ServiceInterface {
@@ -19,8 +23,13 @@ public class VenueService implements ServiceInterface {
     }
 
     @Override
-    public List<Venue> findAll() {
-        return venueRepository.findAll();
+    public List<VenueDTO> findAll() {
+        return venueRepository.findAll().stream().map(this::convertToVenueDTO).collect(Collectors.toList());
+    }
+
+    public List<VenueDTO> findAllByCountry(String country) {
+        return venueRepository.findAllByCityRegionCountryNameOrderByName(country)
+                .stream().map(this::convertToVenueDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -36,5 +45,17 @@ public class VenueService implements ServiceInterface {
     @Override
     public void deleteById(int id) {
         venueRepository.deleteById(id);
+    }
+
+    private VenueDTO convertToVenueDTO(Venue venue) {
+        VenueDTO venueDTO = new VenueDTO();
+        venueDTO.setId(venue.getId());
+        venueDTO.setName(venue.getName());
+        venueDTO.setCity(venue.getCity().getName());
+        venueDTO.setSkiClub(venue.getSkiClub().getName());
+        venueDTO.setCapacity(venue.getCapacity());
+        venueDTO.setYearOfOpening(venue.getYearOfOpening());
+
+        return venueDTO;
     }
 }

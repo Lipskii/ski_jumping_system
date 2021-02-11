@@ -45,6 +45,13 @@ public class SkiJumper implements Comparable<SkiJumper> {
         this.all_time_points = all_time_points;
     }
 
+    public SkiJumper(Person person, boolean isActive, Skis skis, BigDecimal all_time_points) {
+        this.person = person;
+        this.isActive = isActive;
+        this.skis = skis;
+        this.all_time_points = all_time_points;
+    }
+
     public int getId() {
         return id;
     }

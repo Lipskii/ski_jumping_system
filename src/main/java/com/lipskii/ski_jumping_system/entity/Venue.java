@@ -49,6 +49,13 @@ public class Venue implements Comparable<Venue> {
         this.city = city;
     }
 
+    public Venue(String name, int yearOfOpening, SkiClub skiClub, City city) {
+        this.name = name;
+        this.yearOfOpening = yearOfOpening;
+        this.skiClub = skiClub;
+        this.city = city;
+    }
+
     public int getId() {
         return id;
     }

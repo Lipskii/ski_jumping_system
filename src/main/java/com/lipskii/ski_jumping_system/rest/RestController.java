@@ -109,20 +109,64 @@ public class RestController {
         return skiJumperService.getSkiJumpersByCountry(country);
     }
 
+    @GetMapping("/venue/{country}")
+    public List<VenueDTO> getVenues(@PathVariable("country") String country) {
+        return venueService.findAllByCountry(country);
+    }
+
+    @PostMapping("/venue")
+    public ResponseEntity addVenue(@RequestBody Map<String,String> body){
+
+        Venue venue;
+
+        if(!body.get("capacity").equals("")){
+            venue = new Venue(
+                    body.get("name").trim(),
+                    Integer.parseInt(body.get("yearOfOpening")),
+                    Integer.parseInt(body.get("capacity")),
+                    skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
+                    cityService.findById(Integer.parseInt(body.get("city"))).get()
+            );
+        } else {
+            venue = new Venue(body.get("name"),
+                    Integer.parseInt(body.get("yearOfOpening")),
+                    skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
+                    cityService.findById(Integer.parseInt(body.get("city"))).get());
+        }
+
+
+
+        venueService.save(venue);
+
+        return ResponseEntity.ok(venue);
+    }
+
     @PostMapping("/skiJumper")
     public ResponseEntity addSkiJumper(@RequestBody Map<String, String> body) {
 
-        System.out.println(body.toString());
+        Person person;
 
-        Person person = new Person(body.get("firstName").trim(),
-                body.get("lastName").trim(),
-                genderService.findById(Integer.parseInt(body.get("gender"))).get(),
-                Integer.parseInt(body.get("birthdateDay")),
-                Integer.parseInt(body.get("birthdateMonth")),
-                Integer.parseInt(body.get("birthdateYear")),
-                countryService.findCountryByName(body.get("country")),
-                cityService.findById(Integer.parseInt(body.get("city"))).get()
-        );
+        if(!body.get("city").equals("")){
+            person = new Person(body.get("firstName").trim(),
+                    body.get("lastName").trim(),
+                    genderService.findById(Integer.parseInt(body.get("gender"))).get(),
+                    Integer.parseInt(body.get("birthdateDay")),
+                    Integer.parseInt(body.get("birthdateMonth")),
+                    Integer.parseInt(body.get("birthdateYear")),
+                    countryService.findCountryByName(body.get("country")),
+                    cityService.findById(Integer.parseInt(body.get("city"))).get()
+            );
+        } else {
+            person = new Person(body.get("firstName").trim(),
+                    body.get("lastName").trim(),
+                    genderService.findById(Integer.parseInt(body.get("gender"))).get(),
+                    Integer.parseInt(body.get("birthdateDay")),
+                    Integer.parseInt(body.get("birthdateMonth")),
+                    Integer.parseInt(body.get("birthdateYear")),
+                    countryService.findCountryByName(body.get("country"))
+            );
+        }
+
 
         personService.save(person);
 
@@ -131,14 +175,16 @@ public class RestController {
             isActive = false;
         }
 
-        SkiJumper skiJumper = new SkiJumper(
-                person,
-                isActive,
-                skisService.findById(Integer.parseInt(body.get("skis"))).get(),
-                skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
-                BigDecimal.ZERO
-        );
-
+        SkiJumper skiJumper = new SkiJumper();
+        skiJumper.setPerson(person);
+        skiJumper.setActive(isActive);
+        skiJumper.setAll_time_points(BigDecimal.ZERO);
+        if(!body.get("skiClub").equals("")){
+            skiJumper.setSkiClub( skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get());
+        }
+        if(!body.get("skis").equals("")){
+            skiJumper.setSkis(skisService.findById(Integer.parseInt(body.get("skis"))).get());
+        }
 
         skiJumperService.save(skiJumper);
 
