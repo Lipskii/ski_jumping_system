@@ -7,6 +7,7 @@ import com.lipskii.ski_jumping_system.entity.Skis;
 import com.lipskii.ski_jumping_system.entity.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,19 @@ public class VenueService implements ServiceInterface {
     @Override
     public void deleteById(int id) {
         venueRepository.deleteById(id);
+    }
+
+    @Transactional
+    public boolean deleteByIdBool(int id) {
+        if(venueRepository.existsById(id)){
+
+            System.out.println(venueRepository.findById(id));
+            venueRepository.deleteById(id);
+           // return true;
+        }
+        //return false;
+
+        return !venueRepository.existsById(id);
     }
 
     private VenueDTO convertToVenueDTO(Venue venue) {

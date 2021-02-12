@@ -5,6 +5,7 @@ import com.lipskii.ski_jumping_system.dto.*;
 import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,6 +85,11 @@ public class RestController {
         return countryService.findAllDTO();
     }
 
+//    @GetMapping("/countries/withVenues")
+//    public List<CountryDTO> getCountriesWithVenue(){
+//        return countryService.
+//    }
+
     @GetMapping("/cities")
     public List<City> getCities() {
         return cityService.findAll();
@@ -112,6 +118,20 @@ public class RestController {
     @GetMapping("/venue/{country}")
     public List<VenueDTO> getVenues(@PathVariable("country") String country) {
         return venueService.findAllByCountry(country);
+    }
+
+    @DeleteMapping("/venue/{id}")
+    public ResponseEntity<Integer> deleteVenue(@PathVariable("id") int id){
+
+        System.out.println("deleting " + id);
+        boolean isDeleted = venueService.deleteByIdBool(id);
+        System.out.println(isDeleted);
+
+        if(isDeleted){
+            return new ResponseEntity<>(id, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/venue")
