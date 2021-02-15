@@ -7,7 +7,13 @@ public class VenueDTO {
     private int yearOfOpening;
     private int capacity;
     private String city;
+    private int cityId;
+    private String region;
+    private int regionId;
+    private String country;
+    private int countryId;
     private String skiClub;
+    private int skiClubId;
 
     public int getId() {
         return id;
@@ -55,5 +61,53 @@ public class VenueDTO {
 
     public void setSkiClub(String skiClub) {
         this.skiClub = skiClub;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public int getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(int regionId) {
+        this.regionId = regionId;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
+    }
+
+    public int getSkiClubId() {
+        return skiClubId;
+    }
+
+    public void setSkiClubId(int skiClubId) {
+        this.skiClubId = skiClubId;
     }
 }

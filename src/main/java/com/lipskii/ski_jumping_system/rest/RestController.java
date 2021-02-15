@@ -85,10 +85,10 @@ public class RestController {
         return countryService.findAllDTO();
     }
 
-//    @GetMapping("/countries/withVenues")
-//    public List<CountryDTO> getCountriesWithVenue(){
-//        return countryService.
-//    }
+    @GetMapping("/countries/venues")
+    public List<CountryDTO> getCountriesWithVenues(){
+        return countryService.findAllWithVenues();
+    }
 
     @GetMapping("/cities")
     public List<City> getCities() {
@@ -98,6 +98,11 @@ public class RestController {
     @GetMapping("/cities/{country}")
     public List<CityDTO> getCitiesByCountry(@PathVariable("country") String country) {
         return cityService.getCitiesByCountry(countryService.findCountryByName(country));
+    }
+
+    @GetMapping("/hills/{venueId}")
+    public List<Hill> getHillsByVenue(@PathVariable("venueId") int venueId){
+        return hillService.findAllByVenueId(venueId);
     }
 
     @GetMapping("/regions/{country}")
@@ -115,9 +120,14 @@ public class RestController {
         return skiJumperService.getSkiJumpersByCountry(country);
     }
 
+    @GetMapping("/sizeOfHill")
+    public List<SizeOfHill> getSizesOfHil(){
+        return sizeOfHillService.findAll();
+    }
+
     @GetMapping("/venue/{country}")
     public List<VenueDTO> getVenues(@PathVariable("country") String country) {
-        return venueService.findAllByCountry(country);
+        return venueService.findAllByCountryDTO(country);
     }
 
     @DeleteMapping("/venue/{id}")

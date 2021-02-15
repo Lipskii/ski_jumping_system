@@ -3,6 +3,7 @@ package com.lipskii.ski_jumping_system.service;
 import com.lipskii.ski_jumping_system.dao.VenueRepository;
 import com.lipskii.ski_jumping_system.dto.SkisDTO;
 import com.lipskii.ski_jumping_system.dto.VenueDTO;
+import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.Skis;
 import com.lipskii.ski_jumping_system.entity.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class VenueService implements ServiceInterface {
         return venueRepository.findAll().stream().map(this::convertToVenueDTO).collect(Collectors.toList());
     }
 
-    public List<VenueDTO> findAllByCountry(String country) {
+    public List<VenueDTO> findAllByCountryDTO(String country) {
         return venueRepository.findAllByCityRegionCountryNameOrderByName(country)
                 .stream().map(this::convertToVenueDTO).collect(Collectors.toList());
     }
@@ -61,12 +62,26 @@ public class VenueService implements ServiceInterface {
         return !venueRepository.existsById(id);
     }
 
+    List<VenueDTO> findAllByCountryDTO(Country country){
+        return venueRepository.findAllByCityRegionCountry(country).stream().map(this::convertToVenueDTO).collect(Collectors.toList());
+    }
+
+    List<Venue> findAllByCountry(Country country){
+        return venueRepository.findAllByCityRegionCountry(country);
+    }
+
     private VenueDTO convertToVenueDTO(Venue venue) {
         VenueDTO venueDTO = new VenueDTO();
         venueDTO.setId(venue.getId());
         venueDTO.setName(venue.getName());
         venueDTO.setCity(venue.getCity().getName());
+        venueDTO.setCityId(venue.getCity().getId());
+        venueDTO.setRegion(venue.getCity().getRegion().getName());
+        venueDTO.setRegionId(venue.getCity().getRegion().getId());
+        venueDTO.setCountry(venue.getCity().getRegion().getCountry().getName());
+        venueDTO.setCountryId(venue.getCity().getRegion().getCountry().getId());
         venueDTO.setSkiClub(venue.getSkiClub().getName());
+        venueDTO.setSkiClubId(venue.getSkiClub().getId());
         venueDTO.setCapacity(venue.getCapacity());
         venueDTO.setYearOfOpening(venue.getYearOfOpening());
 

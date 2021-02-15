@@ -12,10 +12,12 @@ import java.util.Optional;
 public class HillService implements ServiceInterface {
 
     private final HillRepository hillRepository;
+    private final VenueService venueService;
 
     @Autowired
-    public HillService(HillRepository hillRepository) {
+    public HillService(HillRepository hillRepository, VenueService venueService) {
         this.hillRepository = hillRepository;
+        this.venueService = venueService;
     }
 
     @Override
@@ -26,6 +28,12 @@ public class HillService implements ServiceInterface {
     @Override
     public Optional<Hill> findById(int id) {
         return hillRepository.findById(id);
+    }
+
+    public List<Hill> findAllByVenueId(int venueId){
+        System.out.println(venueId);
+        System.out.println(venueService.findById(venueId).get());
+        return hillRepository.findAllByVenue(venueService.findById(venueId).get());
     }
 
     @Override
