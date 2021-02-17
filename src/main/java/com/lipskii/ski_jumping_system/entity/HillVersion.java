@@ -33,17 +33,23 @@ public class HillVersion {
     @Column(name = "hill_size")
     private BigDecimal hillSize;
 
-    @Column(name = "inrun_length")
-    private BigDecimal inrunLength;
-
     /**
      * Length of the inrun from the lowest to the highest start.
      */
-    @Column(name = "e")
-    private BigDecimal e;
+    @Column(name = "es")
+    private BigDecimal es;
 
-    @Column(name = "inrun_angle")
-    private BigDecimal inrunAngle;
+    /**
+     * Length of the inrun from the highest start
+     */
+    @Column(name = "e1")
+    private BigDecimal e1;
+
+    @Column(name = "e2")
+    private BigDecimal e2;
+
+    @Column(name = "gamma")
+    private BigDecimal gamma;
 
     /**
      * Radius of the transition curve in E2 (End of the transition curve; beginning of the table).
@@ -54,16 +60,16 @@ public class HillVersion {
     @Column(name = "take_off_length")
     private BigDecimal takeOffLength;
 
-    @Column(name = "take_off_angle")
-    private BigDecimal takeOffAngle;
+    @Column(name = "alpha")
+    private BigDecimal alpha;
 
-    @Column(name = "take_off_height")
-    private BigDecimal takeOffHeight;
+    @Column(name = "s")
+    private BigDecimal s;
 
     /**
      * Speed at the end of the inrun.
      */
-    @Column(name = "vo")
+    @Column(name = "v0")
     private BigDecimal v0;
 
     /**
@@ -102,8 +108,8 @@ public class HillVersion {
     @Column(name = "beta_p")
     private BigDecimal betaP;
 
-    @Column(name = "landing_angle")
-    private BigDecimal landingAngle;
+    @Column(name = "beta")
+    private BigDecimal beta;
 
     /**
      * Angle at the end of the landing area (L).
@@ -122,6 +128,18 @@ public class HillVersion {
      */
     @Column(name = "rl")
     private BigDecimal rl;
+
+    /**
+     * Radius of the transition curve from L to U at L.
+     */
+    @Column(name = "r2l")
+    private BigDecimal r2l;
+
+    /**
+     * Difference in Height between the takeoff and the lowest point U
+     */
+    @Column(name = "zu")
+    private BigDecimal zu;
 
     /**
      * Radius of the transition curve from L to U
@@ -195,28 +213,21 @@ public class HillVersion {
     public HillVersion() {
     }
 
-    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint,
-                       BigDecimal hillSize, BigDecimal inrunLength, BigDecimal e,
-                       BigDecimal inrunAngle, BigDecimal r1, BigDecimal takeOffLength,
-                       BigDecimal takeOffAngle, BigDecimal takeOffHeight, BigDecimal v0,
-                       BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1,
-                       BigDecimal l2, BigDecimal betaP, BigDecimal landingAngle,
-                       BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal r2,
-                       BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk,
-                       BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate,
-                       Date validSince, Date validUntil) {
+
+    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal takeOffLength, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal r2l, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, Date validSince, Date validUntil) {
         this.hill = hill;
         this.first_year = first_year;
         this.last_year = last_year;
         this.kPoint = kPoint;
         this.hillSize = hillSize;
-        this.inrunLength = inrunLength;
-        this.e = e;
-        this.inrunAngle = inrunAngle;
+        this.es = es;
+        this.e1 = e1;
+        this.e2 = e2;
+        this.gamma = gamma;
         this.r1 = r1;
         this.takeOffLength = takeOffLength;
-        this.takeOffAngle = takeOffAngle;
-        this.takeOffHeight = takeOffHeight;
+        this.alpha = alpha;
+        this.s = s;
         this.v0 = v0;
         this.h = h;
         this.n = n;
@@ -224,10 +235,51 @@ public class HillVersion {
         this.l1 = l1;
         this.l2 = l2;
         this.betaP = betaP;
-        this.landingAngle = landingAngle;
+        this.beta = beta;
         this.betaL = betaL;
         this.l = l;
         this.rl = rl;
+        this.r2l = r2l;
+        this.zu = zu;
+        this.r2 = r2;
+        this.a = a;
+        this.b1 = b1;
+        this.b2 = b2;
+        this.bk = bk;
+        this.bu = bu;
+        this.d = d;
+        this.q = q;
+        this.fisCertificate = fisCertificate;
+        this.validSince = validSince;
+        this.validUntil = validUntil;
+    }
+
+    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal takeOffLength, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, Date validSince, Date validUntil) {
+        this.hill = hill;
+        this.first_year = first_year;
+        this.last_year = last_year;
+        this.kPoint = kPoint;
+        this.hillSize = hillSize;
+        this.es = es;
+        this.e1 = e1;
+        this.e2 = e2;
+        this.gamma = gamma;
+        this.r1 = r1;
+        this.takeOffLength = takeOffLength;
+        this.alpha = alpha;
+        this.s = s;
+        this.v0 = v0;
+        this.h = h;
+        this.n = n;
+        this.p = p;
+        this.l1 = l1;
+        this.l2 = l2;
+        this.betaP = betaP;
+        this.beta = beta;
+        this.betaL = betaL;
+        this.l = l;
+        this.rl = rl;
+        this.zu = zu;
         this.r2 = r2;
         this.a = a;
         this.b1 = b1;
@@ -265,6 +317,22 @@ public class HillVersion {
         this.first_year = first_year;
     }
 
+    public BigDecimal getR2l() {
+        return r2l;
+    }
+
+    public void setR2l(BigDecimal r2l) {
+        this.r2l = r2l;
+    }
+
+    public BigDecimal getZu() {
+        return zu;
+    }
+
+    public void setZu(BigDecimal zu) {
+        this.zu = zu;
+    }
+
     public Integer getLast_year() {
         return last_year;
     }
@@ -289,28 +357,36 @@ public class HillVersion {
         this.hillSize = hillSize;
     }
 
-    public BigDecimal getInrunLength() {
-        return inrunLength;
+    public BigDecimal getEs() {
+        return es;
     }
 
-    public void setInrunLength(BigDecimal inrunLength) {
-        this.inrunLength = inrunLength;
+    public void setEs(BigDecimal e) {
+        this.es = e;
     }
 
-    public BigDecimal getE() {
-        return e;
+    public BigDecimal getE1() {
+        return e1;
     }
 
-    public void setE(BigDecimal e) {
-        this.e = e;
+    public void setE1(BigDecimal e1) {
+        this.e1 = e1;
     }
 
-    public BigDecimal getInrunAngle() {
-        return inrunAngle;
+    public BigDecimal getE2() {
+        return e2;
     }
 
-    public void setInrunAngle(BigDecimal inrunAngle) {
-        this.inrunAngle = inrunAngle;
+    public void setE2(BigDecimal e2) {
+        this.e2 = e2;
+    }
+
+    public BigDecimal getGamma() {
+        return gamma;
+    }
+
+    public void setGamma(BigDecimal inrunAngle) {
+        this.gamma = inrunAngle;
     }
 
     public BigDecimal getR1() {
@@ -329,20 +405,20 @@ public class HillVersion {
         this.takeOffLength = takeOffLength;
     }
 
-    public BigDecimal getTakeOffAngle() {
-        return takeOffAngle;
+    public BigDecimal getAlpha() {
+        return alpha;
     }
 
-    public void setTakeOffAngle(BigDecimal takeOffAngle) {
-        this.takeOffAngle = takeOffAngle;
+    public void setAlpha(BigDecimal takeOffAngle) {
+        this.alpha = takeOffAngle;
     }
 
-    public BigDecimal getTakeOffHeight() {
-        return takeOffHeight;
+    public BigDecimal getS() {
+        return s;
     }
 
-    public void setTakeOffHeight(BigDecimal takeOffHeight) {
-        this.takeOffHeight = takeOffHeight;
+    public void setS(BigDecimal takeOffHeight) {
+        this.s = takeOffHeight;
     }
 
     public BigDecimal getV0() {
@@ -401,12 +477,12 @@ public class HillVersion {
         this.betaP = betaP;
     }
 
-    public BigDecimal getLandingAngle() {
-        return landingAngle;
+    public BigDecimal getBeta() {
+        return beta;
     }
 
-    public void setLandingAngle(BigDecimal landingAngle) {
-        this.landingAngle = landingAngle;
+    public void setBeta(BigDecimal landingAngle) {
+        this.beta = landingAngle;
     }
 
     public BigDecimal getBetaL() {
@@ -531,12 +607,12 @@ public class HillVersion {
                 ", kPoint=" + kPoint +
                 ", hillSize=" + hillSize +
                 ", inrunLength=" + inrunLength +
-                ", e=" + e +
-                ", inrunAngle=" + inrunAngle +
+                ", e=" + es +
+                ", inrunAngle=" + gamma +
                 ", r1=" + r1 +
                 ", takeOffLength=" + takeOffLength +
-                ", takeOffAngle=" + takeOffAngle +
-                ", takeOffHeight=" + takeOffHeight +
+                ", takeOffAngle=" + alpha +
+                ", takeOffHeight=" + s +
                 ", v0=" + v0 +
                 ", h=" + h +
                 ", n=" + n +
@@ -544,7 +620,7 @@ public class HillVersion {
                 ", l1=" + l1 +
                 ", l2=" + l2 +
                 ", betaP=" + betaP +
-                ", landingAngle=" + landingAngle +
+                ", landingAngle=" + beta +
                 ", betaL=" + betaL +
                 ", l=" + l +
                 ", rl=" + rl +

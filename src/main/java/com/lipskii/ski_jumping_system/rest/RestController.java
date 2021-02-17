@@ -9,9 +9,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+//TODO add isPresent before each .get()
 
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
@@ -86,7 +92,7 @@ public class RestController {
     }
 
     @GetMapping("/countries/venues")
-    public List<CountryDTO> getCountriesWithVenues(){
+    public List<CountryDTO> getCountriesWithVenues() {
         return countryService.findAllWithVenues();
     }
 
@@ -101,7 +107,7 @@ public class RestController {
     }
 
     @GetMapping("/hills/{venueId}")
-    public List<Hill> getHillsByVenue(@PathVariable("venueId") int venueId){
+    public List<Hill> getHillsByVenue(@PathVariable("venueId") int venueId) {
         return hillService.findAllByVenueId(venueId);
     }
 
@@ -111,7 +117,7 @@ public class RestController {
     }
 
     @GetMapping("/skis")
-    public List<SkisDTO> getSkis(){
+    public List<SkisDTO> getSkis() {
         return skisService.findAll();
     }
 
@@ -121,7 +127,7 @@ public class RestController {
     }
 
     @GetMapping("/sizeOfHill")
-    public List<SizeOfHill> getSizesOfHil(){
+    public List<SizeOfHill> getSizesOfHil() {
         return sizeOfHillService.findAll();
     }
 
@@ -131,13 +137,13 @@ public class RestController {
     }
 
     @DeleteMapping("/venue/{id}")
-    public ResponseEntity<Integer> deleteVenue(@PathVariable("id") int id){
+    public ResponseEntity<Integer> deleteVenue(@PathVariable("id") int id) {
 
         System.out.println("deleting " + id);
         boolean isDeleted = venueService.deleteByIdBool(id);
         System.out.println(isDeleted);
 
-        if(isDeleted){
+        if (isDeleted) {
             return new ResponseEntity<>(id, HttpStatus.OK);
         }
 
@@ -145,11 +151,11 @@ public class RestController {
     }
 
     @PostMapping("/venue")
-    public ResponseEntity addVenue(@RequestBody Map<String,String> body){
+    public ResponseEntity addVenue(@RequestBody Map<String, String> body) {
 
         Venue venue;
 
-        if(!body.get("capacity").equals("")){
+        if (!body.get("capacity").equals("")) {
             venue = new Venue(
                     body.get("name").trim(),
                     Integer.parseInt(body.get("yearOfOpening")),
@@ -165,18 +171,91 @@ public class RestController {
         }
 
 
-
         venueService.save(venue);
 
         return ResponseEntity.ok(venue);
     }
+
+    @PostMapping("/hill")
+    public ResponseEntity<Integer> addHillVersion(@RequestBody Map<String, String> body) {
+        Hill hill;
+
+        try {
+            if (body.get("hillId") == null || body.get("hillId").equals("")) {
+                hill = new Hill(body.get("name"),
+                        venueService.findById(Integer.parseInt(body.get("venueId"))).orElseThrow(Exception::new),
+                        sizeOfHillService.findById(Integer.parseInt(body.get("sizeId"))).orElseThrow(Exception::new));
+                hillService.save(hill);
+            } else {
+                hill = hillService.findById(Integer.parseInt(body.get("hillId"))).orElseThrow(Exception::new);
+            }
+
+            HillVersion hillVersion;
+            if (body.get("r2l") == null || body.get("r2l").equals("")) {
+                hillVersion = new HillVersion(
+                        hill,
+                        Integer.parseInt(body.get("firstYear")),
+                        Integer.parseInt(body.get("lastYear")),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("kPoint"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("hillSize"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("es"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("e1"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("e1"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("gamma"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("alpha"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("s"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("v0"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("h"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("n"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("p"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("l1"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("l2"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("betaP"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("beta"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("betaL"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("l"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("rl"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("zu"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("r2"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("a"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("b1"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("b2"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("bk"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("bu"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("d"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("q"))),
+                        body.get("certificate")),
+                        // TODO to be finished tommorrow morning
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+
+//        HashMap<String, Method> map = new HashMap<>();
+//        try {
+//            map.put("hill", hillVersion.getClass().getMethod("setId", int.class));
+//            map.put("firstYear",hillVersion.getClass().getMethod("setFirst_year", Integer.class));
+//            map.put("lastYear", hillVersion.getClass().getMethod("setLast_year", Integer.class));
+//            map.put("KPoint",hillVersion.getClass().getMethod("setkPoint", BigDecimal.class));
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//        }
+
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     @PostMapping("/skiJumper")
     public ResponseEntity addSkiJumper(@RequestBody Map<String, String> body) {
 
         Person person;
 
-        if(!body.get("city").equals("")){
+        if (!body.get("city").equals("")) {
             person = new Person(body.get("firstName").trim(),
                     body.get("lastName").trim(),
                     genderService.findById(Integer.parseInt(body.get("gender"))).get(),
@@ -201,7 +280,7 @@ public class RestController {
         personService.save(person);
 
         boolean isActive = true;
-        if(body.get("isActive").equals("false")){
+        if (body.get("isActive").equals("false")) {
             isActive = false;
         }
 
@@ -209,10 +288,10 @@ public class RestController {
         skiJumper.setPerson(person);
         skiJumper.setActive(isActive);
         skiJumper.setAll_time_points(BigDecimal.ZERO);
-        if(!body.get("skiClub").equals("")){
-            skiJumper.setSkiClub( skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get());
+        if (!body.get("skiClub").equals("")) {
+            skiJumper.setSkiClub(skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get());
         }
-        if(!body.get("skis").equals("")){
+        if (!body.get("skis").equals("")) {
             skiJumper.setSkis(skisService.findById(Integer.parseInt(body.get("skis"))).get());
         }
 
