@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "hill_version")
@@ -202,19 +203,19 @@ public class HillVersion {
      * Beginning of fis certificate validity period.
      */
     @Column(name = "valid_since")
-    private Date validSince;
+    private LocalDate validSince;
 
     /**
      * Ending of fis certificate validity period.
      */
     @Column(name = "valid_until")
-    private Date validUntil;
+    private LocalDate validUntil;
 
     public HillVersion() {
     }
 
 
-    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal takeOffLength, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal r2l, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, Date validSince, Date validUntil) {
+    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal takeOffLength, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal r2l, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
         this.hill = hill;
         this.first_year = first_year;
         this.last_year = last_year;
@@ -254,7 +255,7 @@ public class HillVersion {
         this.validUntil = validUntil;
     }
 
-    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal takeOffLength, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, Date validSince, Date validUntil) {
+    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal takeOffLength, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
         this.hill = hill;
         this.first_year = first_year;
         this.last_year = last_year;
@@ -581,62 +582,22 @@ public class HillVersion {
         this.fisCertificate = fisCertificate;
     }
 
-    public Date getValidSince() {
+    public LocalDate getValidSince() {
         return validSince;
     }
 
-    public void setValidSince(Date validSince) {
+    public void setValidSince(LocalDate validSince) {
         this.validSince = validSince;
     }
 
-    public Date getValidUntil() {
+    public LocalDate getValidUntil() {
         return validUntil;
     }
 
-    public void setValidUntil(Date validUntil) {
+    public void setValidUntil(LocalDate validUntil) {
         this.validUntil = validUntil;
     }
 
-    @Override
-    public String toString() {
-        return "HillVersion{" +
-                "id=" + id +
-                ", hill=" + hill +
-                ", first_year=" + first_year +
-                ", last_year=" + last_year +
-                ", kPoint=" + kPoint +
-                ", hillSize=" + hillSize +
-                ", inrunLength=" + inrunLength +
-                ", e=" + es +
-                ", inrunAngle=" + gamma +
-                ", r1=" + r1 +
-                ", takeOffLength=" + takeOffLength +
-                ", takeOffAngle=" + alpha +
-                ", takeOffHeight=" + s +
-                ", v0=" + v0 +
-                ", h=" + h +
-                ", n=" + n +
-                ", p=" + p +
-                ", l1=" + l1 +
-                ", l2=" + l2 +
-                ", betaP=" + betaP +
-                ", landingAngle=" + beta +
-                ", betaL=" + betaL +
-                ", l=" + l +
-                ", rl=" + rl +
-                ", r2=" + r2 +
-                ", a=" + a +
-                ", b1=" + b1 +
-                ", b2=" + b2 +
-                ", bk=" + bk +
-                ", bu=" + bu +
-                ", d=" + d +
-                ", q=" + q +
-                ", fisCertificate='" + fisCertificate + '\'' +
-                ", validSince=" + validSince +
-                ", validUntil=" + validUntil +
-                '}';
-    }
 }
 
 

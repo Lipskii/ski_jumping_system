@@ -53,7 +53,6 @@ public class VenueService implements ServiceInterface {
     public boolean deleteByIdBool(int id) {
         if(venueRepository.existsById(id)){
 
-            System.out.println(venueRepository.findById(id));
             venueRepository.deleteById(id);
            // return true;
         }

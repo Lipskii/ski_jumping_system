@@ -9,12 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.DateFormatter;
 import javax.xml.crypto.Data;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 //TODO add isPresent before each .get()
@@ -176,7 +181,7 @@ public class RestController {
         return ResponseEntity.ok(venue);
     }
 
-    @PostMapping("/hill")
+    @PostMapping("/hillVersion")
     public ResponseEntity<Integer> addHillVersion(@RequestBody Map<String, String> body) {
         Hill hill;
 
@@ -190,18 +195,22 @@ public class RestController {
                 hill = hillService.findById(Integer.parseInt(body.get("hillId"))).orElseThrow(Exception::new);
             }
 
+
             HillVersion hillVersion;
+
             if (body.get("r2l") == null || body.get("r2l").equals("")) {
                 hillVersion = new HillVersion(
                         hill,
-                        Integer.parseInt(body.get("firstYear")),
-                        Integer.parseInt(body.get("lastYear")),
+                        Integer.parseInt(body.get("validSinceYear")),
+                        Integer.parseInt(body.get("validUntilYear")),
                         BigDecimal.valueOf(Double.parseDouble(body.get("kPoint"))),
                         BigDecimal.valueOf(Double.parseDouble(body.get("hillSize"))),
                         BigDecimal.valueOf(Double.parseDouble(body.get("es"))),
                         BigDecimal.valueOf(Double.parseDouble(body.get("e1"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("e1"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("e2"))),
                         BigDecimal.valueOf(Double.parseDouble(body.get("gamma"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("r1"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("t"))),
                         BigDecimal.valueOf(Double.parseDouble(body.get("alpha"))),
                         BigDecimal.valueOf(Double.parseDouble(body.get("s"))),
                         BigDecimal.valueOf(Double.parseDouble(body.get("v0"))),
@@ -224,27 +233,73 @@ public class RestController {
                         BigDecimal.valueOf(Double.parseDouble(body.get("bu"))),
                         BigDecimal.valueOf(Double.parseDouble(body.get("d"))),
                         BigDecimal.valueOf(Double.parseDouble(body.get("q"))),
-                        body.get("certificate")),
-                        // TODO to be finished tommorrow morning
+                        body.get("certificate"),
+                        LocalDate.of(
+                                Integer.parseInt(body.get("validSinceYear")),
+                                Integer.parseInt(body.get("validSinceMonth")),
+                                Integer.parseInt(body.get("validSinceDay"))
+                        ),
+                        LocalDate.of(
+                                Integer.parseInt(body.get("validUntilYear")),
+                                Integer.parseInt(body.get("validUntilMonth")),
+                                Integer.parseInt(body.get("validUntilDay"))
+                        ));
+            } else {
+                hillVersion = new HillVersion(
+                        hill,
+                        Integer.parseInt(body.get("validSinceYear")),
+                        Integer.parseInt(body.get("validUntilYear")),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("kPoint"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("hillSize"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("es"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("e1"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("e2"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("gamma"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("r1"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("t"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("alpha"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("s"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("v0"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("h"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("n"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("p"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("l1"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("l2"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("betaP"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("beta"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("betaL"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("l"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("rl"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("r2l"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("zu"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("r2"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("a"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("b1"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("b2"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("bk"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("bu"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("d"))),
+                        BigDecimal.valueOf(Double.parseDouble(body.get("q"))),
+                        body.get("certificate"),
+                        LocalDate.of(
+                                Integer.parseInt(body.get("validSinceYear")),
+                                Integer.parseInt(body.get("validSinceMonth")),
+                                Integer.parseInt(body.get("validSinceDay"))
+                        ),
+                        LocalDate.of(
+                                Integer.parseInt(body.get("validUntilYear")),
+                                Integer.parseInt(body.get("validUntilMonth")),
+                                Integer.parseInt(body.get("validUntilDay"))
+                        ));
             }
 
+
+            hillVersionService.save(hillVersion);
 
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-
-//        HashMap<String, Method> map = new HashMap<>();
-//        try {
-//            map.put("hill", hillVersion.getClass().getMethod("setId", int.class));
-//            map.put("firstYear",hillVersion.getClass().getMethod("setFirst_year", Integer.class));
-//            map.put("lastYear", hillVersion.getClass().getMethod("setLast_year", Integer.class));
-//            map.put("KPoint",hillVersion.getClass().getMethod("setkPoint", BigDecimal.class));
-//        } catch (NoSuchMethodException e) {
-//            e.printStackTrace();
-//        }
-
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
