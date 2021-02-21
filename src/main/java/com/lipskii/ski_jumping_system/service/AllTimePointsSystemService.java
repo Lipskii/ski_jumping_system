@@ -29,8 +29,8 @@ public class AllTimePointsSystemService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        allTimePointsSystemRepository.save((AllTimePointsSystem) obj);
+    public AllTimePointsSystem save(Object obj) {
+        return allTimePointsSystemRepository.save((AllTimePointsSystem) obj);
     }
 
     @Override

@@ -30,8 +30,8 @@ public class SeriesService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        seriesRepository.save((Series) obj);
+    public Series save(Object obj) {
+        return seriesRepository.save((Series) obj);
     }
 
     @Override

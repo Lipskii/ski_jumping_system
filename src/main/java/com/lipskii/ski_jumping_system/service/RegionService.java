@@ -32,8 +32,8 @@ public class RegionService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        regionRepository.save((Region) obj);
+    public Region save(Object obj) {
+        return regionRepository.save((Region) obj);
     }
 
     @Override

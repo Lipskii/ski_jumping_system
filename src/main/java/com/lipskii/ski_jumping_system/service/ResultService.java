@@ -29,8 +29,8 @@ public class ResultService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        resultRepository.save((Result) obj);
+    public Result save(Object obj) {
+        return resultRepository.save((Result) obj);
     }
 
     @Override

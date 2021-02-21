@@ -26,7 +26,7 @@ public class HillVersionDTO {
     private BigDecimal l1;
     private BigDecimal l2;
     private BigDecimal landingAngle;
-    private int last_year;
+    private int lastYear;
     private BigDecimal n;
     private BigDecimal p;
     private BigDecimal q;

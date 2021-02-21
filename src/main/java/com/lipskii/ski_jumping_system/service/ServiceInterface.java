@@ -8,7 +8,7 @@ public interface ServiceInterface {
 
     Object findById(int id);
 
-    void save(Object obj);
+    <T> T save(T obj);
 
     void deleteById(int id);
 

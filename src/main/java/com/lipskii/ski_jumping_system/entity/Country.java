@@ -1,5 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -9,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "country")
+@JsonIgnoreProperties({"regions"})
 public class Country implements Comparable<Country> {
 
     @Id
@@ -22,7 +25,7 @@ public class Country implements Comparable<Country> {
     @Column(name = "code")
     private String code;
 
-    @JsonManagedReference
+    @JsonBackReference(value="regions")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "country", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Region> regions;

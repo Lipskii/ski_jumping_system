@@ -40,8 +40,8 @@ public class VenueService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        venueRepository.save((Venue) obj);
+    public Venue save(Object obj) {
+        return venueRepository.save((Venue) obj);
     }
 
     @Override
@@ -61,9 +61,6 @@ public class VenueService implements ServiceInterface {
         return !venueRepository.existsById(id);
     }
 
-    List<VenueDTO> findAllByCountryDTO(Country country){
-        return venueRepository.findAllByCityRegionCountry(country).stream().map(this::convertToVenueDTO).collect(Collectors.toList());
-    }
 
     List<Venue> findAllByCountry(Country country){
         return venueRepository.findAllByCityRegionCountry(country);

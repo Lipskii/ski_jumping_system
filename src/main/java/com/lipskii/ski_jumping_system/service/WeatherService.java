@@ -29,8 +29,8 @@ public class WeatherService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        weatherRepository.save((Weather) obj);
+    public Weather save(Object obj) {
+        return weatherRepository.save((Weather) obj);
     }
 
     @Override

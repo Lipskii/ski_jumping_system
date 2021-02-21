@@ -29,8 +29,8 @@ public class SeasonService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        seasonRepository.save((Season) obj);
+    public Season save(Object obj) {
+        return seasonRepository.save((Season) obj);
     }
 
     @Override

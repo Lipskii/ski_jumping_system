@@ -9,20 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.DateFormatter;
-import javax.xml.crypto.Data;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-//TODO add isPresent before each .get()
+//TODO error handling tomorrow
 
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
@@ -92,12 +84,12 @@ public class RestController {
     }
 
     @GetMapping("/countries")
-    public List<CountryDTO> getCountries() {
-        return countryService.findAllDTO();
+    public List<Country> getCountries() {
+        return countryService.findAll();
     }
 
     @GetMapping("/countries/venues")
-    public List<CountryDTO> getCountriesWithVenues() {
+    public List<Country> getCountriesWithVenues() {
         return countryService.findAllWithVenues();
     }
 
@@ -137,7 +129,7 @@ public class RestController {
     }
 
     @GetMapping("/venue/{country}")
-    public List<VenueDTO> getVenues(@PathVariable("country") String country) {
+    public List<VenueDTO> getVenuesByCountry(@PathVariable("country") String country) {
         return venueService.findAllByCountryDTO(country);
     }
 
@@ -156,29 +148,29 @@ public class RestController {
     }
 
     @PostMapping("/venue")
-    public ResponseEntity addVenue(@RequestBody Map<String, String> body) {
+    public Venue addVenue(@RequestBody Map<String, String> body, HttpServletResponse response) {
 
         Venue venue;
 
-        if (!body.get("capacity").equals("")) {
-            venue = new Venue(
-                    body.get("name").trim(),
-                    Integer.parseInt(body.get("yearOfOpening")),
-                    Integer.parseInt(body.get("capacity")),
-                    skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
-                    cityService.findById(Integer.parseInt(body.get("city"))).get()
-            );
-        } else {
-            venue = new Venue(body.get("name"),
-                    Integer.parseInt(body.get("yearOfOpening")),
-                    skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
-                    cityService.findById(Integer.parseInt(body.get("city"))).get());
-        }
+
+            if (!body.get("capacity").equals("")) {
+                venue = new Venue(
+                        body.get("name").trim(),
+                        Integer.parseInt(body.get("yearOfOpening")),
+                        Integer.parseInt(body.get("capacity")),
+                        skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
+                        cityService.findById(Integer.parseInt(body.get("city"))).get()
+                );
+            } else {
+                venue = new Venue(body.get("name"),
+                        Integer.parseInt(body.get("yearOfOpening")),
+                        skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
+                        cityService.findById(Integer.parseInt(body.get("city"))).get());
+            }
+
+            return venueService.save(venue);
 
 
-        venueService.save(venue);
-
-        return ResponseEntity.ok(venue);
     }
 
     @PostMapping("/hillVersion")

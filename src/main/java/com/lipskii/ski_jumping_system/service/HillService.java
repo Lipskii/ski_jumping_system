@@ -37,8 +37,8 @@ public class HillService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        hillRepository.save((Hill) obj);
+    public Hill save(Object obj) {
+        return hillRepository.save((Hill) obj);
     }
 
     @Override

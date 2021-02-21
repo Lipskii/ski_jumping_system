@@ -29,8 +29,8 @@ public class JudgeService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        judgeRepository.save((Judge) obj);
+    public Judge save(Object obj) {
+        return judgeRepository.save((Judge) obj);
     }
 
     @Override

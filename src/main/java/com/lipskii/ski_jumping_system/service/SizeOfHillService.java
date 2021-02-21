@@ -29,8 +29,8 @@ public class SizeOfHillService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        sizeOfHillRepository.save((SizeOfHill) obj);
+    public SizeOfHill save(Object obj) {
+        return sizeOfHillRepository.save((SizeOfHill) obj);
     }
 
     @Override

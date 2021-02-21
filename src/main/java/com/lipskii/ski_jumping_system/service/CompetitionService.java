@@ -30,8 +30,8 @@ public class CompetitionService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        competitionRepository.save((Competition) obj);
+    public Competition save(Object obj) {
+        return competitionRepository.save((Competition) obj);
     }
 
     @Override

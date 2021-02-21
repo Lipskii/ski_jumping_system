@@ -29,8 +29,8 @@ public class HillVersionService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        hillVersionRepository.save((HillVersion) obj);
+    public HillVersion save(Object obj) {
+        return hillVersionRepository.save((HillVersion) obj);
     }
 
     @Override

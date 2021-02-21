@@ -37,8 +37,8 @@ public class PersonService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        personRepository.save((Person) obj);
+    public Person save(Object obj) {
+        return personRepository.save((Person) obj);
     }
 
     @Override

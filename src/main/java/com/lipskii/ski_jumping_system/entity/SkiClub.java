@@ -23,7 +23,7 @@ public class SkiClub implements Comparable<SkiClub> {
     @JoinColumn(name = "city_idcity")
     private City city;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "skiClub", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Venue> venues;
 

@@ -31,7 +31,7 @@ public class City implements Comparable<City> {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<SkiClub> skiClubs;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Venue> venues;

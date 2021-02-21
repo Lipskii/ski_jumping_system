@@ -18,7 +18,7 @@ public class Region implements Comparable<Region> {
     @Column(name = "name")
     private String name;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "country_idcountry")
     private Country country;

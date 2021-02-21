@@ -29,8 +29,8 @@ public class JuryTypeService implements ServiceInterface{
     }
 
     @Override
-    public void save(Object obj) {
-        juryTypeRepository.save((JuryType) obj);
+    public JuryType save(Object obj) {
+        return juryTypeRepository.save((JuryType) obj);
     }
 
     @Override

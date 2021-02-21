@@ -32,8 +32,8 @@ public class SkiClubService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        skiClubRepository.save((SkiClub) obj);
+    public SkiClub save(Object obj) {
+        return skiClubRepository.save((SkiClub) obj);
     }
 
     @Override

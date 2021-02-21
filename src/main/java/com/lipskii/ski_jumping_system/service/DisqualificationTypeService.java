@@ -29,8 +29,8 @@ public class DisqualificationTypeService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        disqualificationTypeRepository.save((DisqualificationType) obj);
+    public DisqualificationType save(Object obj) {
+        return disqualificationTypeRepository.save((DisqualificationType) obj);
     }
 
     @Override

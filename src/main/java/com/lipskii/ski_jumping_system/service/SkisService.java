@@ -33,8 +33,8 @@ public class SkisService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        skisRepository.save((Skis) obj);
+    public Skis save(Object obj) {
+        return skisRepository.save((Skis) obj);
     }
 
     @Override

@@ -1,12 +1,7 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.CountryRepository;
-import com.lipskii.ski_jumping_system.dto.CountryDTO;
-import com.lipskii.ski_jumping_system.dto.VenueDTO;
-import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.entity.Country;
-import com.lipskii.ski_jumping_system.entity.Region;
-import com.lipskii.ski_jumping_system.entity.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +26,10 @@ public class CountryService implements ServiceInterface {
 
     @Override
     public List<Country> findAll() {
-        return (List<Country>) countryRepository.findAll();
+        return countryRepository.findAll();
     }
 
-    public List<CountryDTO> findAllDTO(){
-        return countryRepository.findAll().stream().map(this::convertToCountryDTO).collect(Collectors.toList());
-    }
+
 
     @Override
     public Optional<Country> findById(int id) {
@@ -44,8 +37,12 @@ public class CountryService implements ServiceInterface {
     }
 
     @Override
-    public void save(Object obj) {
-        countryRepository.save((Country) obj);
+    public Country save(Object obj) {
+       return countryRepository.save((Country) obj);
+    }
+
+    public Country savee(Country country) {
+        return countryRepository.save(country);
     }
 
     public void saveIfNotExists(Country country){
@@ -66,10 +63,10 @@ public class CountryService implements ServiceInterface {
         countryRepository.deleteById(id);
     }
 
-    public List<CountryDTO> findAllWithVenues(){
+    public List<Country> findAllWithVenues(){
         List<Country> countries = countryRepository.findAll();
         countries.removeIf(country -> venueService.findAllByCountry(country).isEmpty());
-        return countries.stream().map(this::convertToCountryDTO).collect(Collectors.toList());
+        return countries;
     }
 
     public Country findFirstById(){
@@ -84,11 +81,4 @@ public class CountryService implements ServiceInterface {
         return countryRepository.findCountryByName(name);
     }
 
-    private CountryDTO convertToCountryDTO(Country country) {
-        CountryDTO countryDTO = new CountryDTO();
-        countryDTO.setId(country.getId());
-        countryDTO.setName(country.getName());
-        countryDTO.setCode(country.getCode());
-        return countryDTO;
-    }
 }
