@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity
@@ -58,8 +57,8 @@ public class HillVersion {
     @Column(name = "r1")
     private BigDecimal r1;
 
-    @Column(name = "take_off_length")
-    private BigDecimal takeOffLength;
+    @Column(name = "t")
+    private BigDecimal t;
 
     @Column(name = "alpha")
     private BigDecimal alpha;
@@ -215,7 +214,7 @@ public class HillVersion {
     }
 
 
-    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal takeOffLength, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal r2l, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
+    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal t, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal r2l, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
         this.hill = hill;
         this.first_year = first_year;
         this.last_year = last_year;
@@ -226,7 +225,7 @@ public class HillVersion {
         this.e2 = e2;
         this.gamma = gamma;
         this.r1 = r1;
-        this.takeOffLength = takeOffLength;
+        this.t = t;
         this.alpha = alpha;
         this.s = s;
         this.v0 = v0;
@@ -255,7 +254,7 @@ public class HillVersion {
         this.validUntil = validUntil;
     }
 
-    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal takeOffLength, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
+    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal t, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
         this.hill = hill;
         this.first_year = first_year;
         this.last_year = last_year;
@@ -266,7 +265,7 @@ public class HillVersion {
         this.e2 = e2;
         this.gamma = gamma;
         this.r1 = r1;
-        this.takeOffLength = takeOffLength;
+        this.t = t;
         this.alpha = alpha;
         this.s = s;
         this.v0 = v0;
@@ -398,12 +397,12 @@ public class HillVersion {
         this.r1 = r1;
     }
 
-    public BigDecimal getTakeOffLength() {
-        return takeOffLength;
+    public BigDecimal getT() {
+        return t;
     }
 
-    public void setTakeOffLength(BigDecimal takeOffLength) {
-        this.takeOffLength = takeOffLength;
+    public void setT(BigDecimal takeOffLength) {
+        this.t = takeOffLength;
     }
 
     public BigDecimal getAlpha() {

@@ -26,11 +26,11 @@ public class VenueService implements ServiceInterface {
 
     @Override
     public List<VenueDTO> findAll() {
-        return venueRepository.findAll().stream().map(this::convertToVenueDTO).collect(Collectors.toList());
+        return venueRepository.findAllByOrderByName().stream().map(this::convertToVenueDTO).collect(Collectors.toList());
     }
 
-    public List<VenueDTO> findAllByCountryDTO(String country) {
-        return venueRepository.findAllByCityRegionCountryNameOrderByName(country)
+    public List<VenueDTO> findAllByCountry(int id) {
+        return venueRepository.findAllByCityRegionCountryIdOrderByName(id)
                 .stream().map(this::convertToVenueDTO).collect(Collectors.toList());
     }
 

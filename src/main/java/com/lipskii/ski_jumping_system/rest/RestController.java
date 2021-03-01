@@ -128,9 +128,14 @@ public class RestController {
         return sizeOfHillService.findAll();
     }
 
-    @GetMapping("/venue/{country}")
-    public List<VenueDTO> getVenuesByCountry(@PathVariable("country") String country) {
-        return venueService.findAllByCountryDTO(country);
+    @GetMapping("/venues/{countryId}")
+    public List<VenueDTO> getVenuesByCountry(@PathVariable("countryId") String countryId) {
+        return venueService.findAllByCountry(Integer.parseInt(countryId));
+    }
+
+    @GetMapping("/venues")
+    public List<VenueDTO> getVenues(){
+        return venueService.findAll();
     }
 
     @DeleteMapping("/venue/{id}")
@@ -173,8 +178,11 @@ public class RestController {
 
     }
 
+    //TODO zdecydowanie to upiększyć, to tylko tymczasowe rozwiązanie
     @PostMapping("/hillVersion")
     public ResponseEntity<Integer> addHillVersion(@RequestBody Map<String, String> body) {
+
+        System.out.println(body.toString());
         Hill hill;
 
         try {
@@ -295,7 +303,6 @@ public class RestController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
     @PostMapping("/skiJumper")
     public ResponseEntity addSkiJumper(@RequestBody Map<String, String> body) {

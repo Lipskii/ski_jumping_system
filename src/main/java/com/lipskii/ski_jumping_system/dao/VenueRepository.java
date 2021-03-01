@@ -13,6 +13,10 @@ public interface VenueRepository extends JpaRepository<Venue,Integer> {
     List<Venue> findAllByCityRegionCountryNameOrderByName(String country);
 
     List<Venue> findAllByCityRegionCountry(Country country);
-//    List<Venue> findAllByCityExists();
+
+    List<Venue> findAllByCityRegionCountryIdOrderByName(int id);
+
+    List<Venue> findAllByOrderByName();
+
 
 }
