@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-//TODO error handling tomorrow
+//TODO error handling
 
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
@@ -88,8 +88,13 @@ public class RestController {
         return countryService.findAll();
     }
 
+//    @GetMapping("/countries/venues")
+//    public List<Country> getCountriesWithVenues() {
+//        return countryService.findAllWithVenues();
+//    }
+
     @GetMapping("/countries/venues")
-    public List<Country> getCountriesWithVenues() {
+    public List<CountryWithVenuesDTO> getCountriesWithVenues() {
         return countryService.findAllWithVenues();
     }
 

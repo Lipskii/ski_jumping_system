@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.CountryRepository;
+import com.lipskii.ski_jumping_system.dto.CountryWithVenuesDTO;
 import com.lipskii.ski_jumping_system.entity.Country;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,10 +64,11 @@ public class CountryService implements ServiceInterface {
         countryRepository.deleteById(id);
     }
 
-    public List<Country> findAllWithVenues(){
+    public List<CountryWithVenuesDTO> findAllWithVenues(){
         List<Country> countries = countryRepository.findAll();
         countries.removeIf(country -> venueService.findAllByCountry(country).isEmpty());
-        return countries;
+
+        return countries.stream().map(this::convertToCountryWithVenuesDTO).collect(Collectors.toList());
     }
 
     public Country findFirstById(){
@@ -80,5 +82,16 @@ public class CountryService implements ServiceInterface {
     public Country findCountryByName(String name){
         return countryRepository.findCountryByName(name);
     }
+
+    private CountryWithVenuesDTO convertToCountryWithVenuesDTO(Country country){
+        CountryWithVenuesDTO countryWithVenuesDTO = new CountryWithVenuesDTO();
+        countryWithVenuesDTO.setId(country.getId());
+        countryWithVenuesDTO.setName(country.getName());
+        countryWithVenuesDTO.setCode(country.getCode());
+        countryWithVenuesDTO.setVenues(venueService.findAllByCountry(country.getId()));
+        return countryWithVenuesDTO;
+    }
+
+
 
 }

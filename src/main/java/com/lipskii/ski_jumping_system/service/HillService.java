@@ -31,8 +31,6 @@ public class HillService implements ServiceInterface {
     }
 
     public List<Hill> findAllByVenueId(int venueId){
-        System.out.println(venueId);
-        System.out.println(venueService.findById(venueId).get());
         return hillRepository.findAllByVenue(venueService.findById(venueId).get());
     }
 
