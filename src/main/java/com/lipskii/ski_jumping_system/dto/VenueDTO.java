@@ -1,5 +1,9 @@
 package com.lipskii.ski_jumping_system.dto;
 
+import com.lipskii.ski_jumping_system.entity.Hill;
+
+import java.util.List;
+
 public class VenueDTO {
 
     private int id;
@@ -14,6 +18,7 @@ public class VenueDTO {
     private int countryId;
     private String skiClub;
     private int skiClubId;
+    private List<Hill> hills;
 
     public int getId() {
         return id;
@@ -109,5 +114,13 @@ public class VenueDTO {
 
     public void setSkiClubId(int skiClubId) {
         this.skiClubId = skiClubId;
+    }
+
+    public List<Hill> getHills() {
+        return hills;
+    }
+
+    public void setHills(List<Hill> hills) {
+        this.hills = hills;
     }
 }

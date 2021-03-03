@@ -18,10 +18,12 @@ import java.util.stream.Collectors;
 public class VenueService implements ServiceInterface {
 
     private final VenueRepository venueRepository;
+    private final HillService hillService;
 
     @Autowired
-    public VenueService(VenueRepository venueRepository) {
+    public VenueService(VenueRepository venueRepository, HillService hillService) {
         this.venueRepository = venueRepository;
+        this.hillService = hillService;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class VenueService implements ServiceInterface {
         venueDTO.setSkiClubId(venue.getSkiClub().getId());
         venueDTO.setCapacity(venue.getCapacity());
         venueDTO.setYearOfOpening(venue.getYearOfOpening());
-
+        venueDTO.setHills(hillService.findAllByVenueId(venue.getId()));
         return venueDTO;
     }
 }
