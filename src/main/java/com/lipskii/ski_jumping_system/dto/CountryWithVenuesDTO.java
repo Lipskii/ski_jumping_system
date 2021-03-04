@@ -1,12 +1,14 @@
 package com.lipskii.ski_jumping_system.dto;
 
+import com.lipskii.ski_jumping_system.entity.Venue;
+
 import java.util.List;
 
 public class CountryWithVenuesDTO {
     int id;
     String name;
     String code;
-    List<VenueDTO> venues;
+    List<Venue> venues;
 
     public int getId() {
         return id;
@@ -32,11 +34,11 @@ public class CountryWithVenuesDTO {
         this.code = code;
     }
 
-    public List<VenueDTO> getVenues() {
+    public List<Venue> getVenues() {
         return venues;
     }
 
-    public void setVenues(List<VenueDTO> venues) {
+    public void setVenues(List<Venue> venues) {
         this.venues = venues;
     }
 }

@@ -2,7 +2,6 @@ package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.VenueRepository;
 import com.lipskii.ski_jumping_system.dto.SkisDTO;
-import com.lipskii.ski_jumping_system.dto.VenueDTO;
 import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.Skis;
 import com.lipskii.ski_jumping_system.entity.Venue;
@@ -27,13 +26,12 @@ public class VenueService implements ServiceInterface {
     }
 
     @Override
-    public List<VenueDTO> findAll() {
-        return venueRepository.findAllByOrderByName().stream().map(this::convertToVenueDTO).collect(Collectors.toList());
+    public List<Venue> findAll() {
+        return venueRepository.findAllByOrderByName();
     }
 
-    public List<VenueDTO> findAllByCountry(int id) {
-        return venueRepository.findAllByCityRegionCountryIdOrderByName(id)
-                .stream().map(this::convertToVenueDTO).collect(Collectors.toList());
+    public List<Venue> findAllByCountry(int id) {
+        return venueRepository.findAllByCityRegionCountryIdOrderByName(id);
     }
 
     @Override
@@ -68,21 +66,4 @@ public class VenueService implements ServiceInterface {
         return venueRepository.findAllByCityRegionCountry(country);
     }
 
-    private VenueDTO convertToVenueDTO(Venue venue) {
-        VenueDTO venueDTO = new VenueDTO();
-        venueDTO.setId(venue.getId());
-        venueDTO.setName(venue.getName());
-        venueDTO.setCity(venue.getCity().getName());
-        venueDTO.setCityId(venue.getCity().getId());
-        venueDTO.setRegion(venue.getCity().getRegion().getName());
-        venueDTO.setRegionId(venue.getCity().getRegion().getId());
-        venueDTO.setCountry(venue.getCity().getRegion().getCountry().getName());
-        venueDTO.setCountryId(venue.getCity().getRegion().getCountry().getId());
-        venueDTO.setSkiClub(venue.getSkiClub().getName());
-        venueDTO.setSkiClubId(venue.getSkiClub().getId());
-        venueDTO.setCapacity(venue.getCapacity());
-        venueDTO.setYearOfOpening(venue.getYearOfOpening());
-        venueDTO.setHills(hillService.findAllByVenueId(venue.getId()));
-        return venueDTO;
-    }
 }

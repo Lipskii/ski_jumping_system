@@ -5,6 +5,7 @@ import com.lipskii.ski_jumping_system.dto.*;
 import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -114,9 +115,16 @@ public class RestController {
     }
 
     @PutMapping("hills/{hillId}")
-    public ResponseEntity<Hill> putHill(@PathVariable("hillId") int hillId, @RequestBody Hill hill){
-        System.out.println(hill);
-        return ResponseEntity.ok(hill);
+    public ResponseEntity<Hill> updateHill(@PathVariable("hillId") int hillId, @RequestBody Hill requestHill) throws ResourceNotFoundException {
+
+        if(hillService.findById(hillId).isPresent()){
+            requestHill.setId(hillId);
+            hillService.save(requestHill);
+        } else {
+            throw new ResourceNotFoundException("No hill found for id: " + hillId);
+        }
+
+        return ResponseEntity.ok(requestHill);
     }
 
     @GetMapping("/regions/{country}")
@@ -140,12 +148,12 @@ public class RestController {
     }
 
     @GetMapping("/venues/{countryId}")
-    public List<VenueDTO> getVenuesByCountry(@PathVariable("countryId") String countryId) {
+    public List<Venue> getVenuesByCountry(@PathVariable("countryId") String countryId) {
         return venueService.findAllByCountry(Integer.parseInt(countryId));
     }
 
     @GetMapping("/venues")
-    public List<VenueDTO> getVenues(){
+    public List<Venue> getVenues() {
         return venueService.findAll();
     }
 
@@ -169,150 +177,32 @@ public class RestController {
         Venue venue;
 
 
-            if (!body.get("capacity").equals("")) {
-                venue = new Venue(
-                        body.get("name").trim(),
-                        Integer.parseInt(body.get("yearOfOpening")),
-                        Integer.parseInt(body.get("capacity")),
-                        skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
-                        cityService.findById(Integer.parseInt(body.get("city"))).get()
-                );
-            } else {
-                venue = new Venue(body.get("name"),
-                        Integer.parseInt(body.get("yearOfOpening")),
-                        skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
-                        cityService.findById(Integer.parseInt(body.get("city"))).get());
-            }
+        if (!body.get("capacity").equals("")) {
+            venue = new Venue(
+                    body.get("name").trim(),
+                    Integer.parseInt(body.get("yearOfOpening")),
+                    Integer.parseInt(body.get("capacity")),
+                    skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
+                    cityService.findById(Integer.parseInt(body.get("city"))).get()
+            );
+        } else {
+            venue = new Venue(body.get("name"),
+                    Integer.parseInt(body.get("yearOfOpening")),
+                    skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
+                    cityService.findById(Integer.parseInt(body.get("city"))).get());
+        }
 
-            return venueService.save(venue);
+        return venueService.save(venue);
 
 
     }
 
-    //TODO tymczasowe rozwiązanie
-    @PostMapping("/hillVersion")
-    public ResponseEntity<Integer> addHillVersion(@RequestBody Map<String, String> body) {
-
-        System.out.println(body.toString());
-        Hill hill;
-
-        try {
-            if (body.get("hillId") == null || body.get("hillId").equals("")) {
-                hill = new Hill(body.get("name"),
-                        venueService.findById(Integer.parseInt(body.get("venueId"))).orElseThrow(Exception::new),
-                        sizeOfHillService.findById(Integer.parseInt(body.get("sizeId"))).orElseThrow(Exception::new));
-                hillService.save(hill);
-            } else {
-                hill = hillService.findById(Integer.parseInt(body.get("hillId"))).orElseThrow(Exception::new);
-            }
-
-
-            HillVersion hillVersion;
-
-            if (body.get("r2l") == null || body.get("r2l").equals("")) {
-                hillVersion = new HillVersion(
-                        hill,
-                        Integer.parseInt(body.get("validSinceYear")),
-                        Integer.parseInt(body.get("validUntilYear")),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("kPoint"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("hillSize"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("es"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("e1"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("e2"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("gamma"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("r1"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("t"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("alpha"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("s"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("v0"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("h"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("n"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("p"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("l1"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("l2"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("betaP"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("beta"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("betaL"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("l"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("rl"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("zu"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("r2"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("a"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("b1"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("b2"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("bk"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("bu"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("d"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("q"))),
-                        body.get("certificate"),
-                        LocalDate.of(
-                                Integer.parseInt(body.get("validSinceYear")),
-                                Integer.parseInt(body.get("validSinceMonth")),
-                                Integer.parseInt(body.get("validSinceDay"))
-                        ),
-                        LocalDate.of(
-                                Integer.parseInt(body.get("validUntilYear")),
-                                Integer.parseInt(body.get("validUntilMonth")),
-                                Integer.parseInt(body.get("validUntilDay"))
-                        ));
-            } else {
-                hillVersion = new HillVersion(
-                        hill,
-                        Integer.parseInt(body.get("validSinceYear")),
-                        Integer.parseInt(body.get("validUntilYear")),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("kPoint"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("hillSize"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("es"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("e1"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("e2"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("gamma"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("r1"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("t"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("alpha"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("s"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("v0"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("h"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("n"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("p"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("l1"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("l2"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("betaP"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("beta"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("betaL"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("l"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("rl"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("r2l"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("zu"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("r2"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("a"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("b1"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("b2"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("bk"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("bu"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("d"))),
-                        BigDecimal.valueOf(Double.parseDouble(body.get("q"))),
-                        body.get("certificate"),
-                        LocalDate.of(
-                                Integer.parseInt(body.get("validSinceYear")),
-                                Integer.parseInt(body.get("validSinceMonth")),
-                                Integer.parseInt(body.get("validSinceDay"))
-                        ),
-                        LocalDate.of(
-                                Integer.parseInt(body.get("validUntilYear")),
-                                Integer.parseInt(body.get("validUntilMonth")),
-                                Integer.parseInt(body.get("validUntilDay"))
-                        ));
-            }
-
-
-            hillVersionService.save(hillVersion);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+    //TODO temporary solution before bug with jackson was fixed, new solution soon
+    @PostMapping("/hill")
+    public ResponseEntity<Hill> addHillVersion(@RequestBody Hill hill) {
+        System.out.println(hill);
+        hillService.save(hill);
+        return ResponseEntity.ok(hill);
     }
 
     @PostMapping("/skiJumper")

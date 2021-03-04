@@ -1,6 +1,8 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,12 +21,12 @@ public class Hill {
     private String name;
 
     @JsonBackReference(value = "venue-hill")
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "venue_idvenue")
     private Venue venue;
 
     @JsonBackReference(value = "size_hill")
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "size_of_hill_idsize_of_hill")
     private SizeOfHill sizeOfHill;
 
