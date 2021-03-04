@@ -1,10 +1,13 @@
 package com.lipskii.ski_jumping_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
 
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id", scope = Integer.class)
 @Entity
 @Table(name = "size_of_hill")
 public class SizeOfHill {
@@ -35,7 +38,7 @@ public class SizeOfHill {
     @Column(name = "max_distance_t_k")
     private int maxDistanceTK;
 
-    @JsonManagedReference
+    @JsonManagedReference(value = "size_hill")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "sizeOfHill", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Hill> hills;
 

@@ -21,17 +21,17 @@ public class City implements Comparable<City> {
     @Column(name = "name")
     private String name;
 
-    @JsonBackReference
+    @JsonBackReference(value = "region-city")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "region_idregion")
     private Region region;
 
-    @JsonManagedReference
+    @JsonManagedReference("city-club")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<SkiClub> skiClubs;
 
-    @JsonBackReference
+    @JsonManagedReference(value = "venue-city")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Venue> venues;

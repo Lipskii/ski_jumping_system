@@ -113,6 +113,12 @@ public class RestController {
         return hillService.findAllByVenueId(venueId);
     }
 
+    @PutMapping("hills/{hillId}")
+    public ResponseEntity<Hill> putHill(@PathVariable("hillId") int hillId, @RequestBody Hill hill){
+        System.out.println(hill);
+        return ResponseEntity.ok(hill);
+    }
+
     @GetMapping("/regions/{country}")
     public List<RegionDTO> getRegionsByCountry(@PathVariable("country") String country) {
         return regionService.findRegionsByCountry(countryService.findCountryByName(country));
@@ -183,7 +189,7 @@ public class RestController {
 
     }
 
-    //TODO zdecydowanie to upiększyć, to tylko tymczasowe rozwiązanie
+    //TODO tymczasowe rozwiązanie
     @PostMapping("/hillVersion")
     public ResponseEntity<Integer> addHillVersion(@RequestBody Map<String, String> body) {
 

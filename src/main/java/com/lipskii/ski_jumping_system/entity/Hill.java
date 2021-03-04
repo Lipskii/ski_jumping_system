@@ -1,10 +1,10 @@
 package com.lipskii.ski_jumping_system.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.List;
+
 
 @Entity
 @Table(name = "hill")
@@ -18,23 +18,25 @@ public class Hill {
     @Column(name = "name")
     private String name;
 
-    @JsonBackReference
+    @JsonBackReference(value = "venue-hill")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "venue_idvenue")
     private Venue venue;
 
-    @JsonBackReference
+    @JsonBackReference(value = "size_hill")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "size_of_hill_idsize_of_hill")
     private SizeOfHill sizeOfHill;
 
-    @JsonManagedReference
+    @JsonManagedReference(value = "hill-hillVersion")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "hill", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<HillVersion> hillVersions;
+
 
     public Hill() {
     }
 
+    @JsonCreator
     public Hill(String name, Venue venue, SizeOfHill sizeOfHill) {
         this.name = name;
         this.venue = venue;

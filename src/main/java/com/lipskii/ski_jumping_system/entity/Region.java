@@ -18,12 +18,12 @@ public class Region implements Comparable<Region> {
     @Column(name = "name")
     private String name;
 
-    @JsonManagedReference
+    @JsonBackReference(value = "country-region")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "country_idcountry")
     private Country country;
 
-    @JsonManagedReference
+    @JsonManagedReference(value = "region-city")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "region", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<City> cities;
 
