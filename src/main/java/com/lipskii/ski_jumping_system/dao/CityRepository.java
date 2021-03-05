@@ -12,7 +12,7 @@ public interface CityRepository extends JpaRepository<City,Integer> {
 
     boolean existsCityByName(String name);
 
-    List<City> findAllByRegionCountryCode(String code);
+    List<City> findAllByRegionCountry(Country country);
 
     List<City> findAllByRegionCountryCodeOrderByName(String code);
 

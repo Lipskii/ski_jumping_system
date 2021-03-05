@@ -1,5 +1,6 @@
 package com.lipskii.ski_jumping_system.dao;
 
+import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.Venue;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,8 @@ public interface VenueRepository extends JpaRepository<Venue,Integer> {
     List<Venue> findAllByCityRegionCountry(Country country);
 
     List<Venue> findAllByCityRegionCountryIdOrderByName(int id);
+
+    List<Venue> findAllByCityOrderByName(City city);
 
     List<Venue> findAllByOrderByName();
 

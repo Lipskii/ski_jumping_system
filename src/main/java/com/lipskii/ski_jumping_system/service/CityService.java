@@ -4,6 +4,7 @@ import com.lipskii.ski_jumping_system.dao.CityRepository;
 import com.lipskii.ski_jumping_system.dto.CityDTO;
 import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.entity.Country;
+import com.lipskii.ski_jumping_system.entity.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,13 @@ import java.util.stream.Collectors;
 public class CityService implements ServiceInterface {
 
     private final CityRepository cityRepository;
+    private final VenueService venueService;
     protected final Logger log = Logger.getLogger(getClass().getName());
 
     @Autowired
-    public CityService(CityRepository cityRepository) {
+    public CityService(CityRepository cityRepository, VenueService venueService) {
         this.cityRepository = cityRepository;
+        this.venueService = venueService;
     }
 
     @Override
@@ -39,8 +42,15 @@ public class CityService implements ServiceInterface {
         return cityRepository.save((City) obj);
     }
 
-    public List<City> findCitiesByCountry(String code){
-        return cityRepository.findAllByRegionCountryCode(code);
+    public List<City> findCitiesWithVenues(){
+        List<City> cities = cityRepository.findAll();
+        cities.removeIf(city -> venueService.findAllByCity(city).isEmpty());
+
+        return cities;
+    }
+
+    public List<City> findCitiesByCountry(Country country){
+        return cityRepository.findAllByRegionCountry(country);
     }
 
     public List<City> findCitiesByCountryOrderByName(String code){

@@ -17,12 +17,14 @@ public class CountryService implements ServiceInterface {
 
     private final CountryRepository countryRepository;
     private final VenueService venueService;
+    private final CityService cityService;
     protected final Logger log = Logger.getLogger(getClass().getName());
 
     @Autowired
-    public CountryService(CountryRepository countryRepository, VenueService venueService) {
+    public CountryService(CountryRepository countryRepository, VenueService venueService, CityService cityService) {
         this.countryRepository = countryRepository;
         this.venueService = venueService;
+        this.cityService = cityService;
     }
 
     @Override
@@ -89,6 +91,7 @@ public class CountryService implements ServiceInterface {
         countryWithVenuesDTO.setName(country.getName());
         countryWithVenuesDTO.setCode(country.getCode());
         countryWithVenuesDTO.setVenues(venueService.findAllByCountry(country.getId()));
+        countryWithVenuesDTO.setCities(cityService.findCitiesByCountry(country));
         return countryWithVenuesDTO;
     }
 

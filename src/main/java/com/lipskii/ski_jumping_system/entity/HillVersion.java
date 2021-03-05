@@ -17,7 +17,7 @@ public class HillVersion {
     private int id;
 
     @JsonBackReference(value = "hill-hillVersion")
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "hill_idhill")
     private Hill hill;
 

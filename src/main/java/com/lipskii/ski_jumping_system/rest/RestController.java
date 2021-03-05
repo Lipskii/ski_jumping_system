@@ -89,10 +89,6 @@ public class RestController {
         return countryService.findAll();
     }
 
-//    @GetMapping("/countries/venues")
-//    public List<Country> getCountriesWithVenues() {
-//        return countryService.findAllWithVenues();
-//    }
 
     @GetMapping("/countries/venues")
     public List<CountryWithVenuesDTO> getCountriesWithVenues() {
@@ -102,6 +98,11 @@ public class RestController {
     @GetMapping("/cities")
     public List<City> getCities() {
         return cityService.findAll();
+    }
+
+    @GetMapping("cities/venues")
+    public List<City> getCitiesWithVenues() {
+        return cityService.findCitiesWithVenues();
     }
 
     @GetMapping("/cities/{country}")
@@ -147,14 +148,14 @@ public class RestController {
         return sizeOfHillService.findAll();
     }
 
-    @GetMapping("/venues/{countryId}")
-    public List<Venue> getVenuesByCountry(@PathVariable("countryId") String countryId) {
-        return venueService.findAllByCountry(Integer.parseInt(countryId));
+    @GetMapping("/venues/country/{countryId}")
+    public List<VenueDTO> getVenuesByCountry(@PathVariable("countryId") int countryId) {
+        return venueService.findAllByCountryDTO(countryId);
     }
 
     @GetMapping("/venues")
-    public List<Venue> getVenues() {
-        return venueService.findAll();
+    public List<VenueDTO> getVenues() {
+        return venueService.findAllDTO();
     }
 
     @DeleteMapping("/venue/{id}")
@@ -197,12 +198,18 @@ public class RestController {
 
     }
 
-    //TODO temporary solution before bug with jackson was fixed, new solution soon
+
     @PostMapping("/hill")
-    public ResponseEntity<Hill> addHillVersion(@RequestBody Hill hill) {
-        System.out.println(hill);
+    public Hill addHill(@RequestBody Hill hill) {
         hillService.save(hill);
-        return ResponseEntity.ok(hill);
+        return hill;
+    }
+
+    @PostMapping("/hillVersion")
+    public HillVersion addHillVersion(@RequestBody HillVersion hillVersion){
+        System.out.println(hillVersion);
+        hillVersionService.save(hillVersion);
+        return hillVersion;
     }
 
     @PostMapping("/skiJumper")
