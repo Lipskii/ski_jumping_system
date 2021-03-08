@@ -41,25 +41,9 @@ public class SkiClubService implements ServiceInterface {
         skiClubRepository.deleteById(id);
     }
 
-   public List<SkiClubDTO> getClubsByCountryDTO(Country country){
-        return skiClubRepository.findAllByCityRegionCountryOrderByName(country).stream().map(this::convertToSkiClubDTO).collect(Collectors.toList());
+   public List<SkiClub> getClubsByCountry(int countryId){
+        return skiClubRepository.findAllByCityRegionCountryIdOrderByName(countryId);
    }
 
-    public List<SkiClubDTO> getAllClubsDTO() {
-        return skiClubRepository.findAll().stream().map(this::convertToSkiClubDTO).collect(Collectors.toList());
-    }
 
-
-    private SkiClubDTO convertToSkiClubDTO(SkiClub skiClub) {
-        SkiClubDTO skiClubDTO = new SkiClubDTO();
-        skiClubDTO.setId(skiClub.getId());
-        skiClubDTO.setName(skiClub.getName());
-        skiClubDTO.setCity(skiClub.getCity().getName());
-        skiClubDTO.setCode(skiClub.getCity().getRegion().getCountry().getCode());
-        return skiClubDTO;
-    }
-
-    public List<SkiClubDTO> findAllByCountryCode(String code){
-        return skiClubRepository.findAllByCityRegionCountryCodeOrderByName(code).stream().map(this::convertToSkiClubDTO).collect(Collectors.toList());
-    }
 }

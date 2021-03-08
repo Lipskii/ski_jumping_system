@@ -50,13 +50,18 @@ public class VenueService implements ServiceInterface {
         return venueRepository.findAllByCityRegionCountryIdOrderByName(id);
     }
 
-    public List<Venue> findAllByCity(City city){
-        return venueRepository.findAllByCityOrderByName(city);
-    }
 
     @Override
     public Optional<Venue> findById(int id) {
         return venueRepository.findById(id);
+    }
+
+    public List<VenueDTO> getVenuesByCity(int cityId) {
+        return venueRepository.findAllByCityIdOrderByName(cityId).stream().map(this::convertToVenueDTO).collect(Collectors.toList());
+    }
+
+    public List<Venue> findAllByCity(City city){
+        return venueRepository.findAllByCityOrderByName(city);
     }
 
     @Override
@@ -97,4 +102,6 @@ public class VenueService implements ServiceInterface {
         venueDTO.setCity(venue.getCity());
         return venueDTO;
     }
+
+
 }

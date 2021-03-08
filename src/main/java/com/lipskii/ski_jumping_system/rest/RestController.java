@@ -74,14 +74,13 @@ public class RestController {
 
 
     @GetMapping("/skiClubs")
-    public List<SkiClubDTO> getSkiClubs() {
-        return skiClubService.getAllClubsDTO();
+    public List<SkiClub> getSkiClubs() {
+        return skiClubService.findAll();
     }
 
-    @GetMapping("/skiClubs/{country}")
-    public List<SkiClubDTO> getSkiClubsByCountry(@PathVariable("country") String country) {
-
-        return skiClubService.getClubsByCountryDTO(countryService.findCountryByName(country));
+    @GetMapping("/skiClubs/{countryId}")
+    public List<SkiClub> getSkiClubsByCountry(@PathVariable("countryId") int countryId) {
+        return skiClubService.getClubsByCountry(countryId);
     }
 
     @GetMapping("/countries")
@@ -97,7 +96,7 @@ public class RestController {
 
     @GetMapping("/cities")
     public List<City> getCities() {
-        return cityService.findAll();
+        return cityService.getCitiesOrderByName();
     }
 
     @GetMapping("cities/venues")
@@ -105,9 +104,9 @@ public class RestController {
         return cityService.findCitiesWithVenues();
     }
 
-    @GetMapping("/cities/{country}")
-    public List<CityDTO> getCitiesByCountry(@PathVariable("country") String country) {
-        return cityService.getCitiesByCountry(countryService.findCountryByName(country));
+    @GetMapping("/cities/{countryId}")
+    public List<City> getCitiesByCountry(@PathVariable("countryId") int countryId) {
+        return cityService.getCitiesByCountry(countryId);
     }
 
     @GetMapping("/hills/{venueId}")
@@ -151,6 +150,11 @@ public class RestController {
     @GetMapping("/venues/country/{countryId}")
     public List<VenueDTO> getVenuesByCountry(@PathVariable("countryId") int countryId) {
         return venueService.findAllByCountryDTO(countryId);
+    }
+
+    @GetMapping("/venues/city/{cityId}")
+    public List<VenueDTO> getVenuesByCity(@PathVariable("cityId") int cityId){
+        return venueService.getVenuesByCity(cityId);
     }
 
     @GetMapping("/venues")

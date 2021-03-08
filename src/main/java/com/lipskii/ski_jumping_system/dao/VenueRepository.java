@@ -11,15 +11,15 @@ import java.util.List;
 @Repository
 public interface VenueRepository extends JpaRepository<Venue,Integer> {
 
-    List<Venue> findAllByCityRegionCountryNameOrderByName(String country);
-
     List<Venue> findAllByCityRegionCountry(Country country);
 
-    List<Venue> findAllByCityRegionCountryIdOrderByName(int id);
+    List<Venue> findAllByCityRegionCountryIdOrderByName(int countryId);
 
-    List<Venue> findAllByCityOrderByName(City city);
+    List<Venue> findAllByCityIdOrderByName(int cityId);
 
     List<Venue> findAllByOrderByName();
+
+    List<Venue> findAllByCityOrderByName(City city);
 
 
 }

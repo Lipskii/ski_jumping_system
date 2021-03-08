@@ -14,5 +14,7 @@ public interface SkiClubRepository extends JpaRepository<SkiClub,Integer> {
 
     List<SkiClub> findAllByCityRegionCountryOrderByName(Country country);
 
+    List<SkiClub> findAllByCityRegionCountryIdOrderByName(int countryId);
+
 
 }

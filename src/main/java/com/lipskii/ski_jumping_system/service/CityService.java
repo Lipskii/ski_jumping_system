@@ -32,6 +32,10 @@ public class CityService implements ServiceInterface {
         return cityRepository.findAll();
     }
 
+    public List<City> getCitiesOrderByName(){
+        return cityRepository.findAllByOrderByName();
+    }
+
     @Override
     public Optional<City> findById(int id) {
         return cityRepository.findById(id);
@@ -43,9 +47,8 @@ public class CityService implements ServiceInterface {
     }
 
     public List<City> findCitiesWithVenues(){
-        List<City> cities = cityRepository.findAll();
+        List<City> cities = cityRepository.findAllByOrderByName();
         cities.removeIf(city -> venueService.findAllByCity(city).isEmpty());
-
         return cities;
     }
 
@@ -62,33 +65,24 @@ public class CityService implements ServiceInterface {
         cityRepository.deleteById(id);
     }
 
-    public List<CityDTO> getCitiesByCountry(Country country){
-        return cityRepository.findAllByRegionCountryOrderByName(country).stream().map(this::convertToCityDTO).collect(Collectors.toList());
+    public List<City> getCitiesByCountry(int countryId){
+        return cityRepository.findAllByRegionCountryIdOrderByName(countryId);
     }
 
-    public void saveIfNotExists(City city) {
-
-        log.log(Level.INFO,"Checking if city: " + city + " exists in db");
-
-        boolean exists = cityRepository.existsCityByName(city.getName());
-
-        if(!exists){
-            log.log(Level.INFO,"City: " + city + " does not exist in db");
-            save(city);
-            log.log(Level.INFO,"after saving: " + city);
-        } else{
-            log.log(Level.INFO,"City: " + city + " already exists in db");
-        }
-    }
-
-    private CityDTO convertToCityDTO(City city) {
-        CityDTO cityDTO = new CityDTO();
-        cityDTO.setId(city.getId());
-        cityDTO.setName(city.getName());
-        cityDTO.setRegion(city.getRegion().getName());
-        cityDTO.setCountry(city.getRegion().getCountry().getName());
-        return cityDTO;
-    }
+//    public void saveIfNotExists(City city) {
+//
+//        log.log(Level.INFO,"Checking if city: " + city + " exists in db");
+//
+//        boolean exists = cityRepository.existsCityByName(city.getName());
+//
+//        if(!exists){
+//            log.log(Level.INFO,"City: " + city + " does not exist in db");
+//            save(city);
+//            log.log(Level.INFO,"after saving: " + city);
+//        } else{
+//            log.log(Level.INFO,"City: " + city + " already exists in db");
+//        }
+//    }
 
     public City findCityByName(String cityName) {
         return cityRepository.findByName(cityName);
