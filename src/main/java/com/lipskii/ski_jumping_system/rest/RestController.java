@@ -75,10 +75,10 @@ public class RestController {
 
     @GetMapping("/skiClubs")
     public List<SkiClub> getSkiClubs() {
-        return skiClubService.findAll();
+        return skiClubService.findAllOrderByName();
     }
 
-    @GetMapping("/skiClubs/{countryId}")
+    @GetMapping("/skiClubs/country/{countryId}")
     public List<SkiClub> getSkiClubsByCountry(@PathVariable("countryId") int countryId) {
         return skiClubService.getClubsByCountry(countryId);
     }
@@ -104,7 +104,7 @@ public class RestController {
         return cityService.findCitiesWithVenues();
     }
 
-    @GetMapping("/cities/{countryId}")
+    @GetMapping("/cities/country/{countryId}")
     public List<City> getCitiesByCountry(@PathVariable("countryId") int countryId) {
         return cityService.getCitiesByCountry(countryId);
     }
@@ -127,9 +127,14 @@ public class RestController {
         return ResponseEntity.ok(requestHill);
     }
 
-    @GetMapping("/regions/{country}")
-    public List<RegionDTO> getRegionsByCountry(@PathVariable("country") String country) {
-        return regionService.findRegionsByCountry(countryService.findCountryByName(country));
+    @GetMapping("/regions/country/{countryId}")
+    public List<Region> getRegionsByCountry(@PathVariable("countryId") int countryId) {
+        return regionService.getRegionsByCountry(countryId);
+    }
+
+    @GetMapping("/regions")
+    public List<Region> getRegions() {
+        return regionService.findAllOrderByName();
     }
 
     @GetMapping("/skis")
@@ -211,11 +216,11 @@ public class RestController {
 
     @PostMapping("/hillVersion")
     public HillVersion addHillVersion(@RequestBody HillVersion hillVersion){
-        System.out.println(hillVersion);
         hillVersionService.save(hillVersion);
         return hillVersion;
     }
 
+    //TEMPORARY SOLUTION will be fixed in next days
     @PostMapping("/skiJumper")
     public ResponseEntity addSkiJumper(@RequestBody Map<String, String> body) {
 
@@ -267,12 +272,10 @@ public class RestController {
     }
 
     @PostMapping("/city")
-    public ResponseEntity addCity(@RequestBody Map<String, String> body) {
-
-        City city = new City(body.get("name"), regionService.findRegionByName(body.get("region")));
+    public City addCity(@RequestBody City city) {
+        city.setName(city.getName().trim());
         cityService.save(city);
-
-        return ResponseEntity.ok(city);
+        return city;
     }
 
     @PostMapping("/skiClub")

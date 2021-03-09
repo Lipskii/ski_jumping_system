@@ -22,7 +22,7 @@ public class City implements Comparable<City> {
     private String name;
 
     @JsonBackReference(value = "region-city")
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "region_idregion")
     private Region region;
 

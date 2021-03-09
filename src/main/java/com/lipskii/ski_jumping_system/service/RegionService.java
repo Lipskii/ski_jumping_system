@@ -36,6 +36,14 @@ public class RegionService implements ServiceInterface {
         return regionRepository.save((Region) obj);
     }
 
+    public List<Region> getRegionsByCountry(int countryId){
+        return regionRepository.findAllByCountryIdOrderByName(countryId);
+    }
+
+    public List<Region> findAllOrderByName() {
+        return regionRepository.findAllByOrderByName();
+    }
+
     @Override
     public void deleteById(int id) {
         regionRepository.deleteById(id);

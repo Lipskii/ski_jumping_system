@@ -26,6 +26,9 @@ public class SkiClubService implements ServiceInterface {
         return skiClubRepository.findAll();
     }
 
+    public List<SkiClub> findAllOrderByName(){
+        return skiClubRepository.findAllByOrderByName();
+    }
     @Override
     public Optional<SkiClub> findById(int id) {
         return skiClubRepository.findById(id);
