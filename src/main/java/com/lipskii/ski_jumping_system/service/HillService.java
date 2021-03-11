@@ -1,7 +1,10 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.HillRepository;
+import com.lipskii.ski_jumping_system.dto.HillDTO;
+import com.lipskii.ski_jumping_system.dto.VenueDTO;
 import com.lipskii.ski_jumping_system.entity.Hill;
+import com.lipskii.ski_jumping_system.entity.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -46,4 +49,11 @@ public class HillService implements ServiceInterface {
     public void deleteById(int id) {
         hillRepository.deleteById(id);
     }
+//
+//    private HillDTO convertToVenueDTO(Hill hill){
+//        HillDTO hillDTO = new HillDTO();
+//        hillDTO.setId(hill.getId());
+//        hillDTO.setName(hill.getName());
+//        return hillDTO;
+//    }
 }

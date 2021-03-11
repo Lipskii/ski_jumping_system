@@ -18,20 +18,24 @@ public class CountryService implements ServiceInterface {
     private final CountryRepository countryRepository;
     private final VenueService venueService;
     private final CityService cityService;
+    private final SkiClubService skiClubService;
     protected final Logger log = Logger.getLogger(getClass().getName());
 
     @Autowired
-    public CountryService(CountryRepository countryRepository, VenueService venueService, CityService cityService) {
+    public CountryService(CountryRepository countryRepository,
+                          VenueService venueService,
+                          CityService cityService,
+                          SkiClubService skiClubService) {
         this.countryRepository = countryRepository;
         this.venueService = venueService;
         this.cityService = cityService;
+        this.skiClubService = skiClubService;
     }
 
     @Override
     public List<Country> findAll() {
         return countryRepository.findAll();
     }
-
 
 
     @Override
@@ -41,23 +45,19 @@ public class CountryService implements ServiceInterface {
 
     @Override
     public Country save(Object obj) {
-       return countryRepository.save((Country) obj);
+        return countryRepository.save((Country) obj);
     }
 
-    public Country savee(Country country) {
-        return countryRepository.save(country);
-    }
+    public void saveIfNotExists(Country country) {
 
-    public void saveIfNotExists(Country country){
-
-        log.log(Level.INFO,"Checking if country: " + country + " exists in db");
+        log.log(Level.INFO, "Checking if country: " + country + " exists in db");
         boolean exists = countryRepository.existsCountryByName(country.getName());
 
-        if(!exists){
-            log.log(Level.INFO,"Country: " + country + " does not exist in db");
+        if (!exists) {
+            log.log(Level.INFO, "Country: " + country + " does not exist in db");
             save(country);
-        } else{
-            log.log(Level.INFO,"Country: " + country + " already exists in db");
+        } else {
+            log.log(Level.INFO, "Country: " + country + " already exists in db");
         }
     }
 
@@ -66,26 +66,31 @@ public class CountryService implements ServiceInterface {
         countryRepository.deleteById(id);
     }
 
-    public List<CountryWithVenuesDTO> findAllWithVenues(){
+    public List<Country> findAllWithVenues() {
         List<Country> countries = countryRepository.findAll();
         countries.removeIf(country -> venueService.findAllByCountry(country).isEmpty());
-
-        return countries.stream().map(this::convertToCountryWithVenuesDTO).collect(Collectors.toList());
+        return countries;
     }
 
-    public Country findFirstById(){
+    public List<Country> findAllWithSkiClubs() {
+        List<Country> countries = countryRepository.findAll();
+        countries.removeIf(country -> skiClubService.findAllByCountry(country).isEmpty());
+        return countries;
+    }
+
+    public Country findFirstById() {
         return countryRepository.findFirstByIdGreaterThan(-1);
     }
 
-    public Country findCountryByCode(String code){
+    public Country findCountryByCode(String code) {
         return countryRepository.findCountryByCode(code);
     }
 
-    public Country findCountryByName(String name){
+    public Country findCountryByName(String name) {
         return countryRepository.findCountryByName(name);
     }
 
-    private CountryWithVenuesDTO convertToCountryWithVenuesDTO(Country country){
+    private CountryWithVenuesDTO convertToCountryWithVenuesDTO(Country country) {
         CountryWithVenuesDTO countryWithVenuesDTO = new CountryWithVenuesDTO();
         countryWithVenuesDTO.setId(country.getId());
         countryWithVenuesDTO.setName(country.getName());
@@ -94,7 +99,6 @@ public class CountryService implements ServiceInterface {
         countryWithVenuesDTO.setCities(cityService.findCitiesByCountry(country));
         return countryWithVenuesDTO;
     }
-
 
 
 }

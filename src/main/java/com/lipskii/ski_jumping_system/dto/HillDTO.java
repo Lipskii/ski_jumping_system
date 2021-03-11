@@ -1,16 +1,18 @@
 package com.lipskii.ski_jumping_system.dto;
 
+import com.lipskii.ski_jumping_system.entity.City;
+import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.HillVersion;
+import com.lipskii.ski_jumping_system.entity.SizeOfHill;
 
 import java.util.List;
 
 public class HillDTO {
     private int id;
     private String name;
-    private String sizeOfHill;
-    private int sizeOfHillId;
-    private String venue;
-    private String venueId;
+    private SizeOfHill sizeOfHill;
+    private VenueDTO venue;
+    private Country country;
     private List<HillVersion> hillVersions;
 
     public int getId() {
@@ -29,36 +31,29 @@ public class HillDTO {
         this.name = name;
     }
 
-    public String getSizeOfHill() {
+    public SizeOfHill getSizeOfHill() {
         return sizeOfHill;
     }
 
-    public void setSizeOfHill(String sizeOfHill) {
+    public void setSizeOfHill(SizeOfHill sizeOfHill) {
         this.sizeOfHill = sizeOfHill;
     }
 
-    public int getSizeOfHillId() {
-        return sizeOfHillId;
-    }
-
-    public void setSizeOfHillId(int sizeOfHillId) {
-        this.sizeOfHillId = sizeOfHillId;
-    }
-
-    public String getVenue() {
+    public VenueDTO getVenue() {
         return venue;
     }
 
-    public void setVenue(String venue) {
+    public void setVenue(VenueDTO venue) {
         this.venue = venue;
     }
 
-    public String getVenueId() {
-        return venueId;
+
+    public Country getCountry() {
+        return country;
     }
 
-    public void setVenueId(String venueId) {
-        this.venueId = venueId;
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public List<HillVersion> getHillVersions() {

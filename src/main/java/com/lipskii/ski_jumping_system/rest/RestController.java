@@ -10,9 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.*;
 
 //TODO error handling
@@ -73,14 +70,32 @@ public class RestController {
     }
 
 
-    @GetMapping("/skiClubs")
-    public List<SkiClub> getSkiClubs() {
-        return skiClubService.findAllOrderByName();
+    @GetMapping("/cities")
+    public List<City> getCities() {
+        return cityService.getCitiesOrderByName();
     }
 
-    @GetMapping("/skiClubs/country/{countryId}")
-    public List<SkiClub> getSkiClubsByCountry(@PathVariable("countryId") int countryId) {
-        return skiClubService.getClubsByCountry(countryId);
+
+    @GetMapping("/cities/country/{countryId}")
+    public List<City> getCitiesByCountry(@PathVariable("countryId") int countryId) {
+        return cityService.getCitiesByCountry(countryId);
+    }
+
+    @GetMapping("/cities/skiClubs")
+    public List<City> getCitiesWithSkiClubs(){
+        return cityService.findAllWithSkiClubs();
+    }
+
+    @GetMapping("/cities/venues")
+    public List<City> getCitiesWithVenues() {
+        return cityService.findAllWithVenues();
+    }
+
+    @PostMapping("/city")
+    public City addCity(@RequestBody City city) {
+        city.setName(city.getName().trim());
+        cityService.save(city);
+        return city;
     }
 
     @GetMapping("/countries")
@@ -88,30 +103,20 @@ public class RestController {
         return countryService.findAll();
     }
 
+    @GetMapping("/countries/skiClubs")
+    public List<Country> getCountriesWithSkiClubs(){
+        return countryService.findAllWithSkiClubs();
+    }
 
     @GetMapping("/countries/venues")
-    public List<CountryWithVenuesDTO> getCountriesWithVenues() {
+    public List<Country> getCountriesWithVenues() {
         return countryService.findAllWithVenues();
     }
 
-    @GetMapping("/cities")
-    public List<City> getCities() {
-        return cityService.getCitiesOrderByName();
-    }
-
-    @GetMapping("cities/venues")
-    public List<City> getCitiesWithVenues() {
-        return cityService.findCitiesWithVenues();
-    }
-
-    @GetMapping("/cities/country/{countryId}")
-    public List<City> getCitiesByCountry(@PathVariable("countryId") int countryId) {
-        return cityService.getCitiesByCountry(countryId);
-    }
-
-    @GetMapping("/hills/{venueId}")
-    public List<Hill> getHillsByVenue(@PathVariable("venueId") int venueId) {
-        return hillService.findAllByVenueId(venueId);
+    @PostMapping("/hill")
+    public Hill addHill(@RequestBody Hill hill) {
+        hillService.save(hill);
+        return hill;
     }
 
     @PutMapping("hills/{hillId}")
@@ -127,9 +132,15 @@ public class RestController {
         return ResponseEntity.ok(requestHill);
     }
 
-    @GetMapping("/regions/country/{countryId}")
-    public List<Region> getRegionsByCountry(@PathVariable("countryId") int countryId) {
-        return regionService.getRegionsByCountry(countryId);
+    @GetMapping("/hills/{venueId}")
+    public List<Hill> getHillsByVenue(@PathVariable("venueId") int venueId) {
+        return hillService.findAllByVenueId(venueId);
+    }
+
+    @PostMapping("/hillVersion")
+    public HillVersion addHillVersion(@RequestBody HillVersion hillVersion){
+        hillVersionService.save(hillVersion);
+        return hillVersion;
     }
 
     @GetMapping("/regions")
@@ -137,14 +148,9 @@ public class RestController {
         return regionService.findAllOrderByName();
     }
 
-    @GetMapping("/skis")
-    public List<SkisDTO> getSkis() {
-        return skisService.findAll();
-    }
-
-    @GetMapping("/skiJumper/{country}")
-    public List<SkiJumperDTO> getSkiJumpersByCountry(@PathVariable("country") String country) {
-        return skiJumperService.getSkiJumpersByCountry(country);
+    @GetMapping("/regions/country/{countryId}")
+    public List<Region> getRegionsByCountry(@PathVariable("countryId") int countryId) {
+        return regionService.getRegionsByCountry(countryId);
     }
 
     @GetMapping("/sizeOfHill")
@@ -152,14 +158,29 @@ public class RestController {
         return sizeOfHillService.findAll();
     }
 
-    @GetMapping("/venues/country/{countryId}")
-    public List<VenueDTO> getVenuesByCountry(@PathVariable("countryId") int countryId) {
-        return venueService.findAllByCountryDTO(countryId);
+    @GetMapping("/skiClubs")
+    public List<SkiClub> getSkiClubs() {
+        return skiClubService.findAllOrderByName();
     }
 
-    @GetMapping("/venues/city/{cityId}")
-    public List<VenueDTO> getVenuesByCity(@PathVariable("cityId") int cityId){
-        return venueService.getVenuesByCity(cityId);
+    @GetMapping("/skiClubs/city/{cityId}")
+    public List<SkiClub> getSkiClubsByCity(@PathVariable("cityId") int cityId){
+        return skiClubService.findAllByCityId(cityId);
+    }
+
+    @GetMapping("/skiClubs/country/{countryId}")
+    public List<SkiClub> getSkiClubsByCountry(@PathVariable("countryId") int countryId) {
+        return skiClubService.findAllByCountryId(countryId);
+    }
+
+    @GetMapping("/skiJumper/{country}")
+    public List<SkiJumperDTO> getSkiJumpersByCountry(@PathVariable("country") String country) {
+        return skiJumperService.getSkiJumpersByCountry(country);
+    }
+
+    @GetMapping("/skis")
+    public List<SkisDTO> getSkis() {
+        return skisService.findAll();
     }
 
     @GetMapping("/venues")
@@ -186,8 +207,8 @@ public class RestController {
         return ResponseEntity.ok(venue);
     }
 
-    @DeleteMapping("/venue/{id}")
-    public ResponseEntity<Integer> deleteVenue(@PathVariable("id") int id) {
+    @DeleteMapping("/venue/{venueId}")
+    public ResponseEntity<Integer> deleteVenue(@PathVariable("venueId") int id) {
 
         System.out.println("deleting " + id);
         boolean isDeleted = venueService.deleteByIdBool(id);
@@ -200,89 +221,79 @@ public class RestController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-
-    @PostMapping("/hill")
-    public Hill addHill(@RequestBody Hill hill) {
-        hillService.save(hill);
-        return hill;
+    @GetMapping("/venues/city/{cityId}")
+    public List<VenueDTO> getVenuesByCity(@PathVariable("cityId") int cityId){
+        return venueService.getVenuesByCity(cityId);
     }
 
-    @PostMapping("/hillVersion")
-    public HillVersion addHillVersion(@RequestBody HillVersion hillVersion){
-        hillVersionService.save(hillVersion);
-        return hillVersion;
+    @GetMapping("/venues/country/{countryId}")
+    public List<VenueDTO> getVenuesByCountry(@PathVariable("countryId") int countryId) {
+        return venueService.findAllByCountryDTO(countryId);
     }
 
     //TEMPORARY SOLUTION will be fixed in next days
-    @PostMapping("/skiJumper")
-    public ResponseEntity addSkiJumper(@RequestBody Map<String, String> body) {
+//    @PostMapping("/skiJumper")
+//    public ResponseEntity addSkiJumper(@RequestBody Map<String, String> body) {
+//
+//        Person person;
+//
+//        if (!body.get("city").equals("")) {
+//            person = new Person(body.get("firstName").trim(),
+//                    body.get("lastName").trim(),
+//                    genderService.findById(Integer.parseInt(body.get("gender"))).get(),
+//                    Integer.parseInt(body.get("birthdateDay")),
+//                    Integer.parseInt(body.get("birthdateMonth")),
+//                    Integer.parseInt(body.get("birthdateYear")),
+//                    countryService.findCountryByName(body.get("country")),
+//                    cityService.findById(Integer.parseInt(body.get("city"))).get()
+//            );
+//        } else {
+//            person = new Person(body.get("firstName").trim(),
+//                    body.get("lastName").trim(),
+//                    genderService.findById(Integer.parseInt(body.get("gender"))).get(),
+//                    Integer.parseInt(body.get("birthdateDay")),
+//                    Integer.parseInt(body.get("birthdateMonth")),
+//                    Integer.parseInt(body.get("birthdateYear")),
+//                    countryService.findCountryByName(body.get("country"))
+//            );
+//        }
+//
+//
+//        personService.save(person);
+//
+//        boolean isActive = true;
+//        if (body.get("isActive").equals("false")) {
+//            isActive = false;
+//        }
+//
+//        SkiJumper skiJumper = new SkiJumper();
+//        skiJumper.setPerson(person);
+//        skiJumper.setActive(isActive);
+//        skiJumper.setAll_time_points(BigDecimal.ZERO);
+//        if (!body.get("skiClub").equals("")) {
+//            skiJumper.setSkiClub(skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get());
+//        }
+//        if (!body.get("skis").equals("")) {
+//            skiJumper.setSkis(skisService.findById(Integer.parseInt(body.get("skis"))).get());
+//        }
+//
+//        skiJumperService.save(skiJumper);
+//
+//        return ResponseEntity.ok(skiJumper);
+//    }
 
-        Person person;
-
-        if (!body.get("city").equals("")) {
-            person = new Person(body.get("firstName").trim(),
-                    body.get("lastName").trim(),
-                    genderService.findById(Integer.parseInt(body.get("gender"))).get(),
-                    Integer.parseInt(body.get("birthdateDay")),
-                    Integer.parseInt(body.get("birthdateMonth")),
-                    Integer.parseInt(body.get("birthdateYear")),
-                    countryService.findCountryByName(body.get("country")),
-                    cityService.findById(Integer.parseInt(body.get("city"))).get()
-            );
-        } else {
-            person = new Person(body.get("firstName").trim(),
-                    body.get("lastName").trim(),
-                    genderService.findById(Integer.parseInt(body.get("gender"))).get(),
-                    Integer.parseInt(body.get("birthdateDay")),
-                    Integer.parseInt(body.get("birthdateMonth")),
-                    Integer.parseInt(body.get("birthdateYear")),
-                    countryService.findCountryByName(body.get("country"))
-            );
-        }
-
-
-        personService.save(person);
-
-        boolean isActive = true;
-        if (body.get("isActive").equals("false")) {
-            isActive = false;
-        }
-
-        SkiJumper skiJumper = new SkiJumper();
-        skiJumper.setPerson(person);
-        skiJumper.setActive(isActive);
-        skiJumper.setAll_time_points(BigDecimal.ZERO);
-        if (!body.get("skiClub").equals("")) {
-            skiJumper.setSkiClub(skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get());
-        }
-        if (!body.get("skis").equals("")) {
-            skiJumper.setSkis(skisService.findById(Integer.parseInt(body.get("skis"))).get());
-        }
-
-        skiJumperService.save(skiJumper);
-
-        return ResponseEntity.ok(skiJumper);
-    }
-
-    @PostMapping("/city")
-    public City addCity(@RequestBody City city) {
-        city.setName(city.getName().trim());
-        cityService.save(city);
-        return city;
-    }
-
-    @PostMapping("/skiClub")
-    public ResponseEntity addSkiClub(@RequestBody Map<String, String> body) {
-        System.out.println(body);
-
-        if (cityService.findById(Integer.parseInt(body.get("cityId").trim())).isPresent()) {
-            City city = cityService.findById(Integer.parseInt(body.get("cityId").trim())).get();
-            SkiClub skiClub = new SkiClub(body.get("name").trim(), city);
-            skiClubService.save(skiClub);
-            return ResponseEntity.ok(skiClub);
-        }
-
-        return (ResponseEntity) ResponseEntity.notFound();
-    }
+//    @PostMapping("/skiClub")
+//    public ResponseEntity addSkiClub(@RequestBody Map<String, String> body) {
+//        System.out.println(body);
+//
+//        if (cityService.findById(Integer.parseInt(body.get("cityId").trim())).isPresent()) {
+//            City city = cityService.findById(Integer.parseInt(body.get("cityId").trim())).get();
+//            SkiClub skiClub = new SkiClub(body.get("name").trim(), city);
+//            skiClubService.save(skiClub);
+//            return ResponseEntity.ok(skiClub);
+//        }
+//
+//        return (ResponseEntity) ResponseEntity.notFound();
+//    }
 
 }
