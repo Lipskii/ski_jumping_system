@@ -167,6 +167,25 @@ public class RestController {
         return venueService.findAllDTO();
     }
 
+    @PostMapping("/venues")
+    public Venue saveVenue(@RequestBody Venue venue){
+        venueService.save(venue);
+        return venue;
+    }
+
+    @PutMapping("/venues/{venueId}")
+    public ResponseEntity<Venue> updateVenue(@RequestBody Venue venue, @PathVariable("venueId") int venueId) throws ResourceNotFoundException {
+
+        if(venueService.findById(venueId).isPresent()){
+            venue.setId(venueId);
+            venueService.save(venue);
+        } else {
+            throw new ResourceNotFoundException("No venue found for id: " + venueId);
+        }
+
+        return ResponseEntity.ok(venue);
+    }
+
     @DeleteMapping("/venue/{id}")
     public ResponseEntity<Integer> deleteVenue(@PathVariable("id") int id) {
 
@@ -179,32 +198,6 @@ public class RestController {
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @PostMapping("/venue")
-    public Venue addVenue(@RequestBody Map<String, String> body, HttpServletResponse response) {
-
-        Venue venue;
-
-
-        if (!body.get("capacity").equals("")) {
-            venue = new Venue(
-                    body.get("name").trim(),
-                    Integer.parseInt(body.get("yearOfOpening")),
-                    Integer.parseInt(body.get("capacity")),
-                    skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
-                    cityService.findById(Integer.parseInt(body.get("city"))).get()
-            );
-        } else {
-            venue = new Venue(body.get("name"),
-                    Integer.parseInt(body.get("yearOfOpening")),
-                    skiClubService.findById(Integer.parseInt(body.get("skiClub"))).get(),
-                    cityService.findById(Integer.parseInt(body.get("city"))).get());
-        }
-
-        return venueService.save(venue);
-
-
     }
 
 
