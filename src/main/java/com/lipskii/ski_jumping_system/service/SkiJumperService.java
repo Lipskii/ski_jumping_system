@@ -4,10 +4,13 @@ import com.lipskii.ski_jumping_system.dao.SkiJumperRepository;
 import com.lipskii.ski_jumping_system.dto.CityDTO;
 import com.lipskii.ski_jumping_system.dto.SkiJumperDTO;
 import com.lipskii.ski_jumping_system.entity.City;
+import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.SkiJumper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +30,37 @@ public class SkiJumperService implements ServiceInterface {
         return skiJumperRepository.findAll();
     }
 
+    public List<SkiJumperDTO> findAllDTO(){
+        List<SkiJumperDTO> skiJumperDTOList = skiJumperRepository.findAll()
+                .stream()
+                .map(this::convertToSkiJumperDTO)
+                .collect(Collectors.toList());
+        Collections.sort(skiJumperDTOList);
+        return skiJumperDTOList;
+    }
+
+    public List<SkiJumper> findAllByCity(City city) {
+        return skiJumperRepository.findAllByPersonCityOrderByPerson(city);
+    }
+
+    public List<SkiJumper> findAllByCountry(Country country){
+        return skiJumperRepository.findAllByPersonCountryOrderByPerson(country);
+    }
+
+    public List<SkiJumperDTO> findAllByCountryIdDTO(int countryId){
+       List<SkiJumperDTO> skiJumperDTOList = skiJumperRepository.findAllByPersonCountryId(countryId)
+               .stream().map(this::convertToSkiJumperDTO).collect(Collectors.toList());
+       Collections.sort(skiJumperDTOList);
+       return skiJumperDTOList;
+    }
+
+    public List<SkiJumperDTO> findAllByCityIdDTO(int cityId) {
+        List<SkiJumperDTO> skiJumperDTOList = skiJumperRepository.findAllByPersonCityId(cityId)
+                .stream().map(this::convertToSkiJumperDTO).collect(Collectors.toList());
+        Collections.sort(skiJumperDTOList);
+        return skiJumperDTOList;
+    }
+
     @Override
     public Optional<SkiJumper> findById(int id) {
         return skiJumperRepository.findById(id);
@@ -42,28 +76,21 @@ public class SkiJumperService implements ServiceInterface {
         skiJumperRepository.deleteById(id);
     }
 
-    public List<SkiJumperDTO> getSkiJumpersByCountry(String country) {
-        return skiJumperRepository.findAllByPersonCountryName(country).stream().map(this::convertToSkiJumperDTO).collect(Collectors.toList());
-    }
-
 
     private SkiJumperDTO convertToSkiJumperDTO(SkiJumper skiJumper) {
         SkiJumperDTO skiJumperDTO = new SkiJumperDTO();
         skiJumperDTO.setId(skiJumper.getId());
         skiJumperDTO.setFirstName(skiJumper.getPerson().getFirstName());
         skiJumperDTO.setLastName(skiJumper.getPerson().getLastName());
-        skiJumperDTO.setGender(skiJumper.getPerson().getGender().getGender());
-        skiJumperDTO.setCity(skiJumper.getPerson().getCity().getName());
-        skiJumperDTO.setCountry(skiJumper.getPerson().getCountry().getName());
-        skiJumperDTO.setSkiClub(skiJumper.getSkiClub().getName());
-        String birthdate = skiJumper.getPerson().getBirthdate_day()
-                + "-" + (skiJumper.getPerson().getBirthdate_month())
-                + "-" + (skiJumper.getPerson().getBirthdate_year());
-        skiJumperDTO.setBirthdate(birthdate);
+        skiJumperDTO.setGender(skiJumper.getPerson().getGender());
+        skiJumperDTO.setCity(skiJumper.getPerson().getCity());
+        skiJumperDTO.setCountry(skiJumper.getPerson().getCountry());
+        skiJumperDTO.setSkiClub(skiJumper.getSkiClub());
+        skiJumperDTO.setBirthdate(skiJumper.getPerson().getBirthdate());
         skiJumperDTO.setActive(skiJumper.isActive());
-        skiJumperDTO.setSkis(skiJumper.getSkis().getBrand());
+        skiJumperDTO.setSkis(skiJumper.getSkis());
+        skiJumperDTO.setFisCode(skiJumper.getFisCode());
         skiJumperDTO.setAllTimePoints(skiJumper.getAll_time_points());
-
         return skiJumperDTO;
     }
 }

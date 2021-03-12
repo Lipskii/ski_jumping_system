@@ -17,7 +17,7 @@ public class Skis {
     @Column(name = "brand")
     private String brand;
 
-    @JsonManagedReference
+    @JsonManagedReference(value = "skis-skiJumper")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "skis", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<SkiJumper> skiJumpers;
 

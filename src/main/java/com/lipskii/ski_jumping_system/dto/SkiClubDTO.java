@@ -1,11 +1,12 @@
 package com.lipskii.ski_jumping_system.dto;
 
+import com.lipskii.ski_jumping_system.entity.City;
+
 public class SkiClubDTO {
 
     private Integer id;
     private String name;
-    private String city;
-    private String code;
+    private City city;
 
     public Integer getId() {
         return id;
@@ -23,20 +24,12 @@ public class SkiClubDTO {
         this.name = name;
     }
 
-
-    public String getCity() {
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 }

@@ -1,6 +1,9 @@
 package com.lipskii.ski_jumping_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "gender")
@@ -13,6 +16,10 @@ public class Gender {
 
     @Column(name = "gender")
     private String gender;
+
+    @JsonManagedReference(value = "gender-person")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "gender", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Person> people;
 
     public int getId() {
         return id;
@@ -28,6 +35,14 @@ public class Gender {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public List<Person> getPeople() {
+        return people;
+    }
+
+    public void setPeople(List<Person> people) {
+        this.people = people;
     }
 
     @Override

@@ -19,7 +19,7 @@ public class SkiClub implements Comparable<SkiClub> {
     private String name;
 
     @JsonBackReference(value = "city-club")
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "city_idcity")
     private City city;
 
@@ -27,8 +27,9 @@ public class SkiClub implements Comparable<SkiClub> {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "skiClub", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Venue> venues;
 
-//    @Column(name = "established")
-//    private int established;
+    @JsonManagedReference(value = "skiClub-skiJumper")
+    @OneToMany(mappedBy = "skiClub", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<SkiJumper> skiJumpers;
 
     public SkiClub() {
     }
@@ -62,20 +63,20 @@ public class SkiClub implements Comparable<SkiClub> {
         this.city = city;
     }
 
-//    public int getEstablished() {
-//        return established;
-//    }
-//
-//    public void setEstablished(int established) {
-//        this.established = established;
-//    }
-
     public List<Venue> getVenues() {
         return venues;
     }
 
     public void setVenues(List<Venue> venues) {
         this.venues = venues;
+    }
+
+    public List<SkiJumper> getSkiJumpers() {
+        return skiJumpers;
+    }
+
+    public void setSkiJumpers(List<SkiJumper> skiJumpers) {
+        this.skiJumpers = skiJumpers;
     }
 
     @Override

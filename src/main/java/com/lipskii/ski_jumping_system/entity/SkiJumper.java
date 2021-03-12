@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -21,13 +22,16 @@ public class SkiJumper implements Comparable<SkiJumper> {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @Column(name = "fis_code")
+    private String fisCode;
+
+    @JsonBackReference(value = "skis-skiJumper")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "skis_idskis")
     private Skis skis;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonBackReference(value = "skiClub-skiJumper")
+    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "ski_club_idski_club")
     private SkiClub skiClub;
 
@@ -37,19 +41,22 @@ public class SkiJumper implements Comparable<SkiJumper> {
     public SkiJumper() {
     }
 
-    public SkiJumper(Person person, boolean isActive, Skis skis, SkiClub skiClub, BigDecimal all_time_points) {
+    public SkiJumper(Person person, boolean isActive, String fisCode, Skis skis, SkiClub skiClub, BigDecimal all_time_points) {
         this.person = person;
         this.isActive = isActive;
+        this.fisCode = fisCode;
         this.skis = skis;
         this.skiClub = skiClub;
         this.all_time_points = all_time_points;
     }
 
-    public SkiJumper(Person person, boolean isActive, Skis skis, BigDecimal all_time_points) {
+    public SkiJumper(Person person, boolean isActive, String fisCode, Skis skis, SkiClub skiClub) {
         this.person = person;
         this.isActive = isActive;
+        this.fisCode = fisCode;
         this.skis = skis;
-        this.all_time_points = all_time_points;
+        this.skiClub = skiClub;
+        this.all_time_points = BigDecimal.ZERO;
     }
 
     public int getId() {
@@ -100,6 +107,14 @@ public class SkiJumper implements Comparable<SkiJumper> {
         this.skiClub = skiClub;
     }
 
+    public String getFisCode() {
+        return fisCode;
+    }
+
+    public void setFisCode(String fisCode) {
+        this.fisCode = fisCode;
+    }
+
     @Override
     public int compareTo(SkiJumper o) {
         return person.compareTo(o.person);
@@ -111,6 +126,7 @@ public class SkiJumper implements Comparable<SkiJumper> {
                 "id=" + id +
                 ", person=" + person +
                 ", isActive=" + isActive +
+                ", fisCode='" + fisCode + '\'' +
                 ", skis=" + skis +
                 ", skiClub=" + skiClub +
                 ", all_time_points=" + all_time_points +

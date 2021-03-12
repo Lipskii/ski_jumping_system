@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,17 +17,19 @@ public class CountryService implements ServiceInterface {
     private final VenueService venueService;
     private final CityService cityService;
     private final SkiClubService skiClubService;
-    protected final Logger log = Logger.getLogger(getClass().getName());
+    private final SkiJumperService skiJumperService;
 
     @Autowired
     public CountryService(CountryRepository countryRepository,
                           VenueService venueService,
                           CityService cityService,
-                          SkiClubService skiClubService) {
+                          SkiClubService skiClubService,
+                          SkiJumperService skiJumperService) {
         this.countryRepository = countryRepository;
         this.venueService = venueService;
         this.cityService = cityService;
         this.skiClubService = skiClubService;
+        this.skiJumperService = skiJumperService;
     }
 
     @Override
@@ -48,19 +48,6 @@ public class CountryService implements ServiceInterface {
         return countryRepository.save((Country) obj);
     }
 
-    public void saveIfNotExists(Country country) {
-
-        log.log(Level.INFO, "Checking if country: " + country + " exists in db");
-        boolean exists = countryRepository.existsCountryByName(country.getName());
-
-        if (!exists) {
-            log.log(Level.INFO, "Country: " + country + " does not exist in db");
-            save(country);
-        } else {
-            log.log(Level.INFO, "Country: " + country + " already exists in db");
-        }
-    }
-
     @Override
     public void deleteById(int id) {
         countryRepository.deleteById(id);
@@ -75,6 +62,12 @@ public class CountryService implements ServiceInterface {
     public List<Country> findAllWithSkiClubs() {
         List<Country> countries = countryRepository.findAll();
         countries.removeIf(country -> skiClubService.findAllByCountry(country).isEmpty());
+        return countries;
+    }
+
+    public List<Country> findAllWithSkiJumpers() {
+        List<Country> countries = countryRepository.findAll();
+        countries.removeIf(country -> skiJumperService.findAllByCountry(country).isEmpty());
         return countries;
     }
 
@@ -99,6 +92,7 @@ public class CountryService implements ServiceInterface {
         countryWithVenuesDTO.setCities(cityService.findCitiesByCountry(country));
         return countryWithVenuesDTO;
     }
+
 
 
 }

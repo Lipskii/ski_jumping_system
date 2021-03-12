@@ -20,13 +20,16 @@ public class CityService implements ServiceInterface {
     private final CityRepository cityRepository;
     private final VenueService venueService;
     private final SkiClubService skiClubService;
+    private final SkiJumperService skiJumperService;
 
     @Autowired
-    public CityService(CityRepository cityRepository, VenueService venueService, SkiClubService skiClubService) {
+    public CityService(CityRepository cityRepository, VenueService venueService, SkiClubService skiClubService, SkiJumperService skiJumperService) {
         this.cityRepository = cityRepository;
         this.venueService = venueService;
         this.skiClubService = skiClubService;
+        this.skiJumperService = skiJumperService;
     }
+
 
     @Override
     public List<City> findAll() {
@@ -56,6 +59,12 @@ public class CityService implements ServiceInterface {
     public List<City> findAllWithSkiClubs(){
         List<City> cities = cityRepository.findAllByOrderByName();
         cities.removeIf(city -> skiClubService.findAllByCity(city).isEmpty());
+        return cities;
+    }
+
+    public List<City> findAllWithSkiJumpers(){
+        List<City> cities = cityRepository.findAllByOrderByName();
+        cities.removeIf(city -> skiJumperService.findAllByCity(city).isEmpty());
         return cities;
     }
 

@@ -3,6 +3,7 @@ package com.lipskii.ski_jumping_system.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 
 @Entity
@@ -20,77 +21,40 @@ public class Person implements Comparable<Person> {
     @Column(name = "last_name")
     private String lastName;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonBackReference(value = "gender-person")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "gender_idgender")
     private Gender gender;
 
-    @Column(name = "birthdate_day")
-    private int birthdate_day;
+    @Column(name = "birthdate")
+    private LocalDate birthdate;
 
-    @Column(name = "birthdate_month")
-    private int birthdate_month;
-
-    @Column(name = "birthdate_year")
-    private int birthdate_year;
     /**
      * Current country that athlete represents with his fis license.
      */
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonBackReference(value = "country-person")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "country_idcountry")
     private Country country;
 
     /**
      * Place of birth.
      */
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonBackReference(value = "city-person")
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "city_idcity")
     private City city;
 
     public Person() {
     }
 
-
-    public Person(int id, String firstName, String lastName, Gender gender, Country country, City city) {
-        this.id = id;
+    public Person(String firstName, String lastName, Gender gender, LocalDate birthdate, Country country, City city) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
+        this.birthdate = birthdate;
         this.country = country;
         this.city = city;
-    }
-
-    public Person(int id, String firstName, String lastName, Gender gender, int birthdate_year, Country country, City city) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.birthdate_year = birthdate_year;
-        this.country = country;
-        this.city = city;
-    }
-
-    public Person(String firstName, String lastName, Gender gender, int birthdate_day, int birthdate_month, int birthdate_year, Country country, City city) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.birthdate_day = birthdate_day;
-        this.birthdate_month = birthdate_month;
-        this.birthdate_year = birthdate_year;
-        this.country = country;
-        this.city = city;
-    }
-
-    public Person(String firstName, String lastName, Gender gender, int birthdate_day, int birthdate_month, int birthdate_year, Country country) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.birthdate_day = birthdate_day;
-        this.birthdate_month = birthdate_month;
-        this.birthdate_year = birthdate_year;
-        this.country = country;
     }
 
     public int getId() {
@@ -117,10 +81,25 @@ public class Person implements Comparable<Person> {
         this.lastName = lastName;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
+
     public Country getCountry() {
         return country;
     }
-
 
     public void setCountry(Country country) {
         this.country = country;
@@ -132,38 +111,6 @@ public class Person implements Comparable<Person> {
 
     public void setCity(City city) {
         this.city = city;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public int getBirthdate_day() {
-        return birthdate_day;
-    }
-
-    public void setBirthdate_day(int birthdate_day) {
-        this.birthdate_day = birthdate_day;
-    }
-
-    public int getBirthdate_month() {
-        return birthdate_month;
-    }
-
-    public void setBirthdate_month(int birthdate_month) {
-        this.birthdate_month = birthdate_month;
-    }
-
-    public int getBirthdate_year() {
-        return birthdate_year;
-    }
-
-    public void setBirthdate_year(int birthdate_year) {
-        this.birthdate_year = birthdate_year;
     }
 
     @Override

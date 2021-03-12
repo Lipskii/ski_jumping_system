@@ -1,19 +1,23 @@
 package com.lipskii.ski_jumping_system.dto;
 
-import java.math.BigDecimal;
+import com.lipskii.ski_jumping_system.entity.*;
 
-public class SkiJumperDTO {
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+public class SkiJumperDTO implements Comparable<SkiJumperDTO> {
     private int id;
     private String firstName;
     private String lastName;
-    private String gender;
-    private String city;
-    private String country;
-    private String skiClub;
-    private String birthdate;
+    private Gender gender;
+    private City city;
+    private Country country;
+    private SkiClub skiClub;
+    private LocalDate birthdate;
     private boolean isActive;
-    private String skis;
+    private Skis skis;
     private BigDecimal allTimePoints;
+    private String fisCode;
 
     public int getId() {
         return id;
@@ -39,35 +43,43 @@ public class SkiJumperDTO {
         this.lastName = lastName;
     }
 
-    public String getCity() {
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public City getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(City city) {
         this.city = city;
     }
 
-    public String getCountry() {
+    public Country getCountry() {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(Country country) {
         this.country = country;
     }
 
-    public String getSkiClub() {
+    public SkiClub getSkiClub() {
         return skiClub;
     }
 
-    public void setSkiClub(String skiClub) {
+    public void setSkiClub(SkiClub skiClub) {
         this.skiClub = skiClub;
     }
 
-    public String getBirthdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 
-    public void setBirthdate(String birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -79,11 +91,11 @@ public class SkiJumperDTO {
         isActive = active;
     }
 
-    public String getSkis() {
+    public Skis getSkis() {
         return skis;
     }
 
-    public void setSkis(String skis) {
+    public void setSkis(Skis skis) {
         this.skis = skis;
     }
 
@@ -95,11 +107,16 @@ public class SkiJumperDTO {
         this.allTimePoints = allTimePoints;
     }
 
-    public String getGender() {
-        return gender;
+    public String getFisCode() {
+        return fisCode;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setFisCode(String fisCode) {
+        this.fisCode = fisCode;
+    }
+
+    @Override
+    public int compareTo(SkiJumperDTO o) {
+        return this.lastName.compareTo(o.lastName);
     }
 }

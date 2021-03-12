@@ -23,8 +23,8 @@ public class SkisService implements ServiceInterface {
     }
 
     @Override
-    public List<SkisDTO> findAll() {
-        return skisRepository.findAll().stream().map(this::convertToSkisDTO).collect(Collectors.toList());
+    public List<Skis> findAll() {
+        return skisRepository.findAll();
     }
 
     @Override
@@ -42,11 +42,4 @@ public class SkisService implements ServiceInterface {
         skisRepository.deleteById(id);
     }
 
-    private SkisDTO convertToSkisDTO(Skis skis) {
-        SkisDTO skisDTO = new SkisDTO();
-        skisDTO.setId(skis.getId());
-        skisDTO.setBrand(skis.getBrand());
-
-        return skisDTO;
-    }
 }

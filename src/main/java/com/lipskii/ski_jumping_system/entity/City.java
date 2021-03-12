@@ -36,6 +36,7 @@ public class City implements Comparable<City> {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Venue> venues;
 
+
     public City() {
     }
 

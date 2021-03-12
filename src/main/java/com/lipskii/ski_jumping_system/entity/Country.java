@@ -30,6 +30,7 @@ public class Country implements Comparable<Country> {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Region> regions;
 
+
     public Country() {
     }
 
