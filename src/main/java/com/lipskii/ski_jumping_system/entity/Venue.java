@@ -36,7 +36,7 @@ public class Venue implements Comparable<Venue> {
     private City city;
 
     @JsonManagedReference(value = "venue-hill")
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "venue",  cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "venue")
     private List<Hill> hills;
 
     public Venue() {
@@ -55,6 +55,14 @@ public class Venue implements Comparable<Venue> {
         this.yearOfOpening = yearOfOpening;
         this.skiClub = skiClub;
         this.city = city;
+    }
+
+    @PreRemove
+    private void removeEducationFromUsersProfile() {
+        System.out.println("PRE REMOVED CALLED");
+        for (Hill hill : hills) {
+            System.out.println(hill);
+        }
     }
 
     public int getId() {

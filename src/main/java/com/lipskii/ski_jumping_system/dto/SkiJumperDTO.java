@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 public class SkiJumperDTO implements Comparable<SkiJumperDTO> {
     private int id;
+    private int idPerson;
     private String firstName;
     private String lastName;
     private Gender gender;
@@ -81,6 +82,14 @@ public class SkiJumperDTO implements Comparable<SkiJumperDTO> {
 
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
+    }
+
+    public int getIdPerson() {
+        return idPerson;
+    }
+
+    public void setIdPerson(int idPerson) {
+        this.idPerson = idPerson;
     }
 
     public boolean isActive() {

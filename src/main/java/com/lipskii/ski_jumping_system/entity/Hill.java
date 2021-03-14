@@ -21,17 +21,17 @@ public class Hill {
     private String name;
 
     @JsonBackReference(value = "venue-hill")
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "venue_idvenue")
     private Venue venue;
 
     @JsonBackReference(value = "size_hill")
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "size_of_hill_idsize_of_hill")
     private SizeOfHill sizeOfHill;
 
     @JsonManagedReference(value = "hill-hillVersion")
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hill", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hill", cascade = {CascadeType.PERSIST})
     private List<HillVersion> hillVersions;
 
 

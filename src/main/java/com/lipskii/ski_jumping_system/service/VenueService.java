@@ -104,4 +104,7 @@ public class VenueService implements ServiceInterface {
     }
 
 
+    public void delete(Venue venue) {
+        venueRepository.delete(venue);
+    }
 }

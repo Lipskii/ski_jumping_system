@@ -45,6 +45,9 @@ public class Person implements Comparable<Person> {
     @JoinColumn(name = "city_idcity")
     private City city;
 
+    @Column(name = "photo")
+    private String photo;
+
     public Person() {
     }
 

@@ -39,7 +39,7 @@ public class SizeOfHill {
     private int maxDistanceTK;
 
     @JsonManagedReference(value = "size_hill")
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "sizeOfHill", cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "sizeOfHill", cascade = {CascadeType.PERSIST})
     private List<Hill> hills;
 
     public SizeOfHill() {

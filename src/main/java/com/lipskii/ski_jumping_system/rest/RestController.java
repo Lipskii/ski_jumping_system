@@ -6,7 +6,6 @@ import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -164,6 +163,19 @@ public class RestController {
         return person;
     }
 
+    @PutMapping("/people/{personId}")
+    public Person updatePerson(@RequestBody Person person,@PathVariable("personId") int personId) throws ResourceNotFoundException {
+
+        if(personService.findById(personId).isPresent()){
+            person.setId(personId);
+            personService.save(person);
+        } else {
+            throw new ResourceNotFoundException("No person found for id: " + personId);
+        }
+
+        return person;
+    }
+
     @GetMapping("/regions")
     public List<Region> getRegions() {
         return regionService.findAllOrderByName();
@@ -224,6 +236,19 @@ public class RestController {
         return skiJumper;
     }
 
+    @PutMapping("/skiJumpers/{skiJumperId}")
+    public SkiJumper updateSkiJumper(@RequestBody SkiJumper skiJumper,@PathVariable("skiJumperId") int skiJumperId) throws ResourceNotFoundException {
+
+        if (skiJumperService.findById(skiJumperId).isPresent()) {
+            skiJumper.setId(skiJumperId);
+            skiJumperService.save(skiJumper);
+        } else {
+            throw new ResourceNotFoundException("No jumper found for id: " + skiJumperId);
+        }
+
+        return skiJumper;
+    }
+
     @GetMapping("/skiJumpers/city/{cityId}")
     public List<SkiJumperDTO> getSkiJumpersByCity(@PathVariable("cityId") int cityId) {
         return skiJumperService.findAllByCityIdDTO(cityId);
@@ -263,18 +288,18 @@ public class RestController {
         return ResponseEntity.ok(venue);
     }
 
-    @DeleteMapping("/venue/{venueId}")
-    public ResponseEntity<Integer> deleteVenue(@PathVariable("venueId") int id) {
+    @DeleteMapping("/venues/{venueId}")
+    public Map<String, Boolean> deleteVenue(@PathVariable("venueId") int venueId) {
 
-        System.out.println("deleting " + id);
-        boolean isDeleted = venueService.deleteByIdBool(id);
-        System.out.println(isDeleted);
+        Venue venue = venueService.findById(venueId)
+                .orElseThrow(() -> new ResourceNotFoundException("Venue not found for this id :: " + venueId));
 
-        if (isDeleted) {
-            return new ResponseEntity<>(id, HttpStatus.OK);
-        }
+        System.out.println(venue);
+        venueService.delete(venue);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/venues/city/{cityId}")

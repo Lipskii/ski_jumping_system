@@ -1,7 +1,6 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.SkiJumperRepository;
-import com.lipskii.ski_jumping_system.dto.CityDTO;
 import com.lipskii.ski_jumping_system.dto.SkiJumperDTO;
 import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.entity.Country;
@@ -9,7 +8,6 @@ import com.lipskii.ski_jumping_system.entity.SkiJumper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -80,6 +78,7 @@ public class SkiJumperService implements ServiceInterface {
     private SkiJumperDTO convertToSkiJumperDTO(SkiJumper skiJumper) {
         SkiJumperDTO skiJumperDTO = new SkiJumperDTO();
         skiJumperDTO.setId(skiJumper.getId());
+        skiJumperDTO.setIdPerson(skiJumper.getPerson().getId());
         skiJumperDTO.setFirstName(skiJumper.getPerson().getFirstName());
         skiJumperDTO.setLastName(skiJumper.getPerson().getLastName());
         skiJumperDTO.setGender(skiJumper.getPerson().getGender());
