@@ -78,7 +78,7 @@ public class SkiJumperService implements ServiceInterface {
     private SkiJumperDTO convertToSkiJumperDTO(SkiJumper skiJumper) {
         SkiJumperDTO skiJumperDTO = new SkiJumperDTO();
         skiJumperDTO.setId(skiJumper.getId());
-        skiJumperDTO.setIdPerson(skiJumper.getPerson().getId());
+        skiJumperDTO.setPerson(skiJumper.getPerson());
         skiJumperDTO.setFirstName(skiJumper.getPerson().getFirstName());
         skiJumperDTO.setLastName(skiJumper.getPerson().getLastName());
         skiJumperDTO.setGender(skiJumper.getPerson().getGender());

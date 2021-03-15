@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.PersonRepository;
+import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,14 @@ public class PersonService implements ServiceInterface {
 
     public List<Person> findAllOrderedByLastName(){
         return personRepository.findAllByOrderByLastNameAsc();
+    }
+
+    public List<Person> findAllByCountryId(int countryId){
+        return personRepository.findAllByCountryIdOrderByLastName(countryId);
+    }
+
+    public List<Person> findAllByCountry(Country country){
+        return personRepository.findAllByCountry(country);
     }
 
     @Override

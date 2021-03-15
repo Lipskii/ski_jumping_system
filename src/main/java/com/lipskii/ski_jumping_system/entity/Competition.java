@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "competition")
@@ -21,10 +22,10 @@ public class Competition {
     private Season season;
 
     @Column(name = "date_1")
-    private Date date1;
+    private LocalDate date1;
 
     @Column(name = "date_2")
-    private Date date2;
+    private LocalDate date2;
 
     @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -44,32 +45,32 @@ public class Competition {
     @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_a")
-    private Judge judgeA;
+    private Jury judgeA;
 
     @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_b")
-    private Judge judgeB;
+    private Jury judgeB;
 
     @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_c")
-    private Judge judgeC;
+    private Jury judgeC;
 
     @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_d")
-    private Judge judgeD;
+    private Jury judgeD;
 
     @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_e")
-    private Judge judgeE;
+    private Jury judgeE;
 
     @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_sc")
-    private Judge judgeSC;
+    private Jury judgeSC;
 
     @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -285,50 +286,7 @@ public class Competition {
     public Competition() {
     }
 
-    //1 round competition constructor
-    public Competition(int id, Season season, Date date1, Date date2, Series seriesMajor, Series seriesMinor, HillVersion hillVersion, Judge judgeA, Judge judgeB, Judge judgeC, Judge judgeD, Judge judgeE, Judge judgeSC, Jury raceDirector, Jury technicalDelegate, Jury chiefOfCompetition, Jury assistantTD, Jury assistantRD, Jury equipmentController1, Jury equipmentController2, BigDecimal meterValue, BigDecimal gateFactor, BigDecimal windFactorTail, BigDecimal windFactorFront, Timestamp firstRoundStartTime, Timestamp firstRoundEndTime, int firstRoundBaseGate, Weather firstRoundWeather, BigDecimal firstRoundAirTempStart, BigDecimal firstRoundAirTempFinish, BigDecimal firstRoundSnowTempStart, BigDecimal firstRoundSnowTempFinish, BigDecimal firstRoundHumidityStart, BigDecimal firstRoundHumidityFinish, BigDecimal firstRoundMinWind, BigDecimal firstRoundMaxWind, BigDecimal firstRoundAvgWind) {
-        this.id = id;
-        this.season = season;
-        this.date1 = date1;
-        this.date2 = date2;
-        this.seriesMajor = seriesMajor;
-        this.seriesMinor = seriesMinor;
-        this.hillVersion = hillVersion;
-        this.judgeA = judgeA;
-        this.judgeB = judgeB;
-        this.judgeC = judgeC;
-        this.judgeD = judgeD;
-        this.judgeE = judgeE;
-        this.judgeSC = judgeSC;
-        this.raceDirector = raceDirector;
-        this.technicalDelegate = technicalDelegate;
-        this.chiefOfCompetition = chiefOfCompetition;
-        this.assistantTD = assistantTD;
-        this.assistantRD = assistantRD;
-        this.equipmentController1 = equipmentController1;
-        this.equipmentController2 = equipmentController2;
-        this.meterValue = meterValue;
-        this.gateFactor = gateFactor;
-        this.windFactorTail = windFactorTail;
-        this.windFactorFront = windFactorFront;
-        this.firstRoundStartTime = firstRoundStartTime;
-        this.firstRoundEndTime = firstRoundEndTime;
-        this.firstRoundBaseGate = firstRoundBaseGate;
-        this.firstRoundWeather = firstRoundWeather;
-        this.firstRoundAirTempStart = firstRoundAirTempStart;
-        this.firstRoundAirTempFinish = firstRoundAirTempFinish;
-        this.firstRoundSnowTempStart = firstRoundSnowTempStart;
-        this.firstRoundSnowTempFinish = firstRoundSnowTempFinish;
-        this.firstRoundHumidityStart = firstRoundHumidityStart;
-        this.firstRoundHumidityFinish = firstRoundHumidityFinish;
-        this.firstRoundMinWind = firstRoundMinWind;
-        this.firstRoundMaxWind = firstRoundMaxWind;
-        this.firstRoundAvgWind = firstRoundAvgWind;
-    }
-
-    //2 round competition constructor
-    public Competition(int id, Season season, Date date1, Date date2, Series seriesMajor, Series seriesMinor, HillVersion hillVersion, Judge judgeA, Judge judgeB, Judge judgeC, Judge judgeD, Judge judgeE, Judge judgeSC, Jury raceDirector, Jury technicalDelegate, Jury chiefOfCompetition, Jury assistantTD, Jury assistantRD, Jury equipmentController1, Jury equipmentController2, BigDecimal meterValue, BigDecimal gateFactor, BigDecimal windFactorTail, BigDecimal windFactorFront, Timestamp firstRoundStartTime, Timestamp firstRoundEndTime, int firstRoundBaseGate, Weather firstRoundWeather, BigDecimal firstRoundAirTempStart, BigDecimal firstRoundAirTempFinish, BigDecimal firstRoundSnowTempStart, BigDecimal firstRoundSnowTempFinish, BigDecimal firstRoundHumidityStart, BigDecimal firstRoundHumidityFinish, BigDecimal firstRoundMinWind, BigDecimal firstRoundMaxWind, BigDecimal firstRoundAvgWind, Timestamp secondRoundStartTime, Timestamp secondRoundEndTime, int secondRoundBaseGate, Weather secondRoundWeather, BigDecimal secondRoundAirTempStart, BigDecimal secondRoundAirTempFinish, BigDecimal secondRoundSnowTempStart, BigDecimal secondRoundSnowTempFinish, BigDecimal secondRoundHumidityStart, BigDecimal secondRoundHumidityFinish, BigDecimal secondRoundMinWind, BigDecimal secondRoundMaxWind, BigDecimal secondRoundAvgWind) {
-        this.id = id;
+    public Competition(Season season,LocalDate date1, LocalDate date2, Series seriesMajor, Series seriesMinor, HillVersion hillVersion, Jury judgeA, Jury judgeB, Jury judgeC, Jury judgeD, Jury judgeE, Jury judgeSC, Jury raceDirector, Jury technicalDelegate, Jury chiefOfCompetition, Jury assistantTD, Jury assistantRD, Jury equipmentController1, Jury equipmentController2, BigDecimal meterValue, BigDecimal gateFactor, BigDecimal windFactorTail, BigDecimal windFactorFront, Timestamp firstRoundStartTime, Timestamp firstRoundEndTime, int firstRoundBaseGate, Weather firstRoundWeather, BigDecimal firstRoundAirTempStart, BigDecimal firstRoundAirTempFinish, BigDecimal firstRoundSnowTempStart, BigDecimal firstRoundSnowTempFinish, BigDecimal firstRoundHumidityStart, BigDecimal firstRoundHumidityFinish, BigDecimal firstRoundMinWind, BigDecimal firstRoundMaxWind, BigDecimal firstRoundAvgWind, Timestamp secondRoundStartTime, Timestamp secondRoundEndTime, int secondRoundBaseGate, Weather secondRoundWeather, BigDecimal secondRoundAirTempStart, BigDecimal secondRoundAirTempFinish, BigDecimal secondRoundSnowTempStart, BigDecimal secondRoundSnowTempFinish, BigDecimal secondRoundHumidityStart, BigDecimal secondRoundHumidityFinish, BigDecimal secondRoundMinWind, BigDecimal secondRoundMaxWind, BigDecimal secondRoundAvgWind, Timestamp thirdRoundStartTime, Timestamp thirdRoundEndTime, int thirdRoundBaseGate, Weather thirdRoundWeather, BigDecimal thirdRoundAirTempStart, BigDecimal thirdRoundAirTempFinish, BigDecimal thirdRoundSnowTempStart, BigDecimal thirdRoundSnowTempFinish, BigDecimal thirdRoundHumidityStart, BigDecimal thirdRoundHumidityFinish, BigDecimal thirdRoundMinWind, BigDecimal thirdRoundMaxWind, BigDecimal thirdRoundAvgWind, Timestamp fourthRoundStartTime, Timestamp fourthRoundEndTime, int fourthRoundBaseGate, Weather fourthRoundWeather, BigDecimal fourthRoundAirTempStart, BigDecimal fourthRoundAirTempFinish, BigDecimal fourthRoundSnowTempStart, BigDecimal fourthRoundSnowTempFinish, BigDecimal fourthRoundHumidityStart, BigDecimal fourthRoundHumidityFinish, BigDecimal fourthRoundMinWind, BigDecimal fourthRoundMaxWind, BigDecimal fourthRoundAvgWind) {
         this.season = season;
         this.date1 = date1;
         this.date2 = date2;
@@ -378,6 +336,32 @@ public class Competition {
         this.secondRoundMinWind = secondRoundMinWind;
         this.secondRoundMaxWind = secondRoundMaxWind;
         this.secondRoundAvgWind = secondRoundAvgWind;
+        this.thirdRoundStartTime = thirdRoundStartTime;
+        this.thirdRoundEndTime = thirdRoundEndTime;
+        this.thirdRoundBaseGate = thirdRoundBaseGate;
+        this.thirdRoundWeather = thirdRoundWeather;
+        this.thirdRoundAirTempStart = thirdRoundAirTempStart;
+        this.thirdRoundAirTempFinish = thirdRoundAirTempFinish;
+        this.thirdRoundSnowTempStart = thirdRoundSnowTempStart;
+        this.thirdRoundSnowTempFinish = thirdRoundSnowTempFinish;
+        this.thirdRoundHumidityStart = thirdRoundHumidityStart;
+        this.thirdRoundHumidityFinish = thirdRoundHumidityFinish;
+        this.thirdRoundMinWind = thirdRoundMinWind;
+        this.thirdRoundMaxWind = thirdRoundMaxWind;
+        this.thirdRoundAvgWind = thirdRoundAvgWind;
+        this.fourthRoundStartTime = fourthRoundStartTime;
+        this.fourthRoundEndTime = fourthRoundEndTime;
+        this.fourthRoundBaseGate = fourthRoundBaseGate;
+        this.fourthRoundWeather = fourthRoundWeather;
+        this.fourthRoundAirTempStart = fourthRoundAirTempStart;
+        this.fourthRoundAirTempFinish = fourthRoundAirTempFinish;
+        this.fourthRoundSnowTempStart = fourthRoundSnowTempStart;
+        this.fourthRoundSnowTempFinish = fourthRoundSnowTempFinish;
+        this.fourthRoundHumidityStart = fourthRoundHumidityStart;
+        this.fourthRoundHumidityFinish = fourthRoundHumidityFinish;
+        this.fourthRoundMinWind = fourthRoundMinWind;
+        this.fourthRoundMaxWind = fourthRoundMaxWind;
+        this.fourthRoundAvgWind = fourthRoundAvgWind;
     }
 
     public int getId() {
@@ -396,19 +380,19 @@ public class Competition {
         this.season = season;
     }
 
-    public Date getDate1() {
+    public LocalDate getDate1() {
         return date1;
     }
 
-    public void setDate1(Date date1) {
+    public void setDate1(LocalDate date1) {
         this.date1 = date1;
     }
 
-    public Date getDate2() {
+    public LocalDate getDate2() {
         return date2;
     }
 
-    public void setDate2(Date date2) {
+    public void setDate2(LocalDate date2) {
         this.date2 = date2;
     }
 
@@ -436,51 +420,52 @@ public class Competition {
         this.hillVersion = hillVersion;
     }
 
-    public Judge getJudgeA() {
+
+    public Jury getJudgeA() {
         return judgeA;
     }
 
-    public void setJudgeA(Judge judgeA) {
+    public void setJudgeA(Jury judgeA) {
         this.judgeA = judgeA;
     }
 
-    public Judge getJudgeB() {
+    public Jury getJudgeB() {
         return judgeB;
     }
 
-    public void setJudgeB(Judge judgeB) {
+    public void setJudgeB(Jury judgeB) {
         this.judgeB = judgeB;
     }
 
-    public Judge getJudgeC() {
+    public Jury getJudgeC() {
         return judgeC;
     }
 
-    public void setJudgeC(Judge judgeC) {
+    public void setJudgeC(Jury judgeC) {
         this.judgeC = judgeC;
     }
 
-    public Judge getJudgeD() {
+    public Jury getJudgeD() {
         return judgeD;
     }
 
-    public void setJudgeD(Judge judgeD) {
+    public void setJudgeD(Jury judgeD) {
         this.judgeD = judgeD;
     }
 
-    public Judge getJudgeE() {
+    public Jury getJudgeE() {
         return judgeE;
     }
 
-    public void setJudgeE(Judge judgeE) {
+    public void setJudgeE(Jury judgeE) {
         this.judgeE = judgeE;
     }
 
-    public Judge getJudgeSC() {
+    public Jury getJudgeSC() {
         return judgeSC;
     }
 
-    public void setJudgeSC(Judge judgeSC) {
+    public void setJudgeSC(Jury judgeSC) {
         this.judgeSC = judgeSC;
     }
 

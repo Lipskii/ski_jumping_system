@@ -26,7 +26,6 @@ public class RestController {
     private final GenderService genderService;
     private final HillService hillService;
     private final HillVersionService hillVersionService;
-    private final JudgeService judgeService;
     private final JuryService juryService;
     private final JuryTypeService juryTypeService;
     private final PersonService personService;
@@ -43,7 +42,7 @@ public class RestController {
 
 
     @Autowired
-    public RestController(AllTimePointsSystemService allTimePointsSystemService, CityService cityService, CountryService countryService, CompetitionService competitionService, DisqualificationTypeService disqualificationTypeService, GenderService genderService, HillService hillService, HillVersionService hillVersionService, JudgeService judgeService, JuryService juryService, JuryTypeService juryTypeService, PersonService personService, RegionService regionService, ResultService resultService, SeasonService seasonService, SeriesService seriesService, SizeOfHillService sizeOfHillService, SkiClubService skiClubService, SkiJumperService skiJumperService, SkisService skisService, VenueService venueService, WeatherService weatherService) {
+    public RestController(AllTimePointsSystemService allTimePointsSystemService, CityService cityService, CountryService countryService, CompetitionService competitionService, DisqualificationTypeService disqualificationTypeService, GenderService genderService, HillService hillService, HillVersionService hillVersionService,  JuryService juryService, JuryTypeService juryTypeService, PersonService personService, RegionService regionService, ResultService resultService, SeasonService seasonService, SeriesService seriesService, SizeOfHillService sizeOfHillService, SkiClubService skiClubService, SkiJumperService skiJumperService, SkisService skisService, VenueService venueService, WeatherService weatherService) {
         this.allTimePointsSystemService = allTimePointsSystemService;
         this.cityService = cityService;
         this.countryService = countryService;
@@ -52,7 +51,6 @@ public class RestController {
         this.genderService = genderService;
         this.hillService = hillService;
         this.hillVersionService = hillVersionService;
-        this.judgeService = judgeService;
         this.juryService = juryService;
         this.juryTypeService = juryTypeService;
         this.personService = personService;
@@ -102,9 +100,24 @@ public class RestController {
         return city;
     }
 
+    @GetMapping("/competitions")
+    public List<Competition> getCompetitions(){
+        return competitionService.findAll();
+    }
+
     @GetMapping("/countries")
     public List<Country> getCountries() {
         return countryService.findAll();
+    }
+
+    @GetMapping("/countries/jury")
+    public List<Country> getCountriesWithJury(){
+        return countryService.findAllWithJury();
+    }
+
+    @GetMapping("/countries/people")
+    public List<Country> getCountriesWithPeople(){
+        return countryService.findAllWithPeople();
     }
 
     @GetMapping("/countries/skiClubs")
@@ -127,7 +140,12 @@ public class RestController {
         return genderService.findAll();
     }
 
-    @PostMapping("/hill")
+    @GetMapping("/hills")
+    public List<Hill> getHills(){
+        return hillService.findAll();
+    }
+
+    @PostMapping("/hills")
     public Hill addHill(@RequestBody Hill hill) {
         hillService.save(hill);
         return hill;
@@ -155,6 +173,72 @@ public class RestController {
     public HillVersion addHillVersion(@RequestBody HillVersion hillVersion){
         hillVersionService.save(hillVersion);
         return hillVersion;
+    }
+
+    @GetMapping("/jury")
+    public List<JuryDTO> getJury(){
+        return juryService.findAllDTO();
+    }
+
+    @GetMapping("/jury/rd")
+    public List<JuryDTO> getRDs(){
+        return juryService.findAllRaceDirectors();
+    }
+
+    @GetMapping("/jury/td")
+    public List<JuryDTO> getTDs(){
+        return juryService.findAllTechnicalDelegates();
+    }
+
+    @GetMapping("/jury/coc")
+    public List<JuryDTO> getChiefs(){
+        return juryService.findAllChiefsOfCompetitions();
+    }
+
+    @GetMapping("/jury/ec")
+    public List<JuryDTO> getEquipmentControllers(){
+        return juryService.findAllEquipmentControllers();
+    }
+
+    @GetMapping("/jury/judges")
+    public List<JuryDTO> getJudges(){
+        return juryService.findAllJudges();
+    }
+
+    @GetMapping("/jury/atd")
+    public List<JuryDTO> getTDAssistants(){
+        return juryService.findAllTDAssistants();
+    }
+
+    @GetMapping("/jury/ard")
+    public List<JuryDTO> getRDAssistants(){
+        return juryService.findAllRDAssistants();
+    }
+
+    @PostMapping("/jury")
+    public Jury saveJury(@RequestBody Jury jury){
+        juryService.save(jury);
+        return jury;
+    }
+
+    @GetMapping("/jury/country/{countryId}")
+    public List<JuryDTO> getJuryByCountry(@PathVariable("countryId") int countryId){
+        return juryService.findAllByCountryId(countryId);
+    }
+
+    @GetMapping("/juryTypes")
+    public List<JuryType> getJuryTypes(){
+        return juryTypeService.findAll();
+    }
+
+    @GetMapping("/people")
+    public List<Person> getPeople(){
+        return personService.findAllOrderedByLastName();
+    }
+
+    @GetMapping("/people/country/{countryId}")
+    public List<Person> getPeopleByCountryId(@PathVariable("countryId") int countryId){
+        return personService.findAllByCountryId(countryId);
     }
 
     @PostMapping("/people")

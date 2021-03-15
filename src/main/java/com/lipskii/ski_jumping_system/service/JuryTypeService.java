@@ -20,7 +20,7 @@ public class JuryTypeService implements ServiceInterface{
 
     @Override
     public List<JuryType> findAll() {
-        return (List<JuryType>) juryTypeRepository.findAll();
+        return juryTypeRepository.findAllByOrderByJuryType();
     }
 
     @Override

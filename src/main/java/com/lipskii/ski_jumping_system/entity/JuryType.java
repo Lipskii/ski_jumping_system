@@ -1,6 +1,9 @@
 package com.lipskii.ski_jumping_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "jury_type")
@@ -13,6 +16,10 @@ public class JuryType {
 
     @Column(name = "jury_type")
     private String juryType;
+
+    @JsonManagedReference(value = "juryType-jury")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "juryType", cascade = {CascadeType.PERSIST})
+    private List<Jury> juryList;
 
     public JuryType() {
     }
@@ -35,6 +42,14 @@ public class JuryType {
 
     public void setJuryType(String juryType) {
         this.juryType = juryType;
+    }
+
+    public List<Jury> getJuryList() {
+        return juryList;
+    }
+
+    public void setJuryList(List<Jury> juryList) {
+        this.juryList = juryList;
     }
 
     @Override

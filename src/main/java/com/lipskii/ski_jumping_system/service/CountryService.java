@@ -16,20 +16,26 @@ public class CountryService implements ServiceInterface {
     private final CountryRepository countryRepository;
     private final VenueService venueService;
     private final CityService cityService;
+    private final PersonService personService;
     private final SkiClubService skiClubService;
     private final SkiJumperService skiJumperService;
+    private final JuryService juryService;
 
     @Autowired
     public CountryService(CountryRepository countryRepository,
                           VenueService venueService,
                           CityService cityService,
+                          PersonService personService,
                           SkiClubService skiClubService,
-                          SkiJumperService skiJumperService) {
+                          SkiJumperService skiJumperService,
+                          JuryService juryService) {
         this.countryRepository = countryRepository;
         this.venueService = venueService;
         this.cityService = cityService;
+        this.juryService = juryService;
         this.skiClubService = skiClubService;
         this.skiJumperService = skiJumperService;
+        this.personService = personService;
     }
 
     @Override
@@ -59,9 +65,21 @@ public class CountryService implements ServiceInterface {
         return countries;
     }
 
+    public List<Country> findAllWithJury() {
+        List<Country> countries = countryRepository.findAll();
+        countries.removeIf(country -> juryService.findAllByCountry(country).isEmpty());
+        return countries;
+    }
+
     public List<Country> findAllWithSkiClubs() {
         List<Country> countries = countryRepository.findAll();
         countries.removeIf(country -> skiClubService.findAllByCountry(country).isEmpty());
+        return countries;
+    }
+
+    public List<Country> findAllWithPeople() {
+        List<Country> countries = countryRepository.findAll();
+        countries.removeIf(country -> personService.findAllByCountry(country).isEmpty());
         return countries;
     }
 

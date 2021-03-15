@@ -1,9 +1,11 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -44,6 +46,10 @@ public class Person implements Comparable<Person> {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "city_idcity")
     private City city;
+
+//    @JsonManagedReference(value = "person-jury")
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person")
+//    private List<Jury> juryList;
 
     @Column(name = "photo")
     private String photo;
@@ -115,6 +121,22 @@ public class Person implements Comparable<Person> {
     public void setCity(City city) {
         this.city = city;
     }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+//
+//    public List<Jury> getJuryList() {
+//        return juryList;
+//    }
+//
+//    public void setJuryList(List<Jury> juryList) {
+//        this.juryList = juryList;
+//    }
 
     @Override
     public int compareTo(Person o) {
