@@ -1,10 +1,13 @@
 package com.lipskii.ski_jumping_system.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lipskii.ski_jumping_system.dao.JuryTypeRepository;
 import com.lipskii.ski_jumping_system.entity.JuryType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,5 +39,24 @@ public class JuryTypeService implements ServiceInterface{
     @Override
     public void deleteById(int id) {
         juryTypeRepository.deleteById(id);
+    }
+
+    public JuryType getJson(String jType, MultipartFile file) {
+
+        JuryType juryType = new JuryType();
+        System.out.println(jType);
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            juryType = objectMapper.readValue(jType, JuryType.class);
+        } catch (IOException err) {
+            System.out.printf("Error ", err.toString());
+        }
+
+        System.out.println(juryType);
+        System.out.println(file);
+
+        return juryType;
+
     }
 }

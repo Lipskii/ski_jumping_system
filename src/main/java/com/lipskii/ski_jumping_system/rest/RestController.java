@@ -4,12 +4,20 @@ package com.lipskii.ski_jumping_system.rest;
 import com.lipskii.ski_jumping_system.dto.*;
 import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.logging.Logger;
 
 //TODO error handling
 
@@ -42,7 +50,7 @@ public class RestController {
 
 
     @Autowired
-    public RestController(AllTimePointsSystemService allTimePointsSystemService, CityService cityService, CountryService countryService, CompetitionService competitionService, DisqualificationTypeService disqualificationTypeService, GenderService genderService, HillService hillService, HillVersionService hillVersionService,  JuryService juryService, JuryTypeService juryTypeService, PersonService personService, RegionService regionService, ResultService resultService, SeasonService seasonService, SeriesService seriesService, SizeOfHillService sizeOfHillService, SkiClubService skiClubService, SkiJumperService skiJumperService, SkisService skisService, VenueService venueService, WeatherService weatherService) {
+    public RestController(AllTimePointsSystemService allTimePointsSystemService, CityService cityService, CountryService countryService, CompetitionService competitionService, DisqualificationTypeService disqualificationTypeService, GenderService genderService, HillService hillService, HillVersionService hillVersionService, JuryService juryService, JuryTypeService juryTypeService, PersonService personService, RegionService regionService, ResultService resultService, SeasonService seasonService, SeriesService seriesService, SizeOfHillService sizeOfHillService, SkiClubService skiClubService, SkiJumperService skiJumperService, SkisService skisService, VenueService venueService, WeatherService weatherService) {
         this.allTimePointsSystemService = allTimePointsSystemService;
         this.cityService = cityService;
         this.countryService = countryService;
@@ -79,12 +87,12 @@ public class RestController {
     }
 
     @GetMapping("/cities/skiClubs")
-    public List<City> getCitiesWithSkiClubs(){
+    public List<City> getCitiesWithSkiClubs() {
         return cityService.findAllWithSkiClubs();
     }
 
     @GetMapping("/cities/skiJumpers")
-    public List<City> getCitiesWithSkiJumpers(){
+    public List<City> getCitiesWithSkiJumpers() {
         return cityService.findAllWithSkiJumpers();
     }
 
@@ -101,7 +109,7 @@ public class RestController {
     }
 
     @GetMapping("/competitions")
-    public List<Competition> getCompetitions(){
+    public List<Competition> getCompetitions() {
         return competitionService.findAll();
     }
 
@@ -111,22 +119,22 @@ public class RestController {
     }
 
     @GetMapping("/countries/jury")
-    public List<Country> getCountriesWithJury(){
+    public List<Country> getCountriesWithJury() {
         return countryService.findAllWithJury();
     }
 
     @GetMapping("/countries/people")
-    public List<Country> getCountriesWithPeople(){
+    public List<Country> getCountriesWithPeople() {
         return countryService.findAllWithPeople();
     }
 
     @GetMapping("/countries/skiClubs")
-    public List<Country> getCountriesWithSkiClubs(){
+    public List<Country> getCountriesWithSkiClubs() {
         return countryService.findAllWithSkiClubs();
     }
 
     @GetMapping("/countries/skiJumpers")
-    public List<Country> getCountriesWithSkiJumpers(){
+    public List<Country> getCountriesWithSkiJumpers() {
         return countryService.findAllWithSkiJumpers();
     }
 
@@ -136,12 +144,12 @@ public class RestController {
     }
 
     @GetMapping("/genders")
-    public List<Gender> getGenders(){
+    public List<Gender> getGenders() {
         return genderService.findAll();
     }
 
     @GetMapping("/hills")
-    public List<Hill> getHills(){
+    public List<Hill> getHills() {
         return hillService.findAll();
     }
 
@@ -154,7 +162,7 @@ public class RestController {
     @PutMapping("hills/{hillId}")
     public ResponseEntity<Hill> updateHill(@PathVariable("hillId") int hillId, @RequestBody Hill requestHill) throws ResourceNotFoundException {
 
-        if(hillService.findById(hillId).isPresent()){
+        if (hillService.findById(hillId).isPresent()) {
             requestHill.setId(hillId);
             hillService.save(requestHill);
         } else {
@@ -170,87 +178,120 @@ public class RestController {
     }
 
     @PostMapping("/hillVersion")
-    public HillVersion addHillVersion(@RequestBody HillVersion hillVersion){
+    public HillVersion addHillVersion(@RequestBody HillVersion hillVersion) {
         hillVersionService.save(hillVersion);
         return hillVersion;
     }
 
     @GetMapping("/jury")
-    public List<JuryDTO> getJury(){
+    public List<JuryDTO> getJury() {
         return juryService.findAllDTO();
     }
 
     @GetMapping("/jury/rd")
-    public List<JuryDTO> getRDs(){
+    public List<JuryDTO> getRDs() {
         return juryService.findAllRaceDirectors();
     }
 
     @GetMapping("/jury/td")
-    public List<JuryDTO> getTDs(){
+    public List<JuryDTO> getTDs() {
         return juryService.findAllTechnicalDelegates();
     }
 
     @GetMapping("/jury/coc")
-    public List<JuryDTO> getChiefs(){
+    public List<JuryDTO> getChiefs() {
         return juryService.findAllChiefsOfCompetitions();
     }
 
     @GetMapping("/jury/ec")
-    public List<JuryDTO> getEquipmentControllers(){
+    public List<JuryDTO> getEquipmentControllers() {
         return juryService.findAllEquipmentControllers();
     }
 
     @GetMapping("/jury/judges")
-    public List<JuryDTO> getJudges(){
+    public List<JuryDTO> getJudges() {
         return juryService.findAllJudges();
     }
 
     @GetMapping("/jury/atd")
-    public List<JuryDTO> getTDAssistants(){
+    public List<JuryDTO> getTDAssistants() {
         return juryService.findAllTDAssistants();
     }
 
     @GetMapping("/jury/ard")
-    public List<JuryDTO> getRDAssistants(){
+    public List<JuryDTO> getRDAssistants() {
         return juryService.findAllRDAssistants();
     }
 
     @PostMapping("/jury")
-    public Jury saveJury(@RequestBody Jury jury){
+    public Jury saveJury(@RequestBody Jury jury) {
         juryService.save(jury);
         return jury;
     }
 
     @GetMapping("/jury/country/{countryId}")
-    public List<JuryDTO> getJuryByCountry(@PathVariable("countryId") int countryId){
+    public List<JuryDTO> getJuryByCountry(@PathVariable("countryId") int countryId) {
         return juryService.findAllByCountryId(countryId);
     }
 
     @GetMapping("/juryTypes")
-    public List<JuryType> getJuryTypes(){
+    public List<JuryType> getJuryTypes() {
         return juryTypeService.findAll();
     }
 
     @GetMapping("/people")
-    public List<Person> getPeople(){
+    public List<Person> getPeople() {
         return personService.findAllOrderedByLastName();
     }
 
     @GetMapping("/people/country/{countryId}")
-    public List<Person> getPeopleByCountryId(@PathVariable("countryId") int countryId){
+    public List<Person> getPeopleByCountryId(@PathVariable("countryId") int countryId) {
         return personService.findAllByCountryId(countryId);
     }
 
     @PostMapping("/people")
-    public Person addPerson(@RequestBody Person person){
+    public Person addPerson(@RequestBody Person person) {
         personService.save(person);
         return person;
     }
 
-    @PutMapping("/people/{personId}")
-    public Person updatePerson(@RequestBody Person person,@PathVariable("personId") int personId) throws ResourceNotFoundException {
+    @PostMapping(value = "/people/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity uploadPersonPhoto(@RequestPart MultipartFile file, @RequestPart("personId") int personId)
+            throws ResourceNotFoundException {
+        Person person = personService.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No person found for id " + personId));
 
-        if(personService.findById(personId).isPresent()){
+        try {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\files\\athletes\\" + file.getOriginalFilename());
+            Files.write(path, bytes);
+            person.setPhoto(file.getOriginalFilename());
+        } catch (IOException e) {
+            System.out.println(e.getCause().getMessage());
+            ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+
+//    @PostMapping(value = "/results/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity uploadFile(@RequestPart MultipartFile file) {
+//        System.out.println(String.format("File name '%s' uploaded successfully.", file.getOriginalFilename()));
+//        try {
+//            byte[] bytes = file.getBytes();
+//            Path path = Paths.get("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\files\\" + file.getOriginalFilename());
+//            System.out.println(path);
+//            Files.write(path, bytes);
+//        } catch (IOException e) {
+//            System.out.println(e.getCause().getMessage());
+//            ResponseEntity.badRequest().build();
+//        }
+//        return ResponseEntity.ok().build();
+//    }
+
+    @PutMapping("/people/{personId}")
+    public Person updatePerson(@RequestBody Person person, @PathVariable("personId") int personId) throws ResourceNotFoundException {
+
+        if (personService.findById(personId).isPresent()) {
             person.setId(personId);
             personService.save(person);
         } else {
@@ -281,15 +322,15 @@ public class RestController {
     }
 
     @PostMapping("/skiClubs")
-    public SkiClub addSkiClubs(@RequestBody SkiClub skiClub){
+    public SkiClub addSkiClubs(@RequestBody SkiClub skiClub) {
         skiClubService.save(skiClub);
         return skiClub;
     }
 
     @PutMapping("/skiClubs/{skiClubId}")
-    public ResponseEntity<SkiClub> updateSkiClub(@PathVariable("skiClubId") int skiClubId,@RequestBody SkiClub skiClub)
-            throws ResourceNotFoundException{
-        if(skiClubService.findById(skiClubId).isPresent()){
+    public ResponseEntity<SkiClub> updateSkiClub(@PathVariable("skiClubId") int skiClubId, @RequestBody SkiClub skiClub)
+            throws ResourceNotFoundException {
+        if (skiClubService.findById(skiClubId).isPresent()) {
             skiClub.setId(skiClubId);
             skiClubService.save(skiClub);
         } else {
@@ -300,7 +341,7 @@ public class RestController {
     }
 
     @GetMapping("/skiClubs/city/{cityId}")
-    public List<SkiClubDTO> getSkiClubsByCity(@PathVariable("cityId") int cityId){
+    public List<SkiClubDTO> getSkiClubsByCity(@PathVariable("cityId") int cityId) {
         return skiClubService.findAllByCityIdDTO(cityId);
     }
 
@@ -310,18 +351,18 @@ public class RestController {
     }
 
     @GetMapping("/skiJumpers")
-    public List<SkiJumperDTO> getSkiJumpers(){
+    public List<SkiJumperDTO> getSkiJumpers() {
         return skiJumperService.findAllDTO();
     }
 
     @PostMapping("/skiJumpers")
-    public SkiJumper addSkiJumper(@RequestBody SkiJumper skiJumper){
+    public SkiJumper addSkiJumper(@RequestBody SkiJumper skiJumper) {
         skiJumperService.save(skiJumper);
         return skiJumper;
     }
 
     @PutMapping("/skiJumpers/{skiJumperId}")
-    public SkiJumper updateSkiJumper(@RequestBody SkiJumper skiJumper,@PathVariable("skiJumperId") int skiJumperId) throws ResourceNotFoundException {
+    public SkiJumper updateSkiJumper(@RequestBody SkiJumper skiJumper, @PathVariable("skiJumperId") int skiJumperId) throws ResourceNotFoundException {
 
         if (skiJumperService.findById(skiJumperId).isPresent()) {
             skiJumper.setId(skiJumperId);
@@ -354,7 +395,7 @@ public class RestController {
     }
 
     @PostMapping("/venues")
-    public Venue saveVenue(@RequestBody Venue venue){
+    public Venue saveVenue(@RequestBody Venue venue) {
         venueService.save(venue);
         return venue;
     }
@@ -362,7 +403,7 @@ public class RestController {
     @PutMapping("/venues/{venueId}")
     public ResponseEntity<Venue> updateVenue(@RequestBody Venue venue, @PathVariable("venueId") int venueId) throws ResourceNotFoundException {
 
-        if(venueService.findById(venueId).isPresent()){
+        if (venueService.findById(venueId).isPresent()) {
             venue.setId(venueId);
             venueService.save(venue);
         } else {
@@ -387,7 +428,7 @@ public class RestController {
     }
 
     @GetMapping("/venues/city/{cityId}")
-    public List<VenueDTO> getVenuesByCity(@PathVariable("cityId") int cityId){
+    public List<VenueDTO> getVenuesByCity(@PathVariable("cityId") int cityId) {
         return venueService.getVenuesByCity(cityId);
     }
 

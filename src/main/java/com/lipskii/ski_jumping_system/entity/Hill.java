@@ -21,12 +21,12 @@ public class Hill {
     private String name;
 
     @JsonBackReference(value = "venue-hill")
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "venue_idvenue")
     private Venue venue;
 
     @JsonBackReference(value = "size_hill")
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "size_of_hill_idsize_of_hill")
     private SizeOfHill sizeOfHill;
 
