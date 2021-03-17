@@ -4,7 +4,7 @@ package com.lipskii.ski_jumping_system.rest;
 import com.lipskii.ski_jumping_system.dto.*;
 import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.MediaType;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -255,16 +256,16 @@ public class RestController {
         return person;
     }
 
-    @PostMapping(value = "/people/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity uploadPersonPhoto(@RequestPart MultipartFile file, @RequestPart("personId") int personId)
+    @PostMapping(value = "/people/photo/{personId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity uploadPersonPhoto(@RequestPart MultipartFile file, @PathVariable("personId") int personId)
             throws ResourceNotFoundException {
         Person person = personService.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No person found for id " + personId));
-
         try {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\files\\athletes\\" + file.getOriginalFilename());
+            Path path = Paths.get("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\main\\resources\\files\\athletes\\" + file.getOriginalFilename());
             Files.write(path, bytes);
             person.setPhoto(file.getOriginalFilename());
+            personService.save(person);
         } catch (IOException e) {
             System.out.println(e.getCause().getMessage());
             ResponseEntity.badRequest().build();
@@ -272,21 +273,14 @@ public class RestController {
         return ResponseEntity.ok().build();
     }
 
-
-//    @PostMapping(value = "/results/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity uploadFile(@RequestPart MultipartFile file) {
-//        System.out.println(String.format("File name '%s' uploaded successfully.", file.getOriginalFilename()));
-//        try {
-//            byte[] bytes = file.getBytes();
-//            Path path = Paths.get("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\files\\" + file.getOriginalFilename());
-//            System.out.println(path);
-//            Files.write(path, bytes);
-//        } catch (IOException e) {
-//            System.out.println(e.getCause().getMessage());
-//            ResponseEntity.badRequest().build();
-//        }
-//        return ResponseEntity.ok().build();
-//    }
+    @GetMapping(value = "/people/photo", produces = MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getImageWithMediaType() throws IOException {
+        InputStream in = RestController
+                .class
+                .getResourceAsStream("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\main\\resources\\files\\athletes\\ty.png");
+        System.out.println(in);
+        return IOUtils.toByteArray(in);
+    }
 
     @PutMapping("/people/{personId}")
     public Person updatePerson(@RequestBody Person person, @PathVariable("personId") int personId) throws ResourceNotFoundException {
