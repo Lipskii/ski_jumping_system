@@ -40,6 +40,12 @@ public class VenueService implements ServiceInterface {
                 .map(this::convertToVenueDTO).collect(Collectors.toList());
     }
 
+    public List<VenueDTO> findAllWithHillsDTO(){
+        List<VenueDTO> venues = venueRepository.findAllByOrderByName().stream().map(this::convertToVenueDTO).collect(Collectors.toList());
+        venues.removeIf(venue -> hillService.findAllByVenueId(venue.getId()).isEmpty());
+        return venues;
+    }
+
     public List<VenueDTO> findAllByCountryDTO(int id) {
         return venueRepository.findAllByCityRegionCountryIdOrderByName(id)
                 .stream().map(this::convertToVenueDTO)
@@ -100,6 +106,7 @@ public class VenueService implements ServiceInterface {
         venueDTO.setHills(venue.getHills());
         venueDTO.setSkiClub(venue.getSkiClub());
         venueDTO.setCity(venue.getCity());
+        venueDTO.setCountry(venue.getCity().getRegion().getCountry());
         return venueDTO;
     }
 

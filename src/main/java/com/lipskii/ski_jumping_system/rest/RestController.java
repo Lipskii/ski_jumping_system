@@ -6,12 +6,18 @@ import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -144,6 +150,11 @@ public class RestController {
         return countryService.findAllWithVenues();
     }
 
+    @GetMapping("/countries/venues/hills")
+    public List<Country> getCountriesWithVenuesWithHills() {
+        return countryService.findAllWithVenuesWithHills();
+    }
+
     @GetMapping("/genders")
     public List<Gender> getGenders() {
         return genderService.findAll();
@@ -273,13 +284,17 @@ public class RestController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/people/photo", produces = MediaType.IMAGE_JPEG_VALUE)
-    public @ResponseBody byte[] getImageWithMediaType() throws IOException {
-        InputStream in = RestController
-                .class
-                .getResourceAsStream("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\main\\resources\\files\\athletes\\ty.png");
-        System.out.println(in);
-        return IOUtils.toByteArray(in);
+//    @GetMapping(
+//            value = "/people/photo",
+//            produces = MediaType.IMAGE_JPEG_VALUE
+//    )
+
+    @GetMapping(value = "/people/photo", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody byte[] download() throws IOException {
+        File file = new File("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\main\\resources\\files\\athletes\\ty.png");
+        Path path = Paths.get(file.getAbsolutePath());
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+        return resource.getByteArray();
     }
 
     @PutMapping("/people/{personId}")
@@ -386,6 +401,11 @@ public class RestController {
     @GetMapping("/venues")
     public List<VenueDTO> getVenues() {
         return venueService.findAllDTO();
+    }
+
+    @GetMapping("/venues/hills")
+    public List<VenueDTO> getVenuesWithHills() {
+        return venueService.findAllWithHillsDTO();
     }
 
     @PostMapping("/venues")

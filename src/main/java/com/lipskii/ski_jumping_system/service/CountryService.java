@@ -2,10 +2,12 @@ package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.CountryRepository;
 import com.lipskii.ski_jumping_system.dto.CountryWithVenuesDTO;
+import com.lipskii.ski_jumping_system.dto.VenueDTO;
 import com.lipskii.ski_jumping_system.entity.Country;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,6 +22,7 @@ public class CountryService implements ServiceInterface {
     private final SkiClubService skiClubService;
     private final SkiJumperService skiJumperService;
     private final JuryService juryService;
+    private final HillService hillService;
 
     @Autowired
     public CountryService(CountryRepository countryRepository,
@@ -28,6 +31,7 @@ public class CountryService implements ServiceInterface {
                           PersonService personService,
                           SkiClubService skiClubService,
                           SkiJumperService skiJumperService,
+                          HillService hillService,
                           JuryService juryService) {
         this.countryRepository = countryRepository;
         this.venueService = venueService;
@@ -36,6 +40,7 @@ public class CountryService implements ServiceInterface {
         this.skiClubService = skiClubService;
         this.skiJumperService = skiJumperService;
         this.personService = personService;
+        this.hillService = hillService;
     }
 
     @Override
@@ -63,6 +68,16 @@ public class CountryService implements ServiceInterface {
         List<Country> countries = countryRepository.findAll();
         countries.removeIf(country -> venueService.findAllByCountry(country).isEmpty());
         return countries;
+    }
+
+    public List<Country> findAllWithVenuesWithHills(){
+        List<Country> countries = new ArrayList<>();
+        List<VenueDTO> venueDTOS = venueService.findAllWithHillsDTO();
+        for(VenueDTO venueDTO : venueDTOS){
+            countries.add(venueDTO.getCountry());
+        }
+     //   countries =;
+        return  countries.stream().distinct().collect(Collectors.toList());
     }
 
     public List<Country> findAllWithJury() {

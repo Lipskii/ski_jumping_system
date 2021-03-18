@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.dto;
 
 import com.lipskii.ski_jumping_system.entity.City;
+import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.Hill;
 import com.lipskii.ski_jumping_system.entity.SkiClub;
 
@@ -12,6 +13,7 @@ public class VenueDTO {
     private int yearOfOpening;
     private int capacity;
     private SkiClub skiClub;
+    private Country country;
     private City city;
     private List<Hill> hills;
 
@@ -69,5 +71,13 @@ public class VenueDTO {
 
     public void setHills(List<Hill> hills) {
         this.hills = hills;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 }
