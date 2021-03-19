@@ -15,7 +15,7 @@ public class Result {
     private int id;
 
     @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "competition_idcompetition")
     private Competition competition;
 

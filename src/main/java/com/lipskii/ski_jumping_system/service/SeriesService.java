@@ -21,7 +21,7 @@ public class SeriesService implements ServiceInterface {
 
     @Override
     public List<Series> findAll() {
-        return (List<Series>) seriesRepository.findAll();
+        return (List<Series>) seriesRepository.findAllByOrderByName();
     }
 
     @Override

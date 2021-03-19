@@ -320,6 +320,16 @@ public class RestController {
         return regionService.getRegionsByCountry(countryId);
     }
 
+    @GetMapping("/seasons")
+    public List<Season> getSeasons(){
+        return seasonService.findAll();
+    }
+
+    @GetMapping("/series")
+    public List<Series> getSeries(){
+        return seriesService.findAll();
+    }
+
     @GetMapping("/sizeOfHill")
     public List<SizeOfHill> getSizesOfHil() {
         return sizeOfHillService.findAll();
@@ -449,6 +459,11 @@ public class RestController {
     @GetMapping("/venues/country/{countryId}")
     public List<VenueDTO> getVenuesByCountry(@PathVariable("countryId") int countryId) {
         return venueService.findAllByCountryDTO(countryId);
+    }
+
+    @GetMapping("/weather")
+    public List<Weather> getWeather(){
+        return weatherService.findAll();
     }
 
 }

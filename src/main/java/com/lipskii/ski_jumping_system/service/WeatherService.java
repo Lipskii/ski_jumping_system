@@ -20,7 +20,7 @@ public class WeatherService implements ServiceInterface {
 
     @Override
     public List<Weather> findAll() {
-        return weatherRepository.findAll();
+        return weatherRepository.findAllByOrderByWeather();
     }
 
     @Override

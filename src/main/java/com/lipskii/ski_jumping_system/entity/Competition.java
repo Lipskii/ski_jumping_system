@@ -1,12 +1,14 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "competition")
@@ -116,14 +118,15 @@ public class Competition {
     @Column(name = "wind_factor_tail")
     private BigDecimal windFactorTail;
 
+
     @Column(name = "wind_factor_front")
     private BigDecimal windFactorFront;
 
     @Column(name = "first_round_start_time")
-    private Timestamp firstRoundStartTime;
+    private LocalDateTime firstRoundStartTime;
 
     @Column(name = "first_round_end_time")
-    private Timestamp firstRoundEndTime;
+    private LocalDateTime firstRoundEndTime;
 
     @Column(name = "first_round_base_gate")
     private int firstRoundBaseGate;
@@ -161,10 +164,10 @@ public class Competition {
     private BigDecimal firstRoundAvgWind;
 
     @Column(name = "second_round_start_time")
-    private Timestamp secondRoundStartTime;
+    private LocalDateTime secondRoundStartTime;
 
     @Column(name = "second_round_end_time")
-    private Timestamp secondRoundEndTime;
+    private LocalDateTime secondRoundEndTime;
 
     @Column(name = "second_round_base_gate")
     private int secondRoundBaseGate;
@@ -202,10 +205,10 @@ public class Competition {
     private BigDecimal secondRoundAvgWind;
 
     @Column(name = "third_round_start_time")
-    private Timestamp thirdRoundStartTime;
+    private LocalDateTime thirdRoundStartTime;
 
     @Column(name = "third_round_end_time")
-    private Timestamp thirdRoundEndTime;
+    private LocalDateTime thirdRoundEndTime;
 
     @Column(name = "third_round_base_gate")
     private int thirdRoundBaseGate;
@@ -243,10 +246,10 @@ public class Competition {
     private BigDecimal thirdRoundAvgWind;
 
     @Column(name = "fourth_round_start_time")
-    private Timestamp fourthRoundStartTime;
+    private LocalDateTime fourthRoundStartTime;
 
     @Column(name = "fourth_round_end_time")
-    private Timestamp fourthRoundEndTime;
+    private LocalDateTime fourthRoundEndTime;
 
     @Column(name = "fourth_round_base_gate")
     private int fourthRoundBaseGate;
@@ -286,7 +289,7 @@ public class Competition {
     public Competition() {
     }
 
-    public Competition(Season season,LocalDate date1, LocalDate date2, Series seriesMajor, Series seriesMinor, HillVersion hillVersion, Jury judgeA, Jury judgeB, Jury judgeC, Jury judgeD, Jury judgeE, Jury judgeSC, Jury raceDirector, Jury technicalDelegate, Jury chiefOfCompetition, Jury assistantTD, Jury assistantRD, Jury equipmentController1, Jury equipmentController2, BigDecimal meterValue, BigDecimal gateFactor, BigDecimal windFactorTail, BigDecimal windFactorFront, Timestamp firstRoundStartTime, Timestamp firstRoundEndTime, int firstRoundBaseGate, Weather firstRoundWeather, BigDecimal firstRoundAirTempStart, BigDecimal firstRoundAirTempFinish, BigDecimal firstRoundSnowTempStart, BigDecimal firstRoundSnowTempFinish, BigDecimal firstRoundHumidityStart, BigDecimal firstRoundHumidityFinish, BigDecimal firstRoundMinWind, BigDecimal firstRoundMaxWind, BigDecimal firstRoundAvgWind, Timestamp secondRoundStartTime, Timestamp secondRoundEndTime, int secondRoundBaseGate, Weather secondRoundWeather, BigDecimal secondRoundAirTempStart, BigDecimal secondRoundAirTempFinish, BigDecimal secondRoundSnowTempStart, BigDecimal secondRoundSnowTempFinish, BigDecimal secondRoundHumidityStart, BigDecimal secondRoundHumidityFinish, BigDecimal secondRoundMinWind, BigDecimal secondRoundMaxWind, BigDecimal secondRoundAvgWind, Timestamp thirdRoundStartTime, Timestamp thirdRoundEndTime, int thirdRoundBaseGate, Weather thirdRoundWeather, BigDecimal thirdRoundAirTempStart, BigDecimal thirdRoundAirTempFinish, BigDecimal thirdRoundSnowTempStart, BigDecimal thirdRoundSnowTempFinish, BigDecimal thirdRoundHumidityStart, BigDecimal thirdRoundHumidityFinish, BigDecimal thirdRoundMinWind, BigDecimal thirdRoundMaxWind, BigDecimal thirdRoundAvgWind, Timestamp fourthRoundStartTime, Timestamp fourthRoundEndTime, int fourthRoundBaseGate, Weather fourthRoundWeather, BigDecimal fourthRoundAirTempStart, BigDecimal fourthRoundAirTempFinish, BigDecimal fourthRoundSnowTempStart, BigDecimal fourthRoundSnowTempFinish, BigDecimal fourthRoundHumidityStart, BigDecimal fourthRoundHumidityFinish, BigDecimal fourthRoundMinWind, BigDecimal fourthRoundMaxWind, BigDecimal fourthRoundAvgWind) {
+    public Competition(Season season, LocalDate date1, LocalDate date2, Series seriesMajor, Series seriesMinor, HillVersion hillVersion, Jury judgeA, Jury judgeB, Jury judgeC, Jury judgeD, Jury judgeE, Jury judgeSC, Jury raceDirector, Jury technicalDelegate, Jury chiefOfCompetition, Jury assistantTD, Jury assistantRD, Jury equipmentController1, Jury equipmentController2, BigDecimal meterValue, BigDecimal gateFactor, BigDecimal windFactorTail, BigDecimal windFactorFront, LocalDateTime firstRoundStartTime, LocalDateTime firstRoundEndTime, int firstRoundBaseGate, Weather firstRoundWeather, BigDecimal firstRoundAirTempStart, BigDecimal firstRoundAirTempFinish, BigDecimal firstRoundSnowTempStart, BigDecimal firstRoundSnowTempFinish, BigDecimal firstRoundHumidityStart, BigDecimal firstRoundHumidityFinish, BigDecimal firstRoundMinWind, BigDecimal firstRoundMaxWind, BigDecimal firstRoundAvgWind, LocalDateTime secondRoundStartTime, LocalDateTime secondRoundEndTime, int secondRoundBaseGate, Weather secondRoundWeather, BigDecimal secondRoundAirTempStart, BigDecimal secondRoundAirTempFinish, BigDecimal secondRoundSnowTempStart, BigDecimal secondRoundSnowTempFinish, BigDecimal secondRoundHumidityStart, BigDecimal secondRoundHumidityFinish, BigDecimal secondRoundMinWind, BigDecimal secondRoundMaxWind, BigDecimal secondRoundAvgWind, LocalDateTime thirdRoundStartTime, LocalDateTime thirdRoundEndTime, int thirdRoundBaseGate, Weather thirdRoundWeather, BigDecimal thirdRoundAirTempStart, BigDecimal thirdRoundAirTempFinish, BigDecimal thirdRoundSnowTempStart, BigDecimal thirdRoundSnowTempFinish, BigDecimal thirdRoundHumidityStart, BigDecimal thirdRoundHumidityFinish, BigDecimal thirdRoundMinWind, BigDecimal thirdRoundMaxWind, BigDecimal thirdRoundAvgWind, LocalDateTime fourthRoundStartTime, LocalDateTime fourthRoundEndTime, int fourthRoundBaseGate, Weather fourthRoundWeather, BigDecimal fourthRoundAirTempStart, BigDecimal fourthRoundAirTempFinish, BigDecimal fourthRoundSnowTempStart, BigDecimal fourthRoundSnowTempFinish, BigDecimal fourthRoundHumidityStart, BigDecimal fourthRoundHumidityFinish, BigDecimal fourthRoundMinWind, BigDecimal fourthRoundMaxWind, BigDecimal fourthRoundAvgWind) {
         this.season = season;
         this.date1 = date1;
         this.date2 = date2;
@@ -557,21 +560,6 @@ public class Competition {
         this.windFactorFront = windFactorFront;
     }
 
-    public Timestamp getFirstRoundStartTime() {
-        return firstRoundStartTime;
-    }
-
-    public void setFirstRoundStartTime(Timestamp firstRoundStartTime) {
-        this.firstRoundStartTime = firstRoundStartTime;
-    }
-
-    public Timestamp getFirstRoundEndTime() {
-        return firstRoundEndTime;
-    }
-
-    public void setFirstRoundEndTime(Timestamp firstRoundEndTime) {
-        this.firstRoundEndTime = firstRoundEndTime;
-    }
 
     public int getFirstRoundBaseGate() {
         return firstRoundBaseGate;
@@ -659,22 +647,6 @@ public class Competition {
 
     public void setFirstRoundAvgWind(BigDecimal firstRoundAvgWind) {
         this.firstRoundAvgWind = firstRoundAvgWind;
-    }
-
-    public Timestamp getSecondRoundStartTime() {
-        return secondRoundStartTime;
-    }
-
-    public void setSecondRoundStartTime(Timestamp secondRoundStartTime) {
-        this.secondRoundStartTime = secondRoundStartTime;
-    }
-
-    public Timestamp getSecondRoundEndTime() {
-        return secondRoundEndTime;
-    }
-
-    public void setSecondRoundEndTime(Timestamp secondRoundEndTime) {
-        this.secondRoundEndTime = secondRoundEndTime;
     }
 
     public int getSecondRoundBaseGate() {
@@ -765,22 +737,6 @@ public class Competition {
         this.secondRoundAvgWind = secondRoundAvgWind;
     }
 
-    public Timestamp getThirdRoundStartTime() {
-        return thirdRoundStartTime;
-    }
-
-    public void setThirdRoundStartTime(Timestamp thirdRoundStartTime) {
-        this.thirdRoundStartTime = thirdRoundStartTime;
-    }
-
-    public Timestamp getThirdRoundEndTime() {
-        return thirdRoundEndTime;
-    }
-
-    public void setThirdRoundEndTime(Timestamp thirdRoundEndTime) {
-        this.thirdRoundEndTime = thirdRoundEndTime;
-    }
-
     public int getThirdRoundBaseGate() {
         return thirdRoundBaseGate;
     }
@@ -869,22 +825,6 @@ public class Competition {
         this.thirdRoundAvgWind = thirdRoundAvgWind;
     }
 
-    public Timestamp getFourthRoundStartTime() {
-        return fourthRoundStartTime;
-    }
-
-    public void setFourthRoundStartTime(Timestamp fourthRoundStartTime) {
-        this.fourthRoundStartTime = fourthRoundStartTime;
-    }
-
-    public Timestamp getFourthRoundEndTime() {
-        return fourthRoundEndTime;
-    }
-
-    public void setFourthRoundEndTime(Timestamp fourthRoundEndTime) {
-        this.fourthRoundEndTime = fourthRoundEndTime;
-    }
-
     public int getFourthRoundBaseGate() {
         return fourthRoundBaseGate;
     }
@@ -971,6 +911,70 @@ public class Competition {
 
     public void setFourthRoundAvgWind(BigDecimal fourthRoundAvgWind) {
         this.fourthRoundAvgWind = fourthRoundAvgWind;
+    }
+
+    public LocalDateTime getFirstRoundStartTime() {
+        return firstRoundStartTime;
+    }
+
+    public void setFirstRoundStartTime(LocalDateTime firstRoundStartTime) {
+        this.firstRoundStartTime = firstRoundStartTime;
+    }
+
+    public LocalDateTime getFirstRoundEndTime() {
+        return firstRoundEndTime;
+    }
+
+    public void setFirstRoundEndTime(LocalDateTime firstRoundEndTime) {
+        this.firstRoundEndTime = firstRoundEndTime;
+    }
+
+    public LocalDateTime getSecondRoundStartTime() {
+        return secondRoundStartTime;
+    }
+
+    public void setSecondRoundStartTime(LocalDateTime secondRoundStartTime) {
+        this.secondRoundStartTime = secondRoundStartTime;
+    }
+
+    public LocalDateTime getSecondRoundEndTime() {
+        return secondRoundEndTime;
+    }
+
+    public void setSecondRoundEndTime(LocalDateTime secondRoundEndTime) {
+        this.secondRoundEndTime = secondRoundEndTime;
+    }
+
+    public LocalDateTime getThirdRoundStartTime() {
+        return thirdRoundStartTime;
+    }
+
+    public void setThirdRoundStartTime(LocalDateTime thirdRoundStartTime) {
+        this.thirdRoundStartTime = thirdRoundStartTime;
+    }
+
+    public LocalDateTime getThirdRoundEndTime() {
+        return thirdRoundEndTime;
+    }
+
+    public void setThirdRoundEndTime(LocalDateTime thirdRoundEndTime) {
+        this.thirdRoundEndTime = thirdRoundEndTime;
+    }
+
+    public LocalDateTime getFourthRoundStartTime() {
+        return fourthRoundStartTime;
+    }
+
+    public void setFourthRoundStartTime(LocalDateTime fourthRoundStartTime) {
+        this.fourthRoundStartTime = fourthRoundStartTime;
+    }
+
+    public LocalDateTime getFourthRoundEndTime() {
+        return fourthRoundEndTime;
+    }
+
+    public void setFourthRoundEndTime(LocalDateTime fourthRoundEndTime) {
+        this.fourthRoundEndTime = fourthRoundEndTime;
     }
 
     @Override
