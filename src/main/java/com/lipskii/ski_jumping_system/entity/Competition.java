@@ -19,7 +19,7 @@ public class Competition {
     @Column(name = "idcompetition")
     private int id;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "season_idseason")
     private Season season;
 
@@ -29,83 +29,82 @@ public class Competition {
     @Column(name = "date_2")
     private LocalDate date2;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "series_idseries_major")
     private Series seriesMajor;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "series_idseries_minor")
     private Series seriesMinor;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "hill_version_idhill_version")
     private HillVersion hillVersion;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_a")
     private Jury judgeA;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_b")
     private Jury judgeB;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_c")
     private Jury judgeC;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_d")
     private Jury judgeD;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_e")
     private Jury judgeE;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "judge_idjudge_sc")
     private Jury judgeSC;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "jury_idrace_director")
     private Jury raceDirector;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "jury_idtechnical_delegate")
     private Jury technicalDelegate;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "jury_idchief_of_competition")
     private Jury chiefOfCompetition;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "jury_idassistant_td")
     private Jury assistantTD;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "jury_idassistant_rd")
     private Jury assistantRD;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "jury_idequipment_controller1")
     private Jury equipmentController1;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "jury_idequipment_controller2")
     private Jury equipmentController2;
 
@@ -117,7 +116,6 @@ public class Competition {
 
     @Column(name = "wind_factor_tail")
     private BigDecimal windFactorTail;
-
 
     @Column(name = "wind_factor_front")
     private BigDecimal windFactorFront;
@@ -131,8 +129,8 @@ public class Competition {
     @Column(name = "first_round_base_gate")
     private int firstRoundBaseGate;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "weather_idfirst_round_weather")
     private Weather firstRoundWeather;
 
@@ -172,8 +170,8 @@ public class Competition {
     @Column(name = "second_round_base_gate")
     private int secondRoundBaseGate;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "weather_idsecond_round_weather")
     private Weather secondRoundWeather;
 
@@ -213,8 +211,8 @@ public class Competition {
     @Column(name = "third_round_base_gate")
     private int thirdRoundBaseGate;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+
+    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "weather_idthird_round_weather")
     private Weather thirdRoundWeather;
 
@@ -254,8 +252,7 @@ public class Competition {
     @Column(name = "fourth_round_base_gate")
     private int fourthRoundBaseGate;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "weather_idfourth_round_weather")
     private Weather fourthRoundWeather;
 

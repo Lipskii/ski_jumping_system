@@ -120,6 +120,12 @@ public class RestController {
         return competitionService.findAll();
     }
 
+    @PostMapping("/competitions")
+    public Competition addCompetition(@RequestBody Competition competition) {
+        competitionService.save(competition);
+        return competition;
+    }
+
     @GetMapping("/countries")
     public List<Country> getCountries() {
         return countryService.findAll();
@@ -167,6 +173,7 @@ public class RestController {
 
     @PostMapping("/hills")
     public Hill addHill(@RequestBody Hill hill) {
+        System.out.println(hill);
         hillService.save(hill);
         return hill;
     }
@@ -189,7 +196,13 @@ public class RestController {
         return hillService.findAllByVenueId(venueId);
     }
 
-    @PostMapping("/hillVersion")
+    @GetMapping("/hillVersions")
+    public List<HillVersion> getHillVersions() {
+        return hillVersionService.findAll();
+    }
+
+
+    @PostMapping("/hillVersions")
     public HillVersion addHillVersion(@RequestBody HillVersion hillVersion) {
         hillVersionService.save(hillVersion);
         return hillVersion;
@@ -273,7 +286,8 @@ public class RestController {
         Person person = personService.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No person found for id " + personId));
         try {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\main\\resources\\files\\athletes\\" + file.getOriginalFilename());
+            Path path = Paths.get("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\main\\resources\\files\\athletes\\"
+                    + personId + "_" + person.getFirstName() + "_" + person.getLastName());
             Files.write(path, bytes);
             person.setPhoto(file.getOriginalFilename());
             personService.save(person);
@@ -290,7 +304,8 @@ public class RestController {
 //    )
 
     @GetMapping(value = "/people/photo", produces = MediaType.IMAGE_PNG_VALUE)
-    public @ResponseBody byte[] download() throws IOException {
+    public @ResponseBody
+    byte[] download() throws IOException {
         File file = new File("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\main\\resources\\files\\athletes\\ty.png");
         Path path = Paths.get(file.getAbsolutePath());
         ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
@@ -320,13 +335,30 @@ public class RestController {
         return regionService.getRegionsByCountry(countryId);
     }
 
+    @PostMapping(value = "/results/{competitionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity uploadResultsFile(@RequestPart MultipartFile file, @PathVariable("competitionId") int competitionId)
+            throws ResourceNotFoundException {
+        Competition competition = competitionService
+                .findById(competitionId)
+                .orElseThrow(() -> new ResourceNotFoundException("no competition found for id = " + competitionId));
+        try {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\main\\resources\\files\\results\\" + competitionId + "_" + competition.getDate1().toString());
+            Files.write(path, bytes);
+        } catch (IOException e) {
+            System.out.println(e.getCause().getMessage());
+            ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/seasons")
-    public List<Season> getSeasons(){
+    public List<Season> getSeasons() {
         return seasonService.findAll();
     }
 
     @GetMapping("/series")
-    public List<Series> getSeries(){
+    public List<Series> getSeries() {
         return seriesService.findAll();
     }
 
@@ -462,7 +494,7 @@ public class RestController {
     }
 
     @GetMapping("/weather")
-    public List<Weather> getWeather(){
+    public List<Weather> getWeather() {
         return weatherService.findAll();
     }
 
