@@ -173,7 +173,6 @@ public class RestController {
 
     @PostMapping("/hills")
     public Hill addHill(@RequestBody Hill hill) {
-        System.out.println(hill);
         hillService.save(hill);
         return hill;
     }
@@ -204,6 +203,7 @@ public class RestController {
 
     @PostMapping("/hillVersions")
     public HillVersion addHillVersion(@RequestBody HillVersion hillVersion) {
+        System.out.println(hillVersion);
         hillVersionService.save(hillVersion);
         return hillVersion;
     }
@@ -286,8 +286,8 @@ public class RestController {
         Person person = personService.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No person found for id " + personId));
         try {
             byte[] bytes = file.getBytes();
-            Path path = Paths.get("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\main\\resources\\files\\athletes\\"
-                    + personId + "_" + person.getFirstName() + "_" + person.getLastName());
+            Path path = Paths.get(FilesPaths.ATHLETES_PHOTOS_PATH + personId + "_"
+                    + person.getFirstName() + "_" + person.getLastName());
             Files.write(path, bytes);
             person.setPhoto(file.getOriginalFilename());
             personService.save(person);
@@ -296,20 +296,6 @@ public class RestController {
             ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
-    }
-
-//    @GetMapping(
-//            value = "/people/photo",
-//            produces = MediaType.IMAGE_JPEG_VALUE
-//    )
-
-    @GetMapping(value = "/people/photo", produces = MediaType.IMAGE_PNG_VALUE)
-    public @ResponseBody
-    byte[] download() throws IOException {
-        File file = new File("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\main\\resources\\files\\athletes\\ty.png");
-        Path path = Paths.get(file.getAbsolutePath());
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-        return resource.getByteArray();
     }
 
     @PutMapping("/people/{personId}")
@@ -335,19 +321,19 @@ public class RestController {
         return regionService.getRegionsByCountry(countryId);
     }
 
-    @PostMapping(value = "/results/{competitionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity uploadResultsFile(@RequestPart MultipartFile file, @PathVariable("competitionId") int competitionId)
+    @PostMapping(value = "/results/files/{competitionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity uploadResultsCsv(@RequestPart("csv") MultipartFile csvFile,
+                                           @RequestPart("pdf") MultipartFile  pdfFile,
+                                           @PathVariable("competitionId") int competitionId)
             throws ResourceNotFoundException {
         Competition competition = competitionService
                 .findById(competitionId)
                 .orElseThrow(() -> new ResourceNotFoundException("no competition found for id = " + competitionId));
+
         try {
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get("C:\\Users\\Bartek\\IdeaProjects\\ski_jumping_system\\src\\main\\resources\\files\\results\\" + competitionId + "_" + competition.getDate1().toString());
-            Files.write(path, bytes);
+            competitionService.assignFiles(csvFile,pdfFile,competition,competitionId);
         } catch (IOException e) {
-            System.out.println(e.getCause().getMessage());
-            ResponseEntity.badRequest().build();
+            e.printStackTrace();
         }
         return ResponseEntity.ok().build();
     }

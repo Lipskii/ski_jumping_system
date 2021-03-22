@@ -30,7 +30,8 @@ public class Hill {
     @JoinColumn(name = "size_of_hill_idsize_of_hill")
     private SizeOfHill sizeOfHill;
 
-    @JsonManagedReference(value = "hill-hillVersion")
+  //  @JsonManagedReference(value = "hill-hillVersion")
+    @JsonIgnoreProperties("hill")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "hill", cascade = {CascadeType.PERSIST})
     private List<HillVersion> hillVersions;
 
@@ -38,7 +39,6 @@ public class Hill {
     public Hill() {
     }
 
-    @JsonCreator
     public Hill(String name, Venue venue, SizeOfHill sizeOfHill) {
         this.name = name;
         this.venue = venue;

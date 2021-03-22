@@ -2,6 +2,7 @@ package com.lipskii.ski_jumping_system.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -16,8 +17,9 @@ public class HillVersion {
     @Column(name = "idhill_version")
     private int id;
 
-    @JsonBackReference(value = "hill-hillVersion")
+    //@JsonBackReference(value = "hill-hillVersion")
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @JsonIgnoreProperties("hillVersions")
     @JoinColumn(name = "hill_idhill")
     private Hill hill;
 

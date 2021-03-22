@@ -12,12 +12,12 @@ public class DisqualificationType {
     private int id;
 
     @Column(name = "disqualification_type")
-    private int disqualificationType;
+    private String disqualificationType;
 
     public DisqualificationType() {
     }
 
-    public DisqualificationType(int disqualificationType) {
+    public DisqualificationType(String disqualificationType) {
         this.disqualificationType = disqualificationType;
     }
 
@@ -29,11 +29,11 @@ public class DisqualificationType {
         this.id = id;
     }
 
-    public int getDisqualificationType() {
+    public String getDisqualificationType() {
         return disqualificationType;
     }
 
-    public void setDisqualificationType(int disqualificationType) {
+    public void setDisqualificationType(String disqualificationType) {
         this.disqualificationType = disqualificationType;
     }
 
