@@ -30,6 +30,9 @@ public class Country implements Comparable<Country> {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Region> regions;
 
+    @JsonIgnoreProperties("country")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "country", cascade = {CascadeType.PERSIST})
+    private List<Person> people;
 
     public Country() {
     }
@@ -70,6 +73,14 @@ public class Country implements Comparable<Country> {
 
     public void setRegions(List<Region> regions) {
         this.regions = regions;
+    }
+
+    public List<Person> getPeople() {
+        return people;
+    }
+
+    public void setPeople(List<Person> people) {
+        this.people = people;
     }
 
     @Override

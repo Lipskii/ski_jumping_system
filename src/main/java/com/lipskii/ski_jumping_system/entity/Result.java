@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -14,13 +15,13 @@ public class Result {
     @Column(name = "idresult")
     private int id;
 
-    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonIgnoreProperties("results")
     @JoinColumn(name = "competition_idcompetition")
     private Competition competition;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonIgnoreProperties("results")
     @JoinColumn(name = "ski_jumper_idski_jumper")
     private SkiJumper skiJumper;
 
@@ -277,6 +278,8 @@ public class Result {
     public void setId(int id) {
         this.id = id;
     }
+
+
 
     public Competition getCompetition() {
         return competition;

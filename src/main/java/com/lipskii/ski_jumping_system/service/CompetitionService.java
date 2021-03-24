@@ -37,6 +37,10 @@ public class CompetitionService implements ServiceInterface {
         return competitionRepository.findAllByOrderByDate1Desc();
     }
 
+    public List<Competition> findAllBySeriesId(int seriesId){
+        return competitionRepository.findAllBySeriesMajorIdOrderByDate1Desc(seriesId);
+    }
+
     public void assignFiles(MultipartFile csvFile, MultipartFile pdfFile, Competition competition, int competitionId)
             throws IOException {
         byte[] bytesCsv = csvFile.getBytes();
@@ -50,7 +54,7 @@ public class CompetitionService implements ServiceInterface {
         Files.write(pathPdf, bytesPdf);
         competition.setPdfFile(pdfFileName);
         save(competition);
-      // resultService.saveFromCSV(csvFileName, competitionId);
+        resultService.saveFromCSV(csvFileName, competitionId);
     }
 
     @Override

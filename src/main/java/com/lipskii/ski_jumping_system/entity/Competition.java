@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "competition")
@@ -129,7 +130,6 @@ public class Competition {
 
     @Column(name = "first_round_base_gate")
     private int firstRoundBaseGate;
-
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "weather_idfirst_round_weather")
@@ -290,10 +290,17 @@ public class Competition {
     @Column(name = "csv_file")
     private String csvFile;
 
+    @Column(name = "cancelled_at_round")
+    private int cancelledAtRound;
+
+    @JsonIgnoreProperties("competition")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "competition", cascade = {CascadeType.PERSIST})
+    private List<Result> results;
+
     public Competition() {
     }
 
-    public Competition(Season season, LocalDate date1, LocalDate date2, Series seriesMajor, Series seriesMinor, HillVersion hillVersion, Jury judgeA, Jury judgeB, Jury judgeC, Jury judgeD, Jury judgeE, Jury judgeSC, Jury raceDirector, Jury technicalDelegate, Jury chiefOfCompetition, Jury assistantTD, Jury assistantRD, Jury equipmentController1, Jury equipmentController2, BigDecimal meterValue, BigDecimal gateFactor, BigDecimal windFactorTail, BigDecimal windFactorFront, LocalDateTime firstRoundStartTime, LocalDateTime firstRoundEndTime, int firstRoundBaseGate, Weather firstRoundWeather, BigDecimal firstRoundAirTempStart, BigDecimal firstRoundAirTempFinish, BigDecimal firstRoundSnowTempStart, BigDecimal firstRoundSnowTempFinish, BigDecimal firstRoundHumidityStart, BigDecimal firstRoundHumidityFinish, BigDecimal firstRoundMinWind, BigDecimal firstRoundMaxWind, BigDecimal firstRoundAvgWind, LocalDateTime secondRoundStartTime, LocalDateTime secondRoundEndTime, int secondRoundBaseGate, Weather secondRoundWeather, BigDecimal secondRoundAirTempStart, BigDecimal secondRoundAirTempFinish, BigDecimal secondRoundSnowTempStart, BigDecimal secondRoundSnowTempFinish, BigDecimal secondRoundHumidityStart, BigDecimal secondRoundHumidityFinish, BigDecimal secondRoundMinWind, BigDecimal secondRoundMaxWind, BigDecimal secondRoundAvgWind, LocalDateTime thirdRoundStartTime, LocalDateTime thirdRoundEndTime, int thirdRoundBaseGate, Weather thirdRoundWeather, BigDecimal thirdRoundAirTempStart, BigDecimal thirdRoundAirTempFinish, BigDecimal thirdRoundSnowTempStart, BigDecimal thirdRoundSnowTempFinish, BigDecimal thirdRoundHumidityStart, BigDecimal thirdRoundHumidityFinish, BigDecimal thirdRoundMinWind, BigDecimal thirdRoundMaxWind, BigDecimal thirdRoundAvgWind, LocalDateTime fourthRoundStartTime, LocalDateTime fourthRoundEndTime, int fourthRoundBaseGate, Weather fourthRoundWeather, BigDecimal fourthRoundAirTempStart, BigDecimal fourthRoundAirTempFinish, BigDecimal fourthRoundSnowTempStart, BigDecimal fourthRoundSnowTempFinish, BigDecimal fourthRoundHumidityStart, BigDecimal fourthRoundHumidityFinish, BigDecimal fourthRoundMinWind, BigDecimal fourthRoundMaxWind, BigDecimal fourthRoundAvgWind, String pdfFile, String csvFile) {
+    public Competition(Season season, LocalDate date1, LocalDate date2, Series seriesMajor, Series seriesMinor, HillVersion hillVersion, Jury judgeA, Jury judgeB, Jury judgeC, Jury judgeD, Jury judgeE, Jury judgeSC, Jury raceDirector, Jury technicalDelegate, Jury chiefOfCompetition, Jury assistantTD, Jury assistantRD, Jury equipmentController1, Jury equipmentController2, BigDecimal meterValue, BigDecimal gateFactor, BigDecimal windFactorTail, BigDecimal windFactorFront, LocalDateTime firstRoundStartTime, LocalDateTime firstRoundEndTime, int firstRoundBaseGate, Weather firstRoundWeather, BigDecimal firstRoundAirTempStart, BigDecimal firstRoundAirTempFinish, BigDecimal firstRoundSnowTempStart, BigDecimal firstRoundSnowTempFinish, BigDecimal firstRoundHumidityStart, BigDecimal firstRoundHumidityFinish, BigDecimal firstRoundMinWind, BigDecimal firstRoundMaxWind, BigDecimal firstRoundAvgWind, LocalDateTime secondRoundStartTime, LocalDateTime secondRoundEndTime, int secondRoundBaseGate, Weather secondRoundWeather, BigDecimal secondRoundAirTempStart, BigDecimal secondRoundAirTempFinish, BigDecimal secondRoundSnowTempStart, BigDecimal secondRoundSnowTempFinish, BigDecimal secondRoundHumidityStart, BigDecimal secondRoundHumidityFinish, BigDecimal secondRoundMinWind, BigDecimal secondRoundMaxWind, BigDecimal secondRoundAvgWind, LocalDateTime thirdRoundStartTime, LocalDateTime thirdRoundEndTime, int thirdRoundBaseGate, Weather thirdRoundWeather, BigDecimal thirdRoundAirTempStart, BigDecimal thirdRoundAirTempFinish, BigDecimal thirdRoundSnowTempStart, BigDecimal thirdRoundSnowTempFinish, BigDecimal thirdRoundHumidityStart, BigDecimal thirdRoundHumidityFinish, BigDecimal thirdRoundMinWind, BigDecimal thirdRoundMaxWind, BigDecimal thirdRoundAvgWind, LocalDateTime fourthRoundStartTime, LocalDateTime fourthRoundEndTime, int fourthRoundBaseGate, Weather fourthRoundWeather, BigDecimal fourthRoundAirTempStart, BigDecimal fourthRoundAirTempFinish, BigDecimal fourthRoundSnowTempStart, BigDecimal fourthRoundSnowTempFinish, BigDecimal fourthRoundHumidityStart, BigDecimal fourthRoundHumidityFinish, BigDecimal fourthRoundMinWind, BigDecimal fourthRoundMaxWind, BigDecimal fourthRoundAvgWind, String pdfFile, String csvFile, int cancelledAtRound, List<Result> results) {
         this.season = season;
         this.date1 = date1;
         this.date2 = date2;
@@ -371,6 +378,8 @@ public class Competition {
         this.fourthRoundAvgWind = fourthRoundAvgWind;
         this.pdfFile = pdfFile;
         this.csvFile = csvFile;
+        this.cancelledAtRound = cancelledAtRound;
+        this.results = results;
     }
 
     public int getId() {
@@ -997,6 +1006,22 @@ public class Competition {
 
     public void setCsvFile(String csvFile) {
         this.csvFile = csvFile;
+    }
+
+    public List<Result> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
+    }
+
+    public int getCancelledAtRound() {
+        return cancelledAtRound;
+    }
+
+    public void setCancelledAtRound(int cancelledAtRound) {
+        this.cancelledAtRound = cancelledAtRound;
     }
 
     @Override

@@ -120,6 +120,11 @@ public class RestController {
         return competitionService.findAll();
     }
 
+    @GetMapping("/competitions/series/{seriesId}")
+    public List<Competition> getCompetitionsBySeries(@PathVariable("seriesId") int seriesId) {
+        return competitionService.findAllBySeriesId(seriesId);
+    }
+
     @PostMapping("/competitions")
     public Competition addCompetition(@RequestBody Competition competition) {
         competitionService.save(competition);
@@ -319,6 +324,11 @@ public class RestController {
     @GetMapping("/regions/country/{countryId}")
     public List<Region> getRegionsByCountry(@PathVariable("countryId") int countryId) {
         return regionService.getRegionsByCountry(countryId);
+    }
+
+    @GetMapping("/results/{competitionId}")
+    public List<Result> getResultsByCompetitionId(@PathVariable("competitionId") int competitionId){
+        return resultService.findAllByCompetitionId(competitionId);
     }
 
     @PostMapping(value = "/results/files/{competitionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

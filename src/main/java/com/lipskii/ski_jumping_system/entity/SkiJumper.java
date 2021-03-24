@@ -2,9 +2,11 @@ package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "ski_jumper")
@@ -37,6 +39,10 @@ public class SkiJumper implements Comparable<SkiJumper> {
 
     @Column(name = "all_time_points")
     private BigDecimal all_time_points;
+
+    @JsonIgnoreProperties("skiJumper")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "skiJumper", cascade = {CascadeType.PERSIST})
+    private List<Result> results;
 
     public SkiJumper() {
     }
@@ -113,6 +119,14 @@ public class SkiJumper implements Comparable<SkiJumper> {
 
     public void setFisCode(String fisCode) {
         this.fisCode = fisCode;
+    }
+
+    public List<Result> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
     }
 
     @Override

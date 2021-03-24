@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -34,8 +35,8 @@ public class Person implements Comparable<Person> {
     /**
      * Current country that athlete represents with his fis license.
      */
-    @JsonBackReference(value = "country-person")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonIgnoreProperties("people")
     @JoinColumn(name = "country_idcountry")
     private Country country;
 

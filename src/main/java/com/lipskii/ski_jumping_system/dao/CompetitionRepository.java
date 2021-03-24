@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface CompetitionRepository extends JpaRepository<Competition,Integer> {
     List<Competition> findAllByOrderByDate1Desc();
+
+    List<Competition> findAllBySeriesMajorIdOrderByDate1Desc(int seriesId);
 }

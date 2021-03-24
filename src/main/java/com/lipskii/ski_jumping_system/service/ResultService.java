@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +38,11 @@ public class ResultService implements ServiceInterface {
     public List<Result> findAll() {
         return resultRepository.findAll();
     }
+
+    public List<Result> findAllByCompetitionId(int competitionId) {
+        return resultRepository.findAllByCompetitionIdOrderByTotalRank(competitionId);
+    }
+
 
     @Override
     public Optional<Result> findById(int id) {
@@ -81,12 +89,12 @@ public class ResultService implements ServiceInterface {
             result.setDisqualificationType(disqualificationTypeService.findById(dsqTypeId)
                     .orElseThrow(() -> new ResourceNotFoundException("no dsq type found for id = "
                             + dsqTypeId)));
-            result.setFirstRoundDistance(BigDecimal.valueOf(Long.parseLong(resultData[2])));
-            result.setFirstRoundTotal(BigDecimal.valueOf(Long.parseLong(resultData[3])));
-            result.setSecondRoundDistance(BigDecimal.valueOf(Long.parseLong(resultData[4])));
-            result.setSecondRoundTotal(BigDecimal.valueOf(Long.parseLong(resultData[5])));
-            result.setTotalPoints(BigDecimal.valueOf(Long.parseLong(resultData[6])));
-            result.setTotalRank(Integer.parseInt((resultData[7])));
+            result.setFirstRoundDistance(BigDecimal.valueOf(Double.parseDouble(resultData[2])));
+            result.setFirstRoundTotal(BigDecimal.valueOf(Double.parseDouble(resultData[3])));
+            result.setSecondRoundDistance(BigDecimal.valueOf(Double.parseDouble(resultData[4])));
+            result.setSecondRoundTotal(BigDecimal.valueOf(Double.parseDouble(resultData[5])));
+            result.setTotalPoints(BigDecimal.valueOf(Double.parseDouble(resultData[6])));
+            result.setTotalRank(Integer.parseInt((resultData[8])));
             resultRepository.save(result);
         });
 
