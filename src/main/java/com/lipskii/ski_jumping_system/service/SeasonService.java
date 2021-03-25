@@ -20,7 +20,7 @@ public class SeasonService implements ServiceInterface {
 
     @Override
     public List<Season> findAll() {
-        return (List<Season>) seasonRepository.findAll();
+        return seasonRepository.findAllByOrderBySeasonDesc();
     }
 
     @Override

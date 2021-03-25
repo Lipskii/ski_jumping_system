@@ -2,6 +2,7 @@ package com.lipskii.ski_jumping_system.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -21,21 +22,24 @@ public class City implements Comparable<City> {
     @Column(name = "name")
     private String name;
 
-    @JsonBackReference(value = "region-city")
+    @JsonIgnoreProperties("cities")
     @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "region_idregion")
     private Region region;
 
-    @JsonManagedReference("city-club")
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonIgnoreProperties({"city","skiJumpers"})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    // @Fetch(value = FetchMode.SUBSELECT)
     private List<SkiClub> skiClubs;
 
     @JsonManagedReference(value = "venue-city")
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+   // @Fetch(value = FetchMode.SUBSELECT)
     private List<Venue> venues;
 
+    @JsonIgnoreProperties("city")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.PERSIST})
+    private List<Person> people;
 
     public City() {
     }
@@ -87,6 +91,14 @@ public class City implements Comparable<City> {
 
     public void setVenues(List<Venue> venues) {
         this.venues = venues;
+    }
+
+    public List<Person> getPeople() {
+        return people;
+    }
+
+    public void setPeople(List<Person> people) {
+        this.people = people;
     }
 
     @Override

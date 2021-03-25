@@ -25,7 +25,7 @@ public class Country implements Comparable<Country> {
     @Column(name = "code")
     private String code;
 
-    @JsonBackReference(value = "country-region")
+    @JsonIgnoreProperties({"country"})
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "country", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Region> regions;

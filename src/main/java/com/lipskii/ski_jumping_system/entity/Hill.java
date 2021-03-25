@@ -25,7 +25,7 @@ public class Hill {
     @JoinColumn(name = "venue_idvenue")
     private Venue venue;
 
-    @JsonBackReference(value = "size_hill")
+    @JsonIgnoreProperties("hills")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "size_of_hill_idsize_of_hill")
     private SizeOfHill sizeOfHill;

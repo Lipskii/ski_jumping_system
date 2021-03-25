@@ -1,5 +1,6 @@
 package com.lipskii.ski_jumping_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ public class Skis {
     @Column(name = "brand")
     private String brand;
 
-    @JsonManagedReference(value = "skis-skiJumper")
+    @JsonIgnoreProperties("skis")
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "skis", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<SkiJumper> skiJumpers;
 

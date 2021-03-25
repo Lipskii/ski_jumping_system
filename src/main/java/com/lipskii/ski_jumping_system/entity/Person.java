@@ -24,8 +24,8 @@ public class Person implements Comparable<Person> {
     @Column(name = "last_name")
     private String lastName;
 
-    @JsonBackReference(value = "gender-person")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonIgnoreProperties("people")
     @JoinColumn(name = "gender_idgender")
     private Gender gender;
 
@@ -36,15 +36,15 @@ public class Person implements Comparable<Person> {
      * Current country that athlete represents with his fis license.
      */
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnoreProperties("people")
+    @JsonIgnoreProperties({"people","cities"})
     @JoinColumn(name = "country_idcountry")
     private Country country;
 
     /**
      * Place of birth.
      */
-    @JsonBackReference(value = "city-person")
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonIgnoreProperties("people")
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "city_idcity")
     private City city;
 

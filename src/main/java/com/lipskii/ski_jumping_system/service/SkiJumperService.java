@@ -3,10 +3,13 @@ package com.lipskii.ski_jumping_system.service;
 import com.lipskii.ski_jumping_system.dao.SkiJumperRepository;
 import com.lipskii.ski_jumping_system.dto.SkiJumperDTO;
 import com.lipskii.ski_jumping_system.entity.City;
+import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.SkiJumper;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -31,6 +34,10 @@ public class SkiJumperService implements ServiceInterface {
     @Override
     public List<SkiJumper> findAll() {
         return skiJumperRepository.findAll();
+    }
+
+    public List<SkiJumper> get(Specification<SkiJumper> spec, Sort sort) {
+        return skiJumperRepository.findAll(spec, sort);
     }
 
     public List<SkiJumperDTO> findAllDTO(){

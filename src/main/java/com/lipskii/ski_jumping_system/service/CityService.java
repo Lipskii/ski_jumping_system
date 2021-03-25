@@ -4,8 +4,11 @@ import com.lipskii.ski_jumping_system.dao.CityRepository;
 import com.lipskii.ski_jumping_system.dto.CityDTO;
 import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.entity.Country;
+import com.lipskii.ski_jumping_system.entity.SkiJumper;
 import com.lipskii.ski_jumping_system.entity.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +37,10 @@ public class CityService implements ServiceInterface {
     @Override
     public List<City> findAll() {
         return cityRepository.findAll();
+    }
+
+    public List<City> get(Specification<City> spec, Sort sort) {
+        return cityRepository.findAll(spec, sort);
     }
 
     public List<City> getCitiesOrderByName(){

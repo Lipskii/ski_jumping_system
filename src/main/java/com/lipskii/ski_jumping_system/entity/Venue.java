@@ -36,7 +36,7 @@ public class Venue implements Comparable<Venue> {
     private City city;
 
     @JsonManagedReference(value = "venue-hill")
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "venue")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
     private List<Hill> hills;
 
     public Venue() {

@@ -4,18 +4,26 @@ package com.lipskii.ski_jumping_system.rest;
 import com.lipskii.ski_jumping_system.dto.*;
 import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
+import net.kaczmarzyk.spring.data.jpa.domain.*;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -82,47 +90,59 @@ public class RestController {
     }
 
 
-    @GetMapping("/cities")
-    public List<City> getCities() {
-        return cityService.getCitiesOrderByName();
-    }
-
-
-    @GetMapping("/cities/country/{countryId}")
-    public List<City> getCitiesByCountry(@PathVariable("countryId") int countryId) {
-        return cityService.getCitiesByCountry(countryId);
-    }
-
-    @GetMapping("/cities/skiClubs")
-    public List<City> getCitiesWithSkiClubs() {
-        return cityService.findAllWithSkiClubs();
-    }
-
-    @GetMapping("/cities/skiJumpers")
-    public List<City> getCitiesWithSkiJumpers() {
-        return cityService.findAllWithSkiJumpers();
-    }
-
-    @GetMapping("/cities/venues")
-    public List<City> getCitiesWithVenues() {
-        return cityService.findAllWithVenues();
+    @Transactional
+    @GetMapping(value = "/cities", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<City> getCities(
+            @Join(path = "people", alias = "o")
+            @And({
+                    @Spec(path = "id", params = "id", spec = Equal.class),
+                    @Spec(path = "name", params = "name", spec = Equal.class),
+                    @Spec(path = "region.id", params = "regionId", spec = Equal.class),
+                    @Spec(path = "region.country.id", params = "countryId", spec = Equal.class),
+                    @Spec(path="o", params="hasPeople", spec=NotNull.class)
+            }) Specification<City> spec) {
+        return cityService.get(spec, Sort.by("name"));
     }
 
     @PostMapping("/city")
     public City addCity(@RequestBody City city) {
-        city.setName(city.getName().trim());
+        //city.setName(city.getName().trim());
         cityService.save(city);
         return city;
     }
 
-    @GetMapping("/competitions")
-    public List<Competition> getCompetitions() {
-        return competitionService.findAll();
+    @GetMapping("/competitions/hill/{hillId}")
+    public List<Competition> getCompetitionsByHill(@PathVariable("hillId") int hillId) {
+        return competitionService.findAllByHillId(hillId);
+    }
+
+    @GetMapping("/competitions/hillAndSeries/{hillId}&{seriesId}")
+    public List<Competition> getCompetitionsByHillAndSeries(@PathVariable("seriesId") int seriesId, @PathVariable("hillId") int hillId) {
+        return competitionService.findAllBySeriesAndHillId(hillId, seriesId);
+    }
+
+    @Transactional
+    @GetMapping(value = "/competitions", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Competition> getCompetitions(
+            @And({
+                    @Spec(path = "season.id", params = "seasonId", spec = Equal.class),
+                    @Spec(path = "seriesMajor.id", params = "seriesMajorId", spec = Equal.class),
+                    @Spec(path = "seriesMinor.id", params = "seriesMinorId", spec = Equal.class),
+                    @Spec(path = "hillVersion.hill.id", params = "hillId", spec = Equal.class)
+            }) Specification<Competition> spec) {
+        return competitionService.get(spec, Sort.by(Sort.Direction.DESC, "date1"));
     }
 
     @GetMapping("/competitions/series/{seriesId}")
     public List<Competition> getCompetitionsBySeries(@PathVariable("seriesId") int seriesId) {
         return competitionService.findAllBySeriesId(seriesId);
+    }
+
+    @GetMapping("/competitions/season/{seasonId}")
+    public List<Competition> getCompetitionsBySeason(@PathVariable("seasonId") int seasonId) {
+        return competitionService.findAllBySeasonId(seasonId);
     }
 
     @PostMapping("/competitions")
@@ -327,13 +347,13 @@ public class RestController {
     }
 
     @GetMapping("/results/{competitionId}")
-    public List<Result> getResultsByCompetitionId(@PathVariable("competitionId") int competitionId){
+    public List<Result> getResultsByCompetitionId(@PathVariable("competitionId") int competitionId) {
         return resultService.findAllByCompetitionId(competitionId);
     }
 
     @PostMapping(value = "/results/files/{competitionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity uploadResultsCsv(@RequestPart("csv") MultipartFile csvFile,
-                                           @RequestPart("pdf") MultipartFile  pdfFile,
+                                           @RequestPart("pdf") MultipartFile pdfFile,
                                            @PathVariable("competitionId") int competitionId)
             throws ResourceNotFoundException {
         Competition competition = competitionService
@@ -341,7 +361,7 @@ public class RestController {
                 .orElseThrow(() -> new ResourceNotFoundException("no competition found for id = " + competitionId));
 
         try {
-            competitionService.assignFiles(csvFile,pdfFile,competition,competitionId);
+            competitionService.assignFiles(csvFile, pdfFile, competition, competitionId);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -397,9 +417,21 @@ public class RestController {
         return skiClubService.findAllByCountryIdDTO(countryId);
     }
 
-    @GetMapping("/skiJumpers")
-    public List<SkiJumperDTO> getSkiJumpers() {
-        return skiJumperService.findAllDTO();
+    @Transactional
+    @GetMapping(value = "/skiJumpers", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<SkiJumper> getSkiJumpers(
+            @And({
+                    @Spec(path = "id", params = "id", spec = Equal.class),
+                    @Spec(path = "person.id", params = "personId", spec = Equal.class),
+                    @Spec(path = "isActive", params = "isActive", spec = Equal.class),
+                    @Spec(path = "fisCode", params = "fisCode", spec = Equal.class),
+                    @Spec(path = "skis.id", params = "skisId", spec = Equal.class),
+                    @Spec(path = "skiClub.id", params = "skiClubId", spec = Equal.class),
+                    @Spec(path = "person.country.id", params = "countryId", spec = Equal.class),
+                    @Spec(path = "person.city.id", params = "cityId", spec = Equal.class),
+            }) Specification<SkiJumper> spec) {
+        return skiJumperService.get(spec, Sort.by("person.lastName"));
     }
 
     @PostMapping("/skiJumpers")

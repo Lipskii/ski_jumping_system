@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -24,11 +25,11 @@ public class SkiClub implements Comparable<SkiClub> {
     private City city;
 
     @JsonManagedReference(value = "venue-skiClub")
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "skiClub", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "skiClub", cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Venue> venues;
 
-    @JsonManagedReference(value = "skiClub-skiJumper")
-    @OneToMany(mappedBy = "skiClub", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonIgnoreProperties("skiClub")
+    @OneToMany(mappedBy = "skiClub", cascade = {CascadeType.PERSIST})
     private List<SkiJumper> skiJumpers;
 
     public SkiClub() {

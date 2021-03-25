@@ -27,12 +27,12 @@ public class SkiJumper implements Comparable<SkiJumper> {
     @Column(name = "fis_code")
     private String fisCode;
 
-    @JsonBackReference(value = "skis-skiJumper")
+    @JsonIgnoreProperties("skiJumpers")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "skis_idskis")
     private Skis skis;
 
-    @JsonBackReference(value = "skiClub-skiJumper")
+    @JsonIgnoreProperties("skiJumpers")
     @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "ski_club_idski_club")
     private SkiClub skiClub;
