@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
 @org.springframework.web.bind.annotation.RestController
-public class RestController {
+public class RequestsController {
 
     private final AllTimePointsSystemService allTimePointsSystemService;
     private final CityService cityService;
@@ -65,7 +65,7 @@ public class RestController {
 
 
     @Autowired
-    public RestController(AllTimePointsSystemService allTimePointsSystemService, CityService cityService, CountryService countryService, CompetitionService competitionService, DisqualificationTypeService disqualificationTypeService, GenderService genderService, HillService hillService, HillVersionService hillVersionService, JuryService juryService, JuryTypeService juryTypeService, PersonService personService, RegionService regionService, ResultService resultService, SeasonService seasonService, SeriesService seriesService, SizeOfHillService sizeOfHillService, SkiClubService skiClubService, SkiJumperService skiJumperService, SkisService skisService, VenueService venueService, WeatherService weatherService) {
+    public RequestsController(AllTimePointsSystemService allTimePointsSystemService, CityService cityService, CountryService countryService, CompetitionService competitionService, DisqualificationTypeService disqualificationTypeService, GenderService genderService, HillService hillService, HillVersionService hillVersionService, JuryService juryService, JuryTypeService juryTypeService, PersonService personService, RegionService regionService, ResultService resultService, SeasonService seasonService, SeriesService seriesService, SizeOfHillService sizeOfHillService, SkiClubService skiClubService, SkiJumperService skiJumperService, SkisService skisService, VenueService venueService, WeatherService weatherService) {
         this.allTimePointsSystemService = allTimePointsSystemService;
         this.cityService = cityService;
         this.countryService = countryService;
@@ -103,6 +103,11 @@ public class RestController {
                     @Spec(path="o", params="hasPeople", spec=NotNull.class)
             }) Specification<City> spec) {
         return cityService.get(spec, Sort.by("name"));
+    }
+
+    @GetMapping( "/cities/skiClubs")
+    public List<City> getCitiesWithSkiClubs() {
+        return cityService.findAllWithSkiClubs();
     }
 
     @PostMapping("/city")
@@ -151,19 +156,25 @@ public class RestController {
         return competition;
     }
 
-    @GetMapping("/countries")
-    public List<Country> getCountries() {
-        return countryService.findAll();
+
+    @Transactional
+    @GetMapping(value = "/countries", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Country> getCountries(
+            @Join(path = "people", alias = "o")
+            @And({
+                    @Spec(path = "id", params = "id", spec = Equal.class),
+                    @Spec(path = "name", params = "name", spec = Equal.class),
+                    @Spec(path = "code", params = "code", spec = Equal.class),
+                    @Spec(path="o", params="hasPeople", spec=NotNull.class)
+            }) Specification<Country> spec) {
+        return countryService.get(spec, Sort.by("name"));
     }
+
 
     @GetMapping("/countries/jury")
     public List<Country> getCountriesWithJury() {
         return countryService.findAllWithJury();
-    }
-
-    @GetMapping("/countries/people")
-    public List<Country> getCountriesWithPeople() {
-        return countryService.findAllWithPeople();
     }
 
     @GetMapping("/countries/skiClubs")
@@ -233,44 +244,19 @@ public class RestController {
         return hillVersion;
     }
 
-    @GetMapping("/jury")
-    public List<JuryDTO> getJury() {
-        return juryService.findAllDTO();
-    }
 
-    @GetMapping("/jury/rd")
-    public List<JuryDTO> getRDs() {
-        return juryService.findAllRaceDirectors();
-    }
-
-    @GetMapping("/jury/td")
-    public List<JuryDTO> getTDs() {
-        return juryService.findAllTechnicalDelegates();
-    }
-
-    @GetMapping("/jury/coc")
-    public List<JuryDTO> getChiefs() {
-        return juryService.findAllChiefsOfCompetitions();
-    }
-
-    @GetMapping("/jury/ec")
-    public List<JuryDTO> getEquipmentControllers() {
-        return juryService.findAllEquipmentControllers();
-    }
-
-    @GetMapping("/jury/judges")
-    public List<JuryDTO> getJudges() {
-        return juryService.findAllJudges();
-    }
-
-    @GetMapping("/jury/atd")
-    public List<JuryDTO> getTDAssistants() {
-        return juryService.findAllTDAssistants();
-    }
-
-    @GetMapping("/jury/ard")
-    public List<JuryDTO> getRDAssistants() {
-        return juryService.findAllRDAssistants();
+    @Transactional
+    @GetMapping(value = "/jury", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Jury> getJury(
+            @And({
+                    @Spec(path = "id", params = "id", spec = Equal.class),
+                    @Spec(path = "juryType.id", params = "juryTypeId", spec = Equal.class),
+                    @Spec(path = "person.id", params = "personId", spec = Equal.class),
+                    @Spec(path = "person.country.id", params = "countryId", spec = Equal.class),
+                    @Spec(path = "person.gender.id", params = "genderId", spec = Equal.class),
+            }) Specification<Jury> spec) {
+        return juryService.get(spec, Sort.by("person.lastName"));
     }
 
     @PostMapping("/jury")
@@ -279,24 +265,24 @@ public class RestController {
         return jury;
     }
 
-    @GetMapping("/jury/country/{countryId}")
-    public List<JuryDTO> getJuryByCountry(@PathVariable("countryId") int countryId) {
-        return juryService.findAllByCountryId(countryId);
-    }
-
     @GetMapping("/juryTypes")
     public List<JuryType> getJuryTypes() {
         return juryTypeService.findAll();
     }
 
-    @GetMapping("/people")
-    public List<Person> getPeople() {
-        return personService.findAllOrderedByLastName();
-    }
-
-    @GetMapping("/people/country/{countryId}")
-    public List<Person> getPeopleByCountryId(@PathVariable("countryId") int countryId) {
-        return personService.findAllByCountryId(countryId);
+    @Transactional
+    @GetMapping(value = "/people", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Person> getPeople(
+            @And({
+                    @Spec(path = "id", params = "id", spec = Equal.class),
+                    @Spec(path = "firstName", params = "firstName", spec = Equal.class),
+                    @Spec(path = "lastName", params = "lastName", spec = Equal.class),
+                    @Spec(path = "gender.id", params = "genderId", spec = Equal.class),
+                    @Spec(path = "country.id", params = "countryId", spec = Equal.class),
+                    @Spec(path = "city.id", params = "cityId", spec = Equal.class),
+            }) Specification<Person> spec) {
+        return personService.get(spec, Sort.by("lastName"));
     }
 
     @PostMapping("/people")
@@ -383,9 +369,17 @@ public class RestController {
         return sizeOfHillService.findAll();
     }
 
-    @GetMapping("/skiClubs")
-    public List<SkiClubDTO> getSkiClubs() {
-        return skiClubService.findAllOrderByNameDTO();
+    @Transactional
+    @GetMapping(value = "/skiClubs", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<SkiClub> getSkiClubs(
+            @And({
+                    @Spec(path = "id", params = "id", spec = Equal.class),
+                    @Spec(path = "name", params = "name", spec = Equal.class),
+                    @Spec(path = "city.id", params = "cityId", spec = Equal.class),
+                    @Spec(path = "city.region.country.id", params = "countryId", spec = Equal.class),
+            }) Specification<SkiClub> spec) {
+        return skiClubService.get(spec, Sort.by("name"));
     }
 
     @PostMapping("/skiClubs")
@@ -407,16 +401,6 @@ public class RestController {
         return ResponseEntity.ok(skiClub);
     }
 
-    @GetMapping("/skiClubs/city/{cityId}")
-    public List<SkiClubDTO> getSkiClubsByCity(@PathVariable("cityId") int cityId) {
-        return skiClubService.findAllByCityIdDTO(cityId);
-    }
-
-    @GetMapping("/skiClubs/country/{countryId}")
-    public List<SkiClubDTO> getSkiClubsByCountry(@PathVariable("countryId") int countryId) {
-        return skiClubService.findAllByCountryIdDTO(countryId);
-    }
-
     @Transactional
     @GetMapping(value = "/skiJumpers", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -430,6 +414,7 @@ public class RestController {
                     @Spec(path = "skiClub.id", params = "skiClubId", spec = Equal.class),
                     @Spec(path = "person.country.id", params = "countryId", spec = Equal.class),
                     @Spec(path = "person.city.id", params = "cityId", spec = Equal.class),
+                    @Spec(path = "person.gender.id", params = "genderId", spec = Equal.class),
             }) Specification<SkiJumper> spec) {
         return skiJumperService.get(spec, Sort.by("person.lastName"));
     }
@@ -453,29 +438,24 @@ public class RestController {
         return skiJumper;
     }
 
-    @GetMapping("/skiJumpers/city/{cityId}")
-    public List<SkiJumperDTO> getSkiJumpersByCity(@PathVariable("cityId") int cityId) {
-        return skiJumperService.findAllByCityIdDTO(cityId);
-    }
-
-    @GetMapping("/skiJumpers/country/{countryId}")
-    public List<SkiJumperDTO> getSkiJumpersByCountry(@PathVariable("countryId") int countryId) {
-        return skiJumperService.findAllByCountryIdDTO(countryId);
-    }
-
     @GetMapping("/skis")
     public List<Skis> getSkis() {
         return skisService.findAll();
     }
 
-    @GetMapping("/venues")
-    public List<VenueDTO> getVenues() {
-        return venueService.findAllDTO();
-    }
-
-    @GetMapping("/venues/hills")
-    public List<VenueDTO> getVenuesWithHills() {
-        return venueService.findAllWithHillsDTO();
+    @Transactional
+    @GetMapping(value = "/venues", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Venue> getVenues(
+            @Join(path = "hills", alias = "o")
+            @And({
+                    @Spec(path = "id", params = "id", spec = Equal.class),
+                    @Spec(path = "skiClub.id", params = "skiClubId", spec = Equal.class),
+                    @Spec(path = "city.region.country.id", params = "countryId", spec = Equal.class),
+                    @Spec(path = "city.id", params = "cityId", spec = Equal.class),
+                    @Spec(path = "o", params = "hasHills", spec = NotNull.class),
+            }) Specification<Venue> spec) {
+        return venueService.get(spec, Sort.by("name"));
     }
 
     @PostMapping("/venues")
@@ -509,16 +489,6 @@ public class RestController {
         response.put("deleted", Boolean.TRUE);
         return response;
 
-    }
-
-    @GetMapping("/venues/city/{cityId}")
-    public List<VenueDTO> getVenuesByCity(@PathVariable("cityId") int cityId) {
-        return venueService.getVenuesByCity(cityId);
-    }
-
-    @GetMapping("/venues/country/{countryId}")
-    public List<VenueDTO> getVenuesByCountry(@PathVariable("countryId") int countryId) {
-        return venueService.findAllByCountryDTO(countryId);
     }
 
     @GetMapping("/weather")

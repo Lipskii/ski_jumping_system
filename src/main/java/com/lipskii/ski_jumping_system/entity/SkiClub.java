@@ -19,12 +19,12 @@ public class SkiClub implements Comparable<SkiClub> {
     @Column(name = "name")
     private String name;
 
-    @JsonBackReference(value = "city-club")
+    @JsonIgnoreProperties("skiClubs")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "city_idcity")
     private City city;
 
-    @JsonManagedReference(value = "venue-skiClub")
+    @JsonIgnoreProperties("skiClubs")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "skiClub", cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Venue> venues;
 

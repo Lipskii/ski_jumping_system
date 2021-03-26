@@ -25,12 +25,12 @@ public class Venue implements Comparable<Venue> {
     @Column(name = "capacity")
     private int capacity;
 
-    @JsonBackReference(value = "venue-skiClub")
+    @JsonIgnoreProperties("venues")
     @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "ski_club_idski_club")
     private SkiClub skiClub;
 
-    @JsonBackReference(value = "venue-city")
+    @JsonIgnoreProperties("venues")
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "city_idcity")
     private City city;

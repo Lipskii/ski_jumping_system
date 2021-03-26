@@ -4,11 +4,10 @@ import com.lipskii.ski_jumping_system.dao.VenueRepository;
 import com.lipskii.ski_jumping_system.dto.CountryWithVenuesDTO;
 import com.lipskii.ski_jumping_system.dto.SkisDTO;
 import com.lipskii.ski_jumping_system.dto.VenueDTO;
-import com.lipskii.ski_jumping_system.entity.City;
-import com.lipskii.ski_jumping_system.entity.Country;
-import com.lipskii.ski_jumping_system.entity.Skis;
-import com.lipskii.ski_jumping_system.entity.Venue;
+import com.lipskii.ski_jumping_system.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +30,10 @@ public class VenueService implements ServiceInterface {
     @Override
     public List<Venue> findAll() {
         return venueRepository.findAllByOrderByName();
+    }
+
+    public List<Venue> get(Specification<Venue> spec, Sort sort){
+        return venueRepository.findAll(spec,sort);
     }
 
 

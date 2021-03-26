@@ -61,13 +61,6 @@ public class CompetitionService implements ServiceInterface {
         return competitionRepository.findAllBySeriesMajorIdAndHillVersionHillOrderByDate1Desc(seriesId,hill);
     }
 
-//    public List<Competition> findAllByHillIdSeasonIdSeriesId(int hillId, int seasonId, int seriesId) {
-//        Hill hill = hillService.findById(hillId).orElseThrow(() -> new ResourceNotFoundException("No hill found for id = " + hillId));
-//        return competitionRepository.findAllByHillVersionHillAndSeasonIdAndSeriesIdOrderByDate1Desc(
-//          hill,seasonId,seriesId
-//        );
-//    }
-
 
     public void assignFiles(MultipartFile csvFile, MultipartFile pdfFile, Competition competition, int competitionId)
             throws IOException {
@@ -105,20 +98,4 @@ public class CompetitionService implements ServiceInterface {
     }
 
 
-//    private CompetitionDTO convertToCompetitionDTO(Competition competition) {
-//        CompetitionDTO competitionDTO = new CompetitionDTO();
-//        competitionDTO.setId(competition.getId());
-//        competitionDTO.setSeason(competition.getSeason());
-//        competitionDTO.setDate1(competition.getDate1());
-//        competitionDTO.setDate2(competition.getDate2());
-//        competitionDTO.setSeriesMajor(competition.getSeriesMajor());
-//        competitionDTO.setSeriesMinor(competition.getSeriesMinor());
-//        competitionDTO.setCountry(competition.getHillVersion().getHill().getVenue().getCity().getRegion().getCountry());
-//        competitionDTO.setCity(competition.getHillVersion().getHill().getVenue().getCity());
-//        competitionDTO.setVenue(competition.getHillVersion().getHill().getVenue());
-//        competitionDTO.setHill(competition.getHillVersion().getHill());
-//        competitionDTO.setHillVersion(competition.getHillVersion());
-//        competitionDTO.setJudgeA(competition.getJudgeA());
-//        return competitionDTO;
-//    }
 }

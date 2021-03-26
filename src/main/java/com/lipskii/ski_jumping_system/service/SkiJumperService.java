@@ -40,35 +40,8 @@ public class SkiJumperService implements ServiceInterface {
         return skiJumperRepository.findAll(spec, sort);
     }
 
-    public List<SkiJumperDTO> findAllDTO(){
-        List<SkiJumperDTO> skiJumperDTOList = skiJumperRepository.findAll()
-                .stream()
-                .map(this::convertToSkiJumperDTO)
-                .collect(Collectors.toList());
-        Collections.sort(skiJumperDTOList);
-        return skiJumperDTOList;
-    }
-
-    public List<SkiJumper> findAllByCity(City city) {
-        return skiJumperRepository.findAllByPersonCityOrderByPerson(city);
-    }
-
     public List<SkiJumper> findAllByCountry(Country country){
         return skiJumperRepository.findAllByPersonCountryOrderByPerson(country);
-    }
-
-    public List<SkiJumperDTO> findAllByCountryIdDTO(int countryId){
-       List<SkiJumperDTO> skiJumperDTOList = skiJumperRepository.findAllByPersonCountryId(countryId)
-               .stream().map(this::convertToSkiJumperDTO).collect(Collectors.toList());
-       Collections.sort(skiJumperDTOList);
-       return skiJumperDTOList;
-    }
-
-    public List<SkiJumperDTO> findAllByCityIdDTO(int cityId) {
-        List<SkiJumperDTO> skiJumperDTOList = skiJumperRepository.findAllByPersonCityId(cityId)
-                .stream().map(this::convertToSkiJumperDTO).collect(Collectors.toList());
-        Collections.sort(skiJumperDTOList);
-        return skiJumperDTOList;
     }
 
     @Override
@@ -86,22 +59,4 @@ public class SkiJumperService implements ServiceInterface {
         skiJumperRepository.deleteById(id);
     }
 
-
-    private SkiJumperDTO convertToSkiJumperDTO(SkiJumper skiJumper) {
-        SkiJumperDTO skiJumperDTO = new SkiJumperDTO();
-        skiJumperDTO.setId(skiJumper.getId());
-        skiJumperDTO.setPerson(skiJumper.getPerson());
-        skiJumperDTO.setFirstName(skiJumper.getPerson().getFirstName());
-        skiJumperDTO.setLastName(skiJumper.getPerson().getLastName());
-        skiJumperDTO.setGender(skiJumper.getPerson().getGender());
-        skiJumperDTO.setCity(skiJumper.getPerson().getCity());
-        skiJumperDTO.setCountry(skiJumper.getPerson().getCountry());
-        skiJumperDTO.setSkiClub(skiJumper.getSkiClub());
-        skiJumperDTO.setBirthdate(skiJumper.getPerson().getBirthdate());
-        skiJumperDTO.setActive(skiJumper.isActive());
-        skiJumperDTO.setSkis(skiJumper.getSkis());
-        skiJumperDTO.setFisCode(skiJumper.getFisCode());
-        skiJumperDTO.setAllTimePoints(skiJumper.getAll_time_points());
-        return skiJumperDTO;
-    }
 }

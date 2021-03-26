@@ -4,7 +4,10 @@ import com.lipskii.ski_jumping_system.dao.CountryRepository;
 import com.lipskii.ski_jumping_system.dto.CountryWithVenuesDTO;
 import com.lipskii.ski_jumping_system.dto.VenueDTO;
 import com.lipskii.ski_jumping_system.entity.Country;
+import com.lipskii.ski_jumping_system.entity.SkiClub;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,6 +51,9 @@ public class CountryService implements ServiceInterface {
         return countryRepository.findAll();
     }
 
+    public List<Country> get(Specification<Country> spec, Sort sort){
+        return countryRepository.findAll(spec,sort);
+    }
 
     @Override
     public Optional<Country> findById(int id) {

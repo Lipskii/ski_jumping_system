@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -13,12 +14,12 @@ public class Jury {
     @Column(name = "idjury")
     private int id;
 
-    @JsonBackReference(value = "juryType-jury")
+    @JsonIgnoreProperties("jury")
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "jury_type_idjury_type")
     private JuryType juryType;
 
-    @JsonBackReference(value = "person-jury")
+    @JsonIgnoreProperties("jury")
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "person_idperson")
     private Person person;

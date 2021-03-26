@@ -1,7 +1,7 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.CityRepository;
-import com.lipskii.ski_jumping_system.dto.CityDTO;
+
 import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.SkiJumper;
@@ -43,24 +43,9 @@ public class CityService implements ServiceInterface {
         return cityRepository.findAll(spec, sort);
     }
 
-    public List<City> getCitiesOrderByName(){
-        return cityRepository.findAllByOrderByName();
-    }
-
     @Override
     public Optional<City> findById(int id) {
         return cityRepository.findById(id);
-    }
-
-    @Override
-    public City save(Object obj) {
-        return cityRepository.save((City) obj);
-    }
-
-    public List<City> findAllWithVenues(){
-        List<City> cities = cityRepository.findAllByOrderByName();
-        cities.removeIf(city -> venueService.findAllByCity(city).isEmpty());
-        return cities;
     }
 
     public List<City> findAllWithSkiClubs(){
@@ -69,27 +54,18 @@ public class CityService implements ServiceInterface {
         return cities;
     }
 
-    public List<City> findAllWithSkiJumpers(){
-        List<City> cities = cityRepository.findAllByOrderByName();
-        cities.removeIf(city -> skiJumperService.findAllByCity(city).isEmpty());
-        return cities;
+    @Override
+    public City save(Object obj) {
+        return cityRepository.save((City) obj);
     }
 
     public List<City> findCitiesByCountry(Country country){
         return cityRepository.findAllByRegionCountry(country);
     }
 
-
     @Override
     public void deleteById(int id) {
         cityRepository.deleteById(id);
     }
 
-    public List<City> getCitiesByCountry(int countryId){
-        return cityRepository.findAllByRegionCountryIdOrderByName(countryId);
-    }
-
-    public City findCityByName(String cityName) {
-        return cityRepository.findByName(cityName);
-    }
 }

@@ -48,9 +48,9 @@ public class Person implements Comparable<Person> {
     @JoinColumn(name = "city_idcity")
     private City city;
 
-//    @JsonManagedReference(value = "person-jury")
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person")
-//    private List<Jury> juryList;
+    @JsonIgnoreProperties("person")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person")
+    private List<Jury> juryList;
 
     @Column(name = "photo")
     private String photo;

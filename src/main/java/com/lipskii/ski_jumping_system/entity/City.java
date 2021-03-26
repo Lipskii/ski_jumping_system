@@ -27,14 +27,13 @@ public class City implements Comparable<City> {
     @JoinColumn(name = "region_idregion")
     private Region region;
 
-    @JsonIgnoreProperties({"city","skiJumpers"})
+    @JsonIgnoreProperties({"city","skiJumpers","venues"})
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     // @Fetch(value = FetchMode.SUBSELECT)
     private List<SkiClub> skiClubs;
 
-    @JsonManagedReference(value = "venue-city")
+    @JsonIgnoreProperties({"city","skiClub"})
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-   // @Fetch(value = FetchMode.SUBSELECT)
     private List<Venue> venues;
 
     @JsonIgnoreProperties("city")

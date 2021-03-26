@@ -5,8 +5,11 @@ import com.lipskii.ski_jumping_system.dto.JuryDTO;
 import com.lipskii.ski_jumping_system.dto.SkiJumperDTO;
 import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.Jury;
+import com.lipskii.ski_jumping_system.entity.SkiClub;
 import com.lipskii.ski_jumping_system.entity.SkiJumper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -27,6 +30,10 @@ public class JuryService implements ServiceInterface {
     @Override
     public List<Jury> findAll() {
         return juryRepository.findAll();
+    }
+
+    public List<Jury> get(Specification<Jury> spec, Sort sort){
+        return juryRepository.findAll(spec, sort);
     }
 
     public List<JuryDTO> findAllDTO() {

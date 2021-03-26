@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class SkiJumperDTO implements Comparable<SkiJumperDTO> {
+public class SkiJumperDTO {
     private int id;
     private Person person;
     private String firstName;
@@ -125,8 +125,5 @@ public class SkiJumperDTO implements Comparable<SkiJumperDTO> {
         this.fisCode = fisCode;
     }
 
-    @Override
-    public int compareTo(SkiJumperDTO o) {
-        return this.lastName.compareTo(o.lastName);
-    }
+
 }

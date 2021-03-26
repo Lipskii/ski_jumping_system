@@ -3,7 +3,10 @@ package com.lipskii.ski_jumping_system.service;
 import com.lipskii.ski_jumping_system.dao.PersonRepository;
 import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.Person;
+import com.lipskii.ski_jumping_system.entity.SkiClub;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -26,6 +29,10 @@ public class PersonService implements ServiceInterface {
     @Override
     public List<Person> findAll() {
         return personRepository.findAll();
+    }
+
+    public List<Person> get(Specification<Person> spec, Sort sort){
+        return personRepository.findAll(spec,sort);
     }
 
     public List<Person> findAllOrderedByLastName(){
