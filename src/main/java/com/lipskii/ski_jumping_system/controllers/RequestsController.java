@@ -1,40 +1,28 @@
-package com.lipskii.ski_jumping_system.rest;
+package com.lipskii.ski_jumping_system.controllers;
 
 
-import com.lipskii.ski_jumping_system.dto.*;
 import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
 import net.kaczmarzyk.spring.data.jpa.domain.*;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.logging.Logger;
 
-//TODO error handling
 
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
@@ -135,7 +123,8 @@ public class RequestsController {
                     @Spec(path = "season.id", params = "seasonId", spec = Equal.class),
                     @Spec(path = "seriesMajor.id", params = "seriesMajorId", spec = Equal.class),
                     @Spec(path = "seriesMinor.id", params = "seriesMinorId", spec = Equal.class),
-                    @Spec(path = "hillVersion.hill.id", params = "hillId", spec = Equal.class)
+                    @Spec(path = "hillVersion.hill.id", params = "hillId", spec = Equal.class),
+                    @Spec(path = "hillVersion.hill.venue.id", params = "venueId", spec = Equal.class)
             }) Specification<Competition> spec) {
         return competitionService.get(spec, Sort.by(Sort.Direction.DESC, "date1"));
     }
@@ -337,7 +326,7 @@ public class RequestsController {
         return resultService.findAllByCompetitionId(competitionId);
     }
 
-    @PostMapping(value = "/results/files/{competitionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/results/files/csv/{competitionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity uploadResultsCsv(@RequestPart("csv") MultipartFile csvFile,
                                            @RequestPart("pdf") MultipartFile pdfFile,
                                            @PathVariable("competitionId") int competitionId)

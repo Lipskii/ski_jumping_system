@@ -1,7 +1,6 @@
 package com.lipskii.ski_jumping_system.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -24,10 +23,10 @@ public class HillVersion {
     private Hill hill;
 
     @Column(name = "first_year")
-    private Integer first_year;
+    private Integer firstYear;
 
     @Column(name = "last_year")
-    private Integer last_year;
+    private Integer lastYear;
 
     @Column(name = "k_point")
     private BigDecimal kPoint;
@@ -216,10 +215,10 @@ public class HillVersion {
     }
 
 
-    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal t, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal r2l, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
+    public HillVersion(Hill hill, Integer first_year, Integer lastYear, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal t, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal r2l, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
         this.hill = hill;
-        this.first_year = first_year;
-        this.last_year = last_year;
+        this.firstYear = first_year;
+        this.lastYear = lastYear;
         this.kPoint = kPoint;
         this.hillSize = hillSize;
         this.es = es;
@@ -256,10 +255,10 @@ public class HillVersion {
         this.validUntil = validUntil;
     }
 
-    public HillVersion(Hill hill, Integer first_year, Integer last_year, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal t, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
+    public HillVersion(Hill hill, Integer first_year, Integer lastYear, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal t, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
         this.hill = hill;
-        this.first_year = first_year;
-        this.last_year = last_year;
+        this.firstYear = first_year;
+        this.lastYear = lastYear;
         this.kPoint = kPoint;
         this.hillSize = hillSize;
         this.es = es;
@@ -311,12 +310,12 @@ public class HillVersion {
         this.hill = hill;
     }
 
-    public Integer getFirst_year() {
-        return first_year;
+    public Integer getFirstYear() {
+        return firstYear;
     }
 
-    public void setFirst_year(Integer first_year) {
-        this.first_year = first_year;
+    public void setFirstYear(Integer first_year) {
+        this.firstYear = first_year;
     }
 
     public BigDecimal getR2l() {
@@ -335,12 +334,12 @@ public class HillVersion {
         this.zu = zu;
     }
 
-    public Integer getLast_year() {
-        return last_year;
+    public Integer getLastYear() {
+        return lastYear;
     }
 
-    public void setLast_year(Integer last_year) {
-        this.last_year = last_year;
+    public void setLastYear(Integer last_year) {
+        this.lastYear = last_year;
     }
 
     public BigDecimal getkPoint() {

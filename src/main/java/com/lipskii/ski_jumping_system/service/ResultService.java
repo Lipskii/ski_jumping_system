@@ -3,18 +3,14 @@ package com.lipskii.ski_jumping_system.service;
 import com.lipskii.ski_jumping_system.dao.ResultRepository;
 import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Result;
-import com.lipskii.ski_jumping_system.rest.FilesPaths;
+import com.lipskii.ski_jumping_system.controllers.FilesPaths;
 import com.opencsv.CSVReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 

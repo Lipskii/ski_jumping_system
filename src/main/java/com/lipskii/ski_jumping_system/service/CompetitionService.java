@@ -1,18 +1,14 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.CompetitionRepository;
-import com.lipskii.ski_jumping_system.dto.CompetitionDTO;
-import com.lipskii.ski_jumping_system.dto.SkiJumperDTO;
 import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Hill;
-import com.lipskii.ski_jumping_system.entity.SkiJumper;
-import com.lipskii.ski_jumping_system.rest.FilesPaths;
+import com.lipskii.ski_jumping_system.controllers.FilesPaths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
