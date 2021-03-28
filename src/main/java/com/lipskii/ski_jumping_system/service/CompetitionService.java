@@ -58,18 +58,18 @@ public class CompetitionService implements ServiceInterface {
     }
 
 
-    public void assignFiles(MultipartFile csvFile, MultipartFile pdfFile, Competition competition, int competitionId)
+    public void assignFiles(MultipartFile csvFile, Competition competition, int competitionId)
             throws IOException {
         byte[] bytesCsv = csvFile.getBytes();
         String csvFileName = +competitionId + "_" + competition.getDate1().toString() + ".csv";
         Path pathCsv = Paths.get(FilesPaths.RESULTS_PATH + csvFileName);
         Files.write(pathCsv, bytesCsv);
         competition.setCsvFile(csvFileName);
-        byte[] bytesPdf = pdfFile.getBytes();
-        String pdfFileName = +competitionId + "_" + competition.getDate1().toString() + ".pdf";
-        Path pathPdf = Paths.get(FilesPaths.RESULTS_PATH + pdfFileName);
-        Files.write(pathPdf, bytesPdf);
-        competition.setPdfFile(pdfFileName);
+//        byte[] bytesPdf = pdfFile.getBytes();
+//        String pdfFileName = +competitionId + "_" + competition.getDate1().toString() + ".pdf";
+//        Path pathPdf = Paths.get(FilesPaths.RESULTS_PATH + pdfFileName);
+//        Files.write(pathPdf, bytesPdf);
+//        competition.setPdfFile(pdfFileName);
         save(competition);
         resultService.saveFromCSV(csvFileName, competitionId);
     }

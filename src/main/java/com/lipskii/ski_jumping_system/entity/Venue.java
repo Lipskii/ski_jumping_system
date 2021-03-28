@@ -35,7 +35,7 @@ public class Venue implements Comparable<Venue> {
     @JoinColumn(name = "city_idcity")
     private City city;
 
-    @JsonManagedReference(value = "venue-hill")
+    @JsonIgnoreProperties("venue")
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
     private List<Hill> hills;
 

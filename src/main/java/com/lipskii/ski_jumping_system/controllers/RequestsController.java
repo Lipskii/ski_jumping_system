@@ -119,12 +119,15 @@ public class RequestsController {
     @GetMapping(value = "/competitions", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<Competition> getCompetitions(
+            @Join(path = "results", alias = "r")
             @And({
                     @Spec(path = "season.id", params = "seasonId", spec = Equal.class),
                     @Spec(path = "seriesMajor.id", params = "seriesMajorId", spec = Equal.class),
                     @Spec(path = "seriesMinor.id", params = "seriesMinorId", spec = Equal.class),
                     @Spec(path = "hillVersion.hill.id", params = "hillId", spec = Equal.class),
-                    @Spec(path = "hillVersion.hill.venue.id", params = "venueId", spec = Equal.class)
+                    @Spec(path = "hillVersion.hill.venue.id", params = "venueId", spec = Equal.class),
+                    @Spec(path = "hillVersion.hill.sizeOfHill.id", params = "sizeOfHillId", spec=Equal.class),
+                    @Spec(path="r", params="hasResults", spec=NotNull.class)
             }) Specification<Competition> spec) {
         return competitionService.get(spec, Sort.by(Sort.Direction.DESC, "date1"));
     }
@@ -328,7 +331,7 @@ public class RequestsController {
 
     @PostMapping(value = "/results/files/csv/{competitionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity uploadResultsCsv(@RequestPart("csv") MultipartFile csvFile,
-                                           @RequestPart("pdf") MultipartFile pdfFile,
+                                          //@RequestPart("pdf") MultipartFile pdfFile,
                                            @PathVariable("competitionId") int competitionId)
             throws ResourceNotFoundException {
         Competition competition = competitionService
@@ -336,7 +339,7 @@ public class RequestsController {
                 .orElseThrow(() -> new ResourceNotFoundException("no competition found for id = " + competitionId));
 
         try {
-            competitionService.assignFiles(csvFile, pdfFile, competition, competitionId);
+            competitionService.assignFiles(csvFile,competition, competitionId);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -353,7 +356,7 @@ public class RequestsController {
         return seriesService.findAll();
     }
 
-    @GetMapping("/sizeOfHill")
+    @GetMapping("/sizesOfHill")
     public List<SizeOfHill> getSizesOfHil() {
         return sizeOfHillService.findAll();
     }

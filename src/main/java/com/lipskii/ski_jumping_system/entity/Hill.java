@@ -20,7 +20,7 @@ public class Hill {
     @Column(name = "name")
     private String name;
 
-    @JsonBackReference(value = "venue-hill")
+    @JsonIgnoreProperties({"hills","skiClub"})
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "venue_idvenue")
     private Venue venue;
