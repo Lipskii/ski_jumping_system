@@ -1,10 +1,7 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.HillRepository;
-import com.lipskii.ski_jumping_system.dto.HillDTO;
-import com.lipskii.ski_jumping_system.dto.VenueDTO;
 import com.lipskii.ski_jumping_system.entity.Hill;
-import com.lipskii.ski_jumping_system.entity.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -35,6 +32,7 @@ public class HillService implements ServiceInterface {
         return hillRepository.findById(id);
     }
 
+    //TODO add or else throw
     public List<Hill> findAllByVenueId(int venueId){
         return hillRepository.findAllByVenue(venueService.findById(venueId).get());
     }
@@ -45,15 +43,11 @@ public class HillService implements ServiceInterface {
         return hillRepository.save((Hill) obj);
     }
 
+    @Transactional
     @Override
     public void deleteById(int id) {
-        hillRepository.deleteById(id);
+        Hill hill = hillRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("hill does not exist!"));
+        hillRepository.delete(hill);
     }
-//
-//    private HillDTO convertToVenueDTO(Hill hill){
-//        HillDTO hillDTO = new HillDTO();
-//        hillDTO.setId(hill.getId());
-//        hillDTO.setName(hill.getName());
-//        return hillDTO;
-//    }
+
 }

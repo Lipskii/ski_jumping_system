@@ -1,17 +1,15 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.SkiClubRepository;
-import com.lipskii.ski_jumping_system.dto.SkiClubDTO;
-import com.lipskii.ski_jumping_system.dto.VenueDTO;
 import com.lipskii.ski_jumping_system.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SkiClubService implements ServiceInterface {
@@ -45,9 +43,11 @@ public class SkiClubService implements ServiceInterface {
         return skiClubRepository.save((SkiClub) obj);
     }
 
+    @Transactional
     @Override
     public void deleteById(int id) {
-        skiClubRepository.deleteById(id);
+        SkiClub skiClub = skiClubRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ski clubs does not exist!"));
+        skiClubRepository.delete(skiClub);
     }
 
    public List<SkiClub> findAllByCountry(Country country){

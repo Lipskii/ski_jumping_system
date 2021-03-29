@@ -1,6 +1,5 @@
 package com.lipskii.ski_jumping_system.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -14,15 +13,16 @@ public class Jury {
     @Column(name = "idjury")
     private int id;
 
-    @JsonIgnoreProperties("jury")
+    @JsonIgnoreProperties(value = "jury", allowSetters = true)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "jury_type_idjury_type")
     private JuryType juryType;
 
-    @JsonIgnoreProperties("jury")
+    @JsonIgnoreProperties(value = "jury", allowSetters = true)
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "person_idperson")
     private Person person;
+
 
     public Jury() {
     }
@@ -31,6 +31,7 @@ public class Jury {
         this.juryType = juryType;
         this.person = person;
     }
+
 
     public int getId() {
         return id;

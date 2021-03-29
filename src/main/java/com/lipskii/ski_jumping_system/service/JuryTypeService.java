@@ -50,7 +50,7 @@ public class JuryTypeService implements ServiceInterface{
             ObjectMapper objectMapper = new ObjectMapper();
             juryType = objectMapper.readValue(jType, JuryType.class);
         } catch (IOException err) {
-            System.out.printf("Error ", err.toString());
+            err.printStackTrace();
         }
 
         System.out.println(juryType);

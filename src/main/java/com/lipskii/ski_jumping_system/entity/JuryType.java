@@ -1,7 +1,6 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,8 +17,8 @@ public class JuryType {
     @Column(name = "jury_type")
     private String juryType;
 
-    @JsonIgnoreProperties("juryType")
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "juryType", cascade = {CascadeType.PERSIST})
+    @JsonIgnoreProperties(value = "juryType", allowSetters = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "juryType")
     private List<Jury> juryList;
 
     public JuryType() {

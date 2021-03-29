@@ -1,7 +1,6 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 import javax.persistence.*;
@@ -20,21 +19,19 @@ public class Hill {
     @Column(name = "name")
     private String name;
 
-    @JsonIgnoreProperties({"hills","skiClub"})
+    @JsonIgnoreProperties(value = {"hills","skiClub"}, allowSetters = true)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "venue_idvenue")
     private Venue venue;
 
-    @JsonIgnoreProperties("hills")
+    @JsonIgnoreProperties(value = "hills", allowSetters = true)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "size_of_hill_idsize_of_hill")
     private SizeOfHill sizeOfHill;
 
-  //  @JsonManagedReference(value = "hill-hillVersion")
-    @JsonIgnoreProperties("hill")
+    @JsonIgnoreProperties(value = "hill", allowSetters = true)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "hill", cascade = {CascadeType.PERSIST})
     private List<HillVersion> hillVersions;
-
 
     public Hill() {
     }

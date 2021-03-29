@@ -2,10 +2,6 @@ package com.lipskii.ski_jumping_system.dto;
 
 import com.lipskii.ski_jumping_system.entity.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

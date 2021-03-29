@@ -4,8 +4,6 @@ import com.lipskii.ski_jumping_system.dao.CityRepository;
 
 import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.entity.Country;
-import com.lipskii.ski_jumping_system.entity.SkiJumper;
-import com.lipskii.ski_jumping_system.entity.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -13,26 +11,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @Service
 public class CityService implements ServiceInterface {
 
     private final CityRepository cityRepository;
-    private final VenueService venueService;
     private final SkiClubService skiClubService;
-    private final SkiJumperService skiJumperService;
 
     @Autowired
-    public CityService(CityRepository cityRepository, VenueService venueService, SkiClubService skiClubService, SkiJumperService skiJumperService) {
+    public CityService(CityRepository cityRepository, SkiClubService skiClubService) {
         this.cityRepository = cityRepository;
-        this.venueService = venueService;
         this.skiClubService = skiClubService;
-        this.skiJumperService = skiJumperService;
     }
-
 
     @Override
     public List<City> findAll() {

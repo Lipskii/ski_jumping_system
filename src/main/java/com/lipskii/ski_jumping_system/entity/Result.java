@@ -16,12 +16,12 @@ public class Result {
     private int id;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnoreProperties("results")
+    @JsonIgnoreProperties(value = "results", allowSetters = true)
     @JoinColumn(name = "competition_idcompetition")
     private Competition competition;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnoreProperties("results")
+    @JsonIgnoreProperties(value = "results", allowSetters = true)
     @JoinColumn(name = "ski_jumper_idski_jumper")
     private SkiJumper skiJumper;
 

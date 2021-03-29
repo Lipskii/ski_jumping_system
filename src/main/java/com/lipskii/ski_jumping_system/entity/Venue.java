@@ -25,17 +25,17 @@ public class Venue implements Comparable<Venue> {
     @Column(name = "capacity")
     private int capacity;
 
-    @JsonIgnoreProperties("venues")
+    @JsonIgnoreProperties(value = "venues", allowSetters = true)
     @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "ski_club_idski_club")
     private SkiClub skiClub;
 
-    @JsonIgnoreProperties("venues")
+    @JsonIgnoreProperties(value ="venues", allowSetters = true)
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "city_idcity")
     private City city;
 
-    @JsonIgnoreProperties("venue")
+    @JsonIgnoreProperties(value = "venue", allowSetters = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "venue")
     private List<Hill> hills;
 
@@ -55,14 +55,6 @@ public class Venue implements Comparable<Venue> {
         this.yearOfOpening = yearOfOpening;
         this.skiClub = skiClub;
         this.city = city;
-    }
-
-    @PreRemove
-    private void removeEducationFromUsersProfile() {
-        System.out.println("PRE REMOVED CALLED");
-        for (Hill hill : hills) {
-            System.out.println(hill);
-        }
     }
 
     public int getId() {

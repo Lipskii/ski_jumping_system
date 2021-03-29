@@ -20,7 +20,7 @@ public class DisqualificationTypeService implements ServiceInterface {
 
     @Override
     public List<DisqualificationType> findAll() {
-        return (List<DisqualificationType>) disqualificationTypeRepository.findAll();
+        return disqualificationTypeRepository.findAll();
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.lipskii.ski_jumping_system.dto;
 
 import com.lipskii.ski_jumping_system.entity.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

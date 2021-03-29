@@ -1,6 +1,5 @@
 package com.lipskii.ski_jumping_system.dto;
 
-import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.HillVersion;
 import com.lipskii.ski_jumping_system.entity.SizeOfHill;

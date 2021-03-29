@@ -1,8 +1,6 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.VenueRepository;
-import com.lipskii.ski_jumping_system.dto.CountryWithVenuesDTO;
-import com.lipskii.ski_jumping_system.dto.SkisDTO;
 import com.lipskii.ski_jumping_system.dto.VenueDTO;
 import com.lipskii.ski_jumping_system.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,9 +76,12 @@ public class VenueService implements ServiceInterface {
         return venueRepository.save((Venue) obj);
     }
 
+    @Transactional
     @Override
     public void deleteById(int id) {
-        venueRepository.deleteById(id);
+        Venue venue = venueRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("venue does not exist!"));
+        System.out.println(venue);
+        venueRepository.delete(venue);
     }
 
     @Transactional

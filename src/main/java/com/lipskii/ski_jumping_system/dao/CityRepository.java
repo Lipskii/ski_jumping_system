@@ -25,7 +25,7 @@ public interface CityRepository extends JpaRepository<City,Integer>, JpaSpecific
 
     List<City> findAllByRegionCountryIdOrderByName(int countryId);
 
-    List<City> findAllBySkiClubsNotNull(Specification<City> spec, Sort name);
+    List<City> findAllBySkiClubsNotNull(Sort name);
 
     City findByName(String name);
 }

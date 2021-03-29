@@ -12,6 +12,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -84,9 +85,11 @@ public class CompetitionService implements ServiceInterface {
         return competitionRepository.save((Competition) obj);
     }
 
+    @Transactional
     @Override
     public void deleteById(int id) {
-        competitionRepository.deleteById(id);
+        Competition competition = competitionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("competition does not exist!"));
+        competitionRepository.delete(competition);
     }
 
     public List<Competition> findAllBySeasonId(int seasonId) {

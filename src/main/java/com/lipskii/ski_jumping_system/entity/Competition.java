@@ -1,13 +1,9 @@
 package com.lipskii.ski_jumping_system.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -293,7 +289,7 @@ public class Competition {
     @Column(name = "cancelled_at_round")
     private int cancelledAtRound;
 
-    @JsonIgnoreProperties("competition")
+    @JsonIgnoreProperties(value = "competition", allowSetters = true)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "competition", cascade = {CascadeType.PERSIST})
     private List<Result> results;
 

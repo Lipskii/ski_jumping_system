@@ -1,7 +1,5 @@
 package com.lipskii.ski_jumping_system.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -17,7 +15,7 @@ public class SkiJumper implements Comparable<SkiJumper> {
     @Column(name = "idski_jumper")
     private int id;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
     @JoinColumn(name = "person_idperson")
     private Person person;
 
@@ -27,12 +25,12 @@ public class SkiJumper implements Comparable<SkiJumper> {
     @Column(name = "fis_code")
     private String fisCode;
 
-    @JsonIgnoreProperties("skiJumpers")
+    @JsonIgnoreProperties(value = "skiJumpers", allowSetters = true)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "skis_idskis")
     private Skis skis;
 
-    @JsonIgnoreProperties("skiJumpers")
+    @JsonIgnoreProperties(value ="skiJumpers", allowSetters = true)
     @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JoinColumn(name = "ski_club_idski_club")
     private SkiClub skiClub;
@@ -40,7 +38,7 @@ public class SkiJumper implements Comparable<SkiJumper> {
     @Column(name = "all_time_points")
     private BigDecimal all_time_points;
 
-    @JsonIgnoreProperties("skiJumper")
+    @JsonIgnoreProperties(value = "skiJumper", allowSetters = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "skiJumper", cascade = {CascadeType.PERSIST})
     private List<Result> results;
 

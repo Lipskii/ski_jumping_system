@@ -1,11 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -22,21 +18,21 @@ public class City implements Comparable<City> {
     @Column(name = "name")
     private String name;
 
-    @JsonIgnoreProperties("cities")
+    @JsonIgnoreProperties(value ="cities", allowSetters = true)
     @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "region_idregion")
     private Region region;
 
-    @JsonIgnoreProperties({"city","skiJumpers","venues"})
+    @JsonIgnoreProperties(value ={"city","skiJumpers","venues"}, allowSetters = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     // @Fetch(value = FetchMode.SUBSELECT)
     private List<SkiClub> skiClubs;
 
-    @JsonIgnoreProperties({"city","skiClub"})
+    @JsonIgnoreProperties(value = {"city","skiClub"}, allowSetters = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Venue> venues;
 
-    @JsonIgnoreProperties("city")
+    @JsonIgnoreProperties(value = "city", allowSetters = true)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "city", cascade = {CascadeType.PERSIST})
     private List<Person> people;
 

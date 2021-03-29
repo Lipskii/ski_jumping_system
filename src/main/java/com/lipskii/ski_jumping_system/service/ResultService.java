@@ -67,7 +67,7 @@ public class ResultService implements ServiceInterface {
                     break;
             }
         } catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 

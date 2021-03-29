@@ -1,16 +1,12 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.SkisRepository;
-import com.lipskii.ski_jumping_system.dto.SkiJumperDTO;
-import com.lipskii.ski_jumping_system.dto.SkisDTO;
-import com.lipskii.ski_jumping_system.entity.SkiJumper;
 import com.lipskii.ski_jumping_system.entity.Skis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class SkisService implements ServiceInterface {
