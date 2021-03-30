@@ -2,10 +2,7 @@ package com.lipskii.ski_jumping_system.controllers;
 
 import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
-import net.kaczmarzyk.spring.data.jpa.domain.Equal;
-import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
-import net.kaczmarzyk.spring.data.jpa.domain.LessThan;
-import net.kaczmarzyk.spring.data.jpa.domain.NotNull;
+import net.kaczmarzyk.spring.data.jpa.domain.*;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
@@ -49,8 +46,10 @@ public class CompetitionController {
     public List<Competition> getCompetitions(
             @Join(path = "results", alias = "r")
             @And({
+                    @Spec(path = "id", params = "id", spec = Equal.class),
                     @Spec(path = "season.id", params = "seasonId", spec = Equal.class),
-                    @Spec(path = "season", params = "season", spec = Equal.class),
+                    @Spec(path = "season.season", params = "season", spec = Equal.class),
+                    @Spec(path = "hillVersion.hill.venue.city.region.country.id", params = "countryId", spec = Equal.class),
                     @Spec(path = "seriesMajor.id", params = "seriesMajorId", spec = Equal.class),
                     @Spec(path = "seriesMinor.id", params = "seriesMinorId", spec = Equal.class),
                     @Spec(path = "hillVersion.hill.id", params = "hillId", spec = Equal.class),
