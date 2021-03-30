@@ -15,7 +15,7 @@ public class SkiJumper implements Comparable<SkiJumper> {
     @Column(name = "idski_jumper")
     private int id;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE})
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE},orphanRemoval = true)
     @JoinColumn(name = "person_idperson")
     private Person person;
 

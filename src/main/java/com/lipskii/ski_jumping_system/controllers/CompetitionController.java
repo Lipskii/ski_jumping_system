@@ -3,6 +3,8 @@ package com.lipskii.ski_jumping_system.controllers;
 import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;
+import net.kaczmarzyk.spring.data.jpa.domain.LessThan;
 import net.kaczmarzyk.spring.data.jpa.domain.NotNull;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
@@ -48,12 +50,14 @@ public class CompetitionController {
             @Join(path = "results", alias = "r")
             @And({
                     @Spec(path = "season.id", params = "seasonId", spec = Equal.class),
+                    @Spec(path = "season", params = "season", spec = Equal.class),
                     @Spec(path = "seriesMajor.id", params = "seriesMajorId", spec = Equal.class),
                     @Spec(path = "seriesMinor.id", params = "seriesMinorId", spec = Equal.class),
                     @Spec(path = "hillVersion.hill.id", params = "hillId", spec = Equal.class),
                     @Spec(path = "hillVersion.hill.venue.id", params = "venueId", spec = Equal.class),
                     @Spec(path = "hillVersion.hill.sizeOfHill.id", params = "sizeOfHillId", spec = Equal.class),
-                    @Spec(path = "r", params = "hasResults", spec = NotNull.class)
+                    @Spec(path = "r", params = "hasResults", spec = NotNull.class),
+                    @Spec(path="date1", params= "after" ,spec= GreaterThanOrEqual.class)
             }) Specification<Competition> spec) {
         return competitionService.get(spec, Sort.by(Sort.Direction.DESC, "date1"));
     }
