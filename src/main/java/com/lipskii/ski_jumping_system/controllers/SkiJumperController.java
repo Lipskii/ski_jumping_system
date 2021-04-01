@@ -1,6 +1,5 @@
 package com.lipskii.ski_jumping_system.controllers;
 
-
 import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
 import net.kaczmarzyk.spring.data.jpa.domain.*;
@@ -44,6 +43,9 @@ public class SkiJumperController {
                     @Spec(path = "person.country.id", params = "countryId", spec = Equal.class),
                     @Spec(path = "person.city.id", params = "cityId", spec = Equal.class),
                     @Spec(path = "person.gender.id", params = "genderId", spec = Equal.class),
+                    @Spec(path = "person.lastName", params = "lastNameLike=", spec = EqualIgnoreCase.class),
+                    @Spec(path="person.birthdate", params={"bornAfter","bornBefore"}, spec=Between.class),
+                    @Spec(path="person.birthdate", params="bornOn", spec=Equal.class)
             }) Specification<SkiJumper> spec) {
         return skiJumperService.get(spec, Sort.by("person.lastName"));
     }

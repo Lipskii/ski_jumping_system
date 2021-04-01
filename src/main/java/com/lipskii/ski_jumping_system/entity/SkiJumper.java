@@ -45,24 +45,6 @@ public class SkiJumper implements Comparable<SkiJumper> {
     public SkiJumper() {
     }
 
-    public SkiJumper(Person person, boolean isActive, String fisCode, Skis skis, SkiClub skiClub, BigDecimal all_time_points) {
-        this.person = person;
-        this.isActive = isActive;
-        this.fisCode = fisCode;
-        this.skis = skis;
-        this.skiClub = skiClub;
-        this.all_time_points = all_time_points;
-    }
-
-    public SkiJumper(Person person, boolean isActive, String fisCode, Skis skis, SkiClub skiClub) {
-        this.person = person;
-        this.isActive = isActive;
-        this.fisCode = fisCode;
-        this.skis = skis;
-        this.skiClub = skiClub;
-        this.all_time_points = BigDecimal.ZERO;
-    }
-
     public int getId() {
         return id;
     }

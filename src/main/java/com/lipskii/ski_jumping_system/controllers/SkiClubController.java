@@ -5,6 +5,7 @@ import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
 import net.kaczmarzyk.spring.data.jpa.domain.*;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
+import net.kaczmarzyk.spring.data.jpa.web.annotation.Join;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -36,11 +37,13 @@ public class SkiClubController {
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<SkiClub> getSkiClubs(
+            @Join(path = "skiJumpers", alias = "o")
             @And({
                     @Spec(path = "id", params = "id", spec = Equal.class),
                     @Spec(path = "name", params = "name", spec = Equal.class),
                     @Spec(path = "city.id", params = "cityId", spec = Equal.class),
                     @Spec(path = "city.region.country.id", params = "countryId", spec = Equal.class),
+                    @Spec(path = "o", params = "hasJumpers", spec = NotNull.class)
             }) Specification<SkiClub> spec) {
         return skiClubService.get(spec, Sort.by("name"));
     }
