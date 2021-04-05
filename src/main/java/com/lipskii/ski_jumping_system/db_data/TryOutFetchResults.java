@@ -12,7 +12,7 @@ import java.util.List;
 public class TryOutFetchResults {
 
     public static void main(String[] args) {
-        fetchResults("https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=5823");
+        fetchResults("https://www.fis-ski.com/DB/general/results.html?sectorcode=JP&raceid=5882");
     }
 
     public static void fetchResults(String link) {
@@ -25,7 +25,6 @@ public class TryOutFetchResults {
                 if (!element.getElementsByClass("g-lg g-md g-sm g-xs justify-left bold").text().equals("")) {
 
                     FetchedResultsObject fetchedResultsObject = new FetchedResultsObject();
-                    //pozycja
                     if (!element.getElementsByClass("g-lg-1 g-md-1 g-sm-1 g-xs-2 justify-right pr-1 gray bold")
                             .text().equals("")) {
                         fetchedResultsObject.setRank(Integer

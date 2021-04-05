@@ -293,6 +293,13 @@ public class Competition {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "competition", cascade = {CascadeType.PERSIST})
     private List<Result> results;
 
+    @JsonIgnoreProperties(value = "competition", allowSetters = true)
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "competition", cascade = {CascadeType.PERSIST})
+    private Qualification qualification;
+
+    @Column(name = "is_team")
+    private boolean isTeam;
+
     public Competition() {
     }
 
@@ -376,6 +383,22 @@ public class Competition {
         this.csvFile = csvFile;
         this.cancelledAtRound = cancelledAtRound;
         this.results = results;
+    }
+
+    public Qualification getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(Qualification qualification) {
+        this.qualification = qualification;
+    }
+
+    public boolean isTeam() {
+        return isTeam;
+    }
+
+    public void setTeam(boolean team) {
+        isTeam = team;
     }
 
     public int getId() {
