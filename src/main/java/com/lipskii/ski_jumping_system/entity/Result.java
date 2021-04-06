@@ -15,7 +15,7 @@ public class Result {
     @Column(name = "idresult")
     private int id;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne//(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JsonIgnoreProperties(value = "results", allowSetters = true)
     @JoinColumn(name = "competition_idcompetition")
     private Competition competition;
@@ -25,7 +25,7 @@ public class Result {
     @JoinColumn(name = "ski_jumper_idski_jumper")
     private SkiJumper skiJumper;
 
-    @JsonBackReference
+    @JsonIgnoreProperties(value = "results", allowSetters = true)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "disqualification_type_iddisqualification_type")
     private DisqualificationType disqualificationType;

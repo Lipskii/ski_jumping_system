@@ -39,6 +39,10 @@ public class SkiJumperService implements ServiceInterface {
         return skiJumperRepository.findById(id);
     }
 
+    public SkiJumper findByCode(String code){
+        return skiJumperRepository.findByFisCode(code);
+    }
+
     @Override
     public SkiJumper save(Object obj) {
         return skiJumperRepository.save((SkiJumper) obj);

@@ -12,13 +12,8 @@ import java.util.List;
 @Repository
 public interface SkiJumperRepository extends JpaRepository<SkiJumper,Integer>, JpaSpecificationExecutor<SkiJumper> {
 
-    List<SkiJumper> findAllByPersonCountryName(String country);
-
-    List<SkiJumper> findAllByPersonCityOrderByPerson(City city);
-
     List<SkiJumper> findAllByPersonCountryOrderByPerson(Country country);
 
-    List<SkiJumper> findAllByPersonCountryId(int countryId);
+    SkiJumper findByFisCode(String code);
 
-    List<SkiJumper> findAllByPersonCityId(int cityId);
 }

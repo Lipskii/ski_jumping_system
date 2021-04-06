@@ -33,21 +33,10 @@ public class ResultController {
         return resultService.findAllByCompetitionId(competitionId);
     }
 
-    @PostMapping(value = "/files/csv/{competitionId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity uploadResultsCsv(@RequestPart("csv") MultipartFile csvFile,
-                                           //@RequestPart("pdf") MultipartFile pdfFile,
-                                           @PathVariable("competitionId") int competitionId)
-            throws ResourceNotFoundException {
-        Competition competition = competitionService
-                .findById(competitionId)
-                .orElseThrow(() -> new ResourceNotFoundException("no competition found for id = " + competitionId));
-
-        try {
-            competitionService.assignFiles(csvFile, competition, competitionId);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok().build();
+    @PostMapping("/link/{competitionId}")
+    public void uploadResultsLink(@RequestBody String link, @PathVariable("competitionId") int competitionId){
+        resultService.saveFromLink(link, competitionId);
     }
+
 
 }

@@ -290,7 +290,7 @@ public class Competition {
     private int cancelledAtRound;
 
     @JsonIgnoreProperties(value = "competition", allowSetters = true)
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "competition", cascade = {CascadeType.PERSIST})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "competition") //, cascade = {CascadeType.PERSIST,CascadeType.REMOVE}
     private List<Result> results;
 
     @JsonIgnoreProperties(value = "competition", allowSetters = true)
