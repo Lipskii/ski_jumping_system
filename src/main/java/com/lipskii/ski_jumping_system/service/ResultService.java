@@ -13,6 +13,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,10 @@ public class ResultService implements ServiceInterface {
 
     public List<Result> findAllByCompetitionId(int competitionId) {
         return resultRepository.findAllByCompetitionIdOrderByTotalRank(competitionId);
+    }
+
+    public List<Result> get(Specification<Result> spec, Sort sort) {
+        return resultRepository.findAll(spec, sort);
     }
 
 
