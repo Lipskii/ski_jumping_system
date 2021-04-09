@@ -769,5 +769,71 @@ public class Result {
         this.totalRank = totalRank;
     }
 
-
+    @Override
+    public String toString() {
+        return "Result{" +
+                "id=" + id +
+                ", competition=" + competition +
+                ", skiJumper=" + skiJumper +
+                ", disqualificationType=" + disqualificationType +
+                ", firstRoundSpeed=" + firstRoundSpeed +
+                ", firstRoundDistance=" + firstRoundDistance +
+                ", firstRoundDistancePoints=" + firstRoundDistancePoints +
+                ", firstRoundJudgeA=" + firstRoundJudgeA +
+                ", firstRoundJudgeB=" + firstRoundJudgeB +
+                ", firstRoundJudgeC=" + firstRoundJudgeC +
+                ", firstRoundJudgeD=" + firstRoundJudgeD +
+                ", firstRoundJudgeE=" + firstRoundJudgeE +
+                ", firstRoundJudgePoints=" + firstRoundJudgePoints +
+                ", firstRoundGate=" + firstRoundGate +
+                ", firstRoundGateCoachRequest=" + firstRoundGateCoachRequest +
+                ", firstRoundGatePoints=" + firstRoundGatePoints +
+                ", firstRoundTotal=" + firstRoundTotal +
+                ", firstRoundRank=" + firstRoundRank +
+                ", secondRoundSpeed=" + secondRoundSpeed +
+                ", secondRoundDistance=" + secondRoundDistance +
+                ", secondRoundDistancePoints=" + secondRoundDistancePoints +
+                ", secondRoundJudgeA=" + secondRoundJudgeA +
+                ", secondRoundJudgeB=" + secondRoundJudgeB +
+                ", secondRoundJudgeC=" + secondRoundJudgeC +
+                ", secondRoundJudgeD=" + secondRoundJudgeD +
+                ", secondRoundJudgeE=" + secondRoundJudgeE +
+                ", secondRoundJudgePoints=" + secondRoundJudgePoints +
+                ", secondRoundGate=" + secondRoundGate +
+                ", secondRoundGateCoachRequest=" + secondRoundGateCoachRequest +
+                ", secondRoundGatePoints=" + secondRoundGatePoints +
+                ", secondRoundTotal=" + secondRoundTotal +
+                ", secondRoundRank=" + secondRoundRank +
+                ", thirdRoundSpeed=" + thirdRoundSpeed +
+                ", thirdRoundDistance=" + thirdRoundDistance +
+                ", thirdRoundDistancePoints=" + thirdRoundDistancePoints +
+                ", thirdRoundJudgeA=" + thirdRoundJudgeA +
+                ", thirdRoundJudgeB=" + thirdRoundJudgeB +
+                ", thirdRoundJudgeC=" + thirdRoundJudgeC +
+                ", thirdRoundJudgeD=" + thirdRoundJudgeD +
+                ", thirdRoundJudgeE=" + thirdRoundJudgeE +
+                ", thirdRoundJudgePoints=" + thirdRoundJudgePoints +
+                ", thirdRoundGate=" + thirdRoundGate +
+                ", thirdRoundGateCoachRequest=" + thirdRoundGateCoachRequest +
+                ", thirdRoundGatePoints=" + thirdRoundGatePoints +
+                ", thirdRoundTotal=" + thirdRoundTotal +
+                ", thirdRoundRank=" + thirdRoundRank +
+                ", fourthRoundSpeed=" + fourthRoundSpeed +
+                ", fourthRoundDistance=" + fourthRoundDistance +
+                ", fourthRoundDistancePoints=" + fourthRoundDistancePoints +
+                ", fourthRoundJudgeA=" + fourthRoundJudgeA +
+                ", fourthRoundJudgeB=" + fourthRoundJudgeB +
+                ", fourthRoundJudgeC=" + fourthRoundJudgeC +
+                ", fourthRoundJudgeD=" + fourthRoundJudgeD +
+                ", fourthRoundJudgeE=" + fourthRoundJudgeE +
+                ", fourthRoundJudgePoints=" + fourthRoundJudgePoints +
+                ", fourthRoundGate=" + fourthRoundGate +
+                ", fourthRoundGateCoachRequest=" + fourthRoundGateCoachRequest +
+                ", fourthRoundGatePoints=" + fourthRoundGatePoints +
+                ", fourthRoundTotal=" + fourthRoundTotal +
+                ", fourthRoundRank=" + fourthRoundRank +
+                ", totalPoints=" + totalPoints +
+                ", totalRank=" + totalRank +
+                '}';
+    }
 }

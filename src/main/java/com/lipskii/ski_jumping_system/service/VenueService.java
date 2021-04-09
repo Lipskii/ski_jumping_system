@@ -84,18 +84,6 @@ public class VenueService implements ServiceInterface {
         venueRepository.delete(venue);
     }
 
-    @Transactional
-    public boolean deleteByIdBool(int id) {
-        if(venueRepository.existsById(id)){
-
-            venueRepository.deleteById(id);
-           // return true;
-        }
-        //return false;
-
-        return !venueRepository.existsById(id);
-    }
-
 
     List<Venue> findAllByCountry(Country country){
         return venueRepository.findAllByCityRegionCountry(country);

@@ -2,7 +2,10 @@ package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.HillVersionRepository;
 import com.lipskii.ski_jumping_system.entity.HillVersion;
+import com.lipskii.ski_jumping_system.entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +20,11 @@ public class HillVersionService implements ServiceInterface {
     public HillVersionService(HillVersionRepository hillVersionRepository) {
         this.hillVersionRepository = hillVersionRepository;
     }
+
+    public List<HillVersion> get(Specification<HillVersion> spec, Sort sort) {
+        return hillVersionRepository.findAll(spec, sort);
+    }
+
 
     @Override
     public List<HillVersion> findAll() {

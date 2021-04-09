@@ -30,7 +30,7 @@ public class Hill {
     private SizeOfHill sizeOfHill;
 
     @JsonIgnoreProperties(value = "hill", allowSetters = true)
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hill", cascade = {CascadeType.PERSIST})
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "hill",orphanRemoval=true)
     private List<HillVersion> hillVersions;
 
     public Hill() {

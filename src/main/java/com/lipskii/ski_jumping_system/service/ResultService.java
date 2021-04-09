@@ -2,10 +2,13 @@ package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.ResultRepository;
 import com.lipskii.ski_jumping_system.db_data.FetchedResultsObject;
+import com.lipskii.ski_jumping_system.dto.HillRecordDTO;
+import com.lipskii.ski_jumping_system.dto.VenueDTO;
 import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Result;
 import com.lipskii.ski_jumping_system.controllers.FilesPaths;
 import com.lipskii.ski_jumping_system.entity.SkiJumper;
+import com.lipskii.ski_jumping_system.entity.Venue;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import org.jsoup.Jsoup;
@@ -24,6 +27,7 @@ import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +60,44 @@ public class ResultService implements ServiceInterface {
         return resultRepository.findAll(spec, sort);
     }
 
+    public List<HillRecordDTO> getHillRecords(Specification<Result> spec, Sort sort) {
+        List<Result> results = resultRepository.findAll(spec, sort);
+        List<HillRecordDTO> hillRecordDTOS = new ArrayList<>();
+        BigDecimal hillRecord = BigDecimal.valueOf(0);
+        for (Result result : results) {
+            List<BigDecimal> distances = new ArrayList<>();
+            if (result.getFirstRoundDistance() != null) {
+                distances.add(result.getFirstRoundDistance());
+            }
+            if (result.getSecondRoundDistance() != null) {
+                distances.add(result.getSecondRoundDistance());
+            }
+            if (result.getThirdRoundDistance() != null) {
+                distances.add(result.getThirdRoundDistance());
+            }
+            if (result.getFourthRoundDistance() != null) {
+                distances.add(result.getFourthRoundDistance());
+            }
+            for (BigDecimal distance : distances) {
+                if (distance.doubleValue() > hillRecord.doubleValue()) {
+                    hillRecordDTOS.clear();
+                    hillRecordDTOS.add(convertToHillRecordDTO(result, distance));
+                    hillRecord = distance;
+                } else if (distance.doubleValue() == hillRecord.doubleValue()) {
+                    hillRecordDTOS.add(convertToHillRecordDTO(result, distance));
+                }
+            }
+        }
+        return hillRecordDTOS;
+    }
+
+    private HillRecordDTO convertToHillRecordDTO(Result result, BigDecimal distance) {
+        HillRecordDTO hillRecordDTO = new HillRecordDTO();
+        hillRecordDTO.setResult(result);
+        hillRecordDTO.setHillRecord(distance);
+        return hillRecordDTO;
+    }
+
 
     @Override
     public Optional<Result> findById(int id) {
@@ -76,8 +118,8 @@ public class ResultService implements ServiceInterface {
                 .findById(competitionId)
                 .orElseThrow(() -> new ResourceNotFoundException("no competition found for id = " + competitionId));
 
-        if(!competition.getResults().isEmpty()){
-            for(Result result : competition.getResults()){
+        if (!competition.getResults().isEmpty()) {
+            for (Result result : competition.getResults()) {
                 resultRepository.deleteById(result.getId());
             }
         }
@@ -221,5 +263,6 @@ public class ResultService implements ServiceInterface {
         writer.writeAll(stringArray);
         writer.close();
     }
+
 
 }

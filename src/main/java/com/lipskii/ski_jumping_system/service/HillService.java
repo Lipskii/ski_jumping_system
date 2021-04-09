@@ -4,6 +4,8 @@ import com.lipskii.ski_jumping_system.dao.HillRepository;
 import com.lipskii.ski_jumping_system.entity.Hill;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,10 @@ public class HillService implements ServiceInterface {
         return hillRepository.findAll();
     }
 
+    public List<Hill> get(Specification<Hill> spec, Sort sort) {
+        return hillRepository.findAll(spec, sort);
+    }
+
     @Override
     public Optional<Hill> findById(int id) {
         return hillRepository.findById(id);
@@ -47,7 +53,9 @@ public class HillService implements ServiceInterface {
     @Override
     public void deleteById(int id) {
         Hill hill = hillRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("hill does not exist!"));
+        System.out.println(hill);
         hillRepository.delete(hill);
     }
+
 
 }

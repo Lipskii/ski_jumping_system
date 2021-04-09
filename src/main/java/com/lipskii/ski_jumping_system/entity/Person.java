@@ -41,7 +41,8 @@ public class Person implements Comparable<Person> {
     /**
      * Place of birth.
      */
-    @JsonIgnoreProperties(value = "people", allowSetters = true)
+
+    @JsonIgnoreProperties(value = {"people"}, allowSetters = true)
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "city_idcity")
     private City city;

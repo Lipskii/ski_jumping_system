@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "hill_version")
@@ -17,10 +18,14 @@ public class HillVersion {
     private int id;
 
     //@JsonBackReference(value = "hill-hillVersion")
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REFRESH})
     @JsonIgnoreProperties(value = "hillVersions", allowSetters = true)
     @JoinColumn(name = "hill_idhill")
     private Hill hill;
+
+    @JsonIgnoreProperties(value = {"hillVersion","results"}, allowSetters = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "hillVersion")
+    private List<Competition> competitions;
 
     @Column(name = "first_year")
     private Integer firstYear;
@@ -214,10 +219,10 @@ public class HillVersion {
     public HillVersion() {
     }
 
-
-    public HillVersion(Hill hill, Integer first_year, Integer lastYear, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal t, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal r2l, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
+    public HillVersion(Hill hill, List<Competition> competitions, Integer firstYear, Integer lastYear, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal t, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal r2l, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
         this.hill = hill;
-        this.firstYear = first_year;
+        this.competitions = competitions;
+        this.firstYear = firstYear;
         this.lastYear = lastYear;
         this.kPoint = kPoint;
         this.hillSize = hillSize;
@@ -241,45 +246,6 @@ public class HillVersion {
         this.l = l;
         this.rl = rl;
         this.r2l = r2l;
-        this.zu = zu;
-        this.r2 = r2;
-        this.a = a;
-        this.b1 = b1;
-        this.b2 = b2;
-        this.bk = bk;
-        this.bu = bu;
-        this.d = d;
-        this.q = q;
-        this.fisCertificate = fisCertificate;
-        this.validSince = validSince;
-        this.validUntil = validUntil;
-    }
-
-    public HillVersion(Hill hill, Integer first_year, Integer lastYear, BigDecimal kPoint, BigDecimal hillSize, BigDecimal es, BigDecimal e1, BigDecimal e2, BigDecimal gamma, BigDecimal r1, BigDecimal t, BigDecimal alpha, BigDecimal s, BigDecimal v0, BigDecimal h, BigDecimal n, BigDecimal p, BigDecimal l1, BigDecimal l2, BigDecimal betaP, BigDecimal beta, BigDecimal betaL, BigDecimal l, BigDecimal rl, BigDecimal zu, BigDecimal r2, BigDecimal a, BigDecimal b1, BigDecimal b2, BigDecimal bk, BigDecimal bu, BigDecimal d, BigDecimal q, String fisCertificate, LocalDate validSince, LocalDate validUntil) {
-        this.hill = hill;
-        this.firstYear = first_year;
-        this.lastYear = lastYear;
-        this.kPoint = kPoint;
-        this.hillSize = hillSize;
-        this.es = es;
-        this.e1 = e1;
-        this.e2 = e2;
-        this.gamma = gamma;
-        this.r1 = r1;
-        this.t = t;
-        this.alpha = alpha;
-        this.s = s;
-        this.v0 = v0;
-        this.h = h;
-        this.n = n;
-        this.p = p;
-        this.l1 = l1;
-        this.l2 = l2;
-        this.betaP = betaP;
-        this.beta = beta;
-        this.betaL = betaL;
-        this.l = l;
-        this.rl = rl;
         this.zu = zu;
         this.r2 = r2;
         this.a = a;
@@ -598,6 +564,13 @@ public class HillVersion {
         this.validUntil = validUntil;
     }
 
+    public List<Competition> getCompetitions() {
+        return competitions;
+    }
+
+    public void setCompetitions(List<Competition> competitions) {
+        this.competitions = competitions;
+    }
 }
 
 
