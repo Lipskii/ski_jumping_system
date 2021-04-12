@@ -45,7 +45,7 @@ public class HillController {
                     @Spec(path = "venue.city.id", params = "cityId", spec = Equal.class),
                     @Spec(path = "sizeOfHill.id", params = "sizeOfHillId", spec = Equal.class),
             }) Specification<Hill> spec) {
-        return hillService.get(spec, Sort.by(Sort.Direction.DESC, "id"));
+        return hillService.get(spec, Sort.by(Sort.Direction.ASC, "name"));
     }
 
     @DeleteMapping("/{hillId}")
