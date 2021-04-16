@@ -3,12 +3,10 @@ package com.lipskii.ski_jumping_system.service;
 import com.lipskii.ski_jumping_system.dao.ResultRepository;
 import com.lipskii.ski_jumping_system.db_data.FetchedResultsObject;
 import com.lipskii.ski_jumping_system.dto.HillRecordDTO;
-import com.lipskii.ski_jumping_system.dto.VenueDTO;
 import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Result;
 import com.lipskii.ski_jumping_system.controllers.FilesPaths;
 import com.lipskii.ski_jumping_system.entity.SkiJumper;
-import com.lipskii.ski_jumping_system.entity.Venue;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import org.jsoup.Jsoup;
@@ -27,7 +25,6 @@ import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -133,6 +130,7 @@ public class ResultService implements ServiceInterface {
         }
     }
 
+    //most likely it will be deleted
     public void saveFromCSV(Path path, Competition competition) {
         try (CSVReader reader = new CSVReader(new FileReader(path.toString()))) {
             List<String[]> results = reader.readAll();

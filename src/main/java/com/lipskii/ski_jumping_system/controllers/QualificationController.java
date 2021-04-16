@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class QualificationController {
 
-    private QualificationService qualificationService;
+    private final QualificationService qualificationService;
 
     @Autowired
     public QualificationController(QualificationService qualificationService) {

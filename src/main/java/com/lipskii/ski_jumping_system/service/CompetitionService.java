@@ -3,20 +3,14 @@ package com.lipskii.ski_jumping_system.service;
 import com.lipskii.ski_jumping_system.dao.CompetitionRepository;
 import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Hill;
-import com.lipskii.ski_jumping_system.controllers.FilesPaths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,13 +19,11 @@ public class CompetitionService implements ServiceInterface {
 
 
     private final CompetitionRepository competitionRepository;
-    private final ResultService resultService;
     private final HillService hillService;
 
     @Autowired
     public CompetitionService(CompetitionRepository competitionRepository, @Lazy ResultService resultService, HillService hillService) {
         this.competitionRepository = competitionRepository;
-        this.resultService = resultService;
         this.hillService = hillService;
     }
 

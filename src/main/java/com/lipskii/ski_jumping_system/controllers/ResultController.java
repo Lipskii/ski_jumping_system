@@ -24,13 +24,11 @@ import java.util.*;
 @org.springframework.web.bind.annotation.RestController
 public class ResultController {
 
-    private final CompetitionService competitionService;
     private final ResultService resultService;
 
 
     @Autowired
-    public ResultController(CompetitionService competitionService, ResultService resultService) {
-        this.competitionService = competitionService;
+    public ResultController( ResultService resultService) {
         this.resultService = resultService;
     }
 
