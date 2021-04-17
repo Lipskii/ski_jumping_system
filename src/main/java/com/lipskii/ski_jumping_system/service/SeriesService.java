@@ -1,8 +1,11 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.SeriesRepository;
+import com.lipskii.ski_jumping_system.entity.OverallStanding;
 import com.lipskii.ski_jumping_system.entity.Series;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +25,10 @@ public class SeriesService implements ServiceInterface {
     @Override
     public List<Series> findAll() {
         return seriesRepository.findAllByOrderByName();
+    }
+
+    public List<Series> get(Specification<Series> spec, Sort sort) {
+        return seriesRepository.findAll(spec, sort);
     }
 
     @Override

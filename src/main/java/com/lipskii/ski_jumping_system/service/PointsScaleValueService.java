@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.PointsScaleValueRepository;
+import com.lipskii.ski_jumping_system.entity.PointsScale;
 import com.lipskii.ski_jumping_system.entity.PointsScaleValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -27,6 +28,10 @@ public class PointsScaleValueService implements ServiceInterface {
 
     public List<PointsScaleValue> get(Specification<PointsScaleValue> spec, Sort sort) {
         return pointsScaleValueRepository.findAll(spec, sort);
+    }
+
+    public List<PointsScaleValue> findByPointsScale(PointsScale pointsScale){
+        return pointsScaleValueRepository.findAllByPointsScaleOrderByPoints(pointsScale);
     }
 
     @Override

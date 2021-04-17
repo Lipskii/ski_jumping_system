@@ -36,13 +36,17 @@ public class ResultService implements ServiceInterface {
     private final CompetitionService competitionService;
     private final SkiJumperService skiJumperService;
     private final DisqualificationTypeService disqualificationTypeService;
+    private final OverallStandingService overallStandingService;
 
     @Autowired
-    public ResultService(ResultRepository resultRepository, CompetitionService competitionService, SkiJumperService skiJumperService, DisqualificationTypeService disqualificationTypeService) {
+    public ResultService(ResultRepository resultRepository, CompetitionService competitionService,
+                         SkiJumperService skiJumperService, DisqualificationTypeService disqualificationTypeService
+    ,OverallStandingService overallStandingService) {
         this.resultRepository = resultRepository;
         this.competitionService = competitionService;
         this.skiJumperService = skiJumperService;
         this.disqualificationTypeService = disqualificationTypeService;
+        this.overallStandingService = overallStandingService;
     }
 
     @Override
@@ -139,6 +143,7 @@ public class ResultService implements ServiceInterface {
         try {
             csvWriterAll(resultsArray, pathCsv);
             saveFromCSV(pathCsv, competition);
+            overallStandingService.calculateStandings(competition.getSeriesMajor().getId(),competition.getSeason().getSeason());
         } catch (Exception e) {
             e.printStackTrace();
         }

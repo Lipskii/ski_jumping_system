@@ -1,6 +1,7 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -22,12 +23,18 @@ public class Series {
     @JoinColumn(name = "all_time_points_system_idall_time_points_system")
     private AllTimePointsSystem allTimePointsSystem;
 
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "points_scale_idpoints_scale")
+    private PointsScale pointsScale;
+
     public Series() {
     }
 
-    public Series(String name, AllTimePointsSystem allTimePointsSystem) {
+
+    public Series(String name, AllTimePointsSystem allTimePointsSystem, PointsScale pointsScale) {
         this.name = name;
         this.allTimePointsSystem = allTimePointsSystem;
+        this.pointsScale = pointsScale;
     }
 
     public int getId() {
@@ -54,12 +61,21 @@ public class Series {
         this.allTimePointsSystem = allTimePointsSystem;
     }
 
+    public PointsScale getPointsScale() {
+        return pointsScale;
+    }
+
+    public void setPointsScale(PointsScale pointsScale) {
+        this.pointsScale = pointsScale;
+    }
+
     @Override
     public String toString() {
         return "Series{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", allTimePointsSystem=" + allTimePointsSystem +
+                ", pointsScale=" + pointsScale +
                 '}';
     }
 }
