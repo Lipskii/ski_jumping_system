@@ -1,7 +1,8 @@
 package com.lipskii.ski_jumping_system.controllers;
 
-import com.lipskii.ski_jumping_system.entity.OverallStandings;
-import com.lipskii.ski_jumping_system.service.OverallStandingsService;
+import com.lipskii.ski_jumping_system.dto.CalculateOverallStandingsDTO;
+import com.lipskii.ski_jumping_system.entity.OverallStanding;
+import com.lipskii.ski_jumping_system.service.OverallStandingService;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
@@ -19,19 +20,19 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/overallStandings")
 @org.springframework.web.bind.annotation.RestController
-public class OverallStandingsController {
+public class OverallStandingController {
 
-    private final OverallStandingsService overallStandingsService;
+    private final OverallStandingService overallStandingService;
 
     @Autowired
-    public OverallStandingsController(OverallStandingsService overallStandingsService) {
-        this.overallStandingsService = overallStandingsService;
+    public OverallStandingController(OverallStandingService overallStandingService) {
+        this.overallStandingService = overallStandingService;
     }
 
     @Transactional
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<OverallStandings> getOverallStandings(
+    public List<OverallStanding> getOverallStandings(
             @And({
                     @Spec(path = "id", params = "id", spec = Equal.class),
                     @Spec(path = "skiJumper.id", params = "skiJumperId", spec = Equal.class),
@@ -39,18 +40,24 @@ public class OverallStandingsController {
                     @Spec(path = "season.id", params = "seasonId", spec = Equal.class),
                     @Spec(path = "season.season", params = "season", spec = Equal.class),
                     @Spec(path = "series.id", params = "seriesId", spec = Equal.class),
-            }) Specification<OverallStandings> spec) {
-        return overallStandingsService.get(spec, Sort.by(Sort.Direction.DESC, "points"));
+            }) Specification<OverallStanding> spec) {
+        return overallStandingService.get(spec, Sort.by(Sort.Direction.DESC, "points"));
     }
 
     @PostMapping("")
-    public OverallStandings addCompetition(@RequestBody OverallStandings overallStandings) {
-        overallStandingsService.save(overallStandings);
+    public OverallStanding addCompetition(@RequestBody OverallStanding overallStandings) {
+        overallStandingService.save(overallStandings);
         return overallStandings;
     }
 
+    @PostMapping("/calculate")
+    public void calculateOverallStandings(@RequestBody CalculateOverallStandingsDTO dto){
+        overallStandingService.calculateStandings(dto.getSeriesId(), dto.getSeason());
+    }
+
+
     @DeleteMapping("/{overallStandingsId}")
     public void deleteCompetition(@PathVariable("overallStandingsId") int competitionId) {
-        overallStandingsService.deleteById(competitionId);
+        overallStandingService.deleteById(competitionId);
     }
 }

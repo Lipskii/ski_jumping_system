@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "overall_standings")
-public class OverallStandings {
+public class OverallStanding {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +29,10 @@ public class OverallStandings {
     @Column(name = "points")
     private BigDecimal points;
 
-    public OverallStandings() {
+    public OverallStanding() {
     }
 
-    public OverallStandings(Series series, Season season, SkiJumper skiJumper, BigDecimal points) {
+    public OverallStanding(Series series, Season season, SkiJumper skiJumper, BigDecimal points) {
         this.series = series;
         this.season = season;
         this.skiJumper = skiJumper;

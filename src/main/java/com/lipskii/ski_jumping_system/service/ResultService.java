@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,6 +96,19 @@ public class ResultService implements ServiceInterface {
         return hillRecordDTO;
     }
 
+    public List<Result> findBySeriesIdAndSeason(int seriesId, int season) {
+        List<Result> results = new ArrayList<>();
+        List<Competition> competitions = competitionService.findAllBySeriesIdAndSeason(seriesId,season);
+        for (Competition competition : competitions) {
+            List<Result> resultsCompetition = competition.getResults();
+            for (Result result : resultsCompetition) {
+                results.add(result);
+            }
+        }
+
+        return results;
+    }
+
 
     @Override
     public Optional<Result> findById(int id) {
@@ -130,7 +144,6 @@ public class ResultService implements ServiceInterface {
         }
     }
 
-    //most likely it will be deleted
     public void saveFromCSV(Path path, Competition competition) {
         try (CSVReader reader = new CSVReader(new FileReader(path.toString()))) {
             List<String[]> results = reader.readAll();

@@ -2,6 +2,7 @@ package com.lipskii.ski_jumping_system.dao;
 
 import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Hill;
+import com.lipskii.ski_jumping_system.entity.Season;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,8 @@ public interface CompetitionRepository extends JpaRepository<Competition,Integer
     List<Competition> findAllByOrderByDate1Desc();
 
     List<Competition> findAllBySeriesMajorIdOrderByDate1Desc(int seriesId);
+
+    List<Competition> findAllBySeasonSeasonAndSeriesMajorIdOrderByDate1(int season, int seriesMajorId);
 
     List<Competition> findAllByHillVersionHillOrderByDate1Desc(Hill hill);
 

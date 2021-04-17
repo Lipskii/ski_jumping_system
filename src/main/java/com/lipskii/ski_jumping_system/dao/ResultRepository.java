@@ -11,4 +11,5 @@ import java.util.List;
 public interface ResultRepository extends JpaRepository<Result,Integer>, JpaSpecificationExecutor<Result> {
 
     List<Result> findAllByCompetitionIdOrderByTotalRank(int competitionId);
+
 }

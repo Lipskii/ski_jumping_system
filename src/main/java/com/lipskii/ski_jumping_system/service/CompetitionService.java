@@ -40,6 +40,10 @@ public class CompetitionService implements ServiceInterface {
         return competitionRepository.findAllBySeriesMajorIdOrderByDate1Desc(seriesId);
     }
 
+    public List<Competition> findAllBySeriesIdAndSeason(int seriesId, int season){
+        return competitionRepository.findAllBySeasonSeasonAndSeriesMajorIdOrderByDate1(season, seriesId);
+    }
+
     public List<Competition> findAllByHillId(int hillId){
         Hill hill = hillService.findById(hillId).orElseThrow(() -> new ResourceNotFoundException("No hill found for id = " + hillId));
         return competitionRepository.findAllByHillVersionHillOrderByDate1Desc(hill);
