@@ -7,9 +7,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface OverallStandingRepository extends JpaRepository<OverallStanding,Integer>, JpaSpecificationExecutor<OverallStanding> {
 
     OverallStanding findBySeasonSeasonAndSeriesAndSkiJumper(int season, Series series, SkiJumper skiJumper);
+
+    List<OverallStanding> findAllBySeasonSeasonAndSeriesOrderByPointsDesc(int season, Series series);
+
 
 }

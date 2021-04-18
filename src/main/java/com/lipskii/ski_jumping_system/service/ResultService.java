@@ -25,7 +25,6 @@ import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -144,6 +143,9 @@ public class ResultService implements ServiceInterface {
             csvWriterAll(resultsArray, pathCsv);
             saveFromCSV(pathCsv, competition);
             overallStandingService.calculateStandings(competition.getSeriesMajor().getId(),competition.getSeason().getSeason());
+            if(competition.getSeriesMinor() != null){
+                overallStandingService.calculateStandings(competition.getSeriesMinor().getId(),competition.getSeason().getSeason());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

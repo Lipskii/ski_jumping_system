@@ -51,7 +51,7 @@ public class OverallStandingController {
     }
 
     @PostMapping("/calculate")
-    public void calculateOverallStandings(@RequestBody CalculateOverallStandingsDTO dto){
+    public void calculateOverallStandings(@RequestBody CalculateOverallStandingsDTO dto) {
         overallStandingService.calculateStandings(dto.getSeriesId(), dto.getSeason());
     }
 

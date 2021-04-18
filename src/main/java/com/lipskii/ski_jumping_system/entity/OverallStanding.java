@@ -5,12 +5,12 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "overall_standings")
+@Table(name = "overall_standing")
 public class OverallStanding {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idoverall_standings")
+    @Column(name = "idoverall_standing")
     private int id;
 
     @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
@@ -22,21 +22,24 @@ public class OverallStanding {
     private Season season;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-   // @JsonIgnoreProperties(value = "results", allowSetters = true)
     @JoinColumn(name = "ski_jumper_idski_jumper")
     private SkiJumper skiJumper;
 
     @Column(name = "points")
     private BigDecimal points;
 
+    @Column(name = "ranking")
+    private Integer ranking;
+
     public OverallStanding() {
     }
 
-    public OverallStanding(Series series, Season season, SkiJumper skiJumper, BigDecimal points) {
+    public OverallStanding(Series series, Season season, SkiJumper skiJumper, BigDecimal points, int ranking) {
         this.series = series;
         this.season = season;
         this.skiJumper = skiJumper;
         this.points = points;
+        this.ranking = ranking;
     }
 
     public int getId() {
@@ -79,14 +82,23 @@ public class OverallStanding {
         this.points = points;
     }
 
+    public Integer getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(Integer rank) {
+        this.ranking = rank;
+    }
+
     @Override
     public String toString() {
-        return "OverallStandings{" +
+        return "OverallStanding{" +
                 "id=" + id +
                 ", series=" + series +
                 ", season=" + season +
                 ", skiJumper=" + skiJumper +
                 ", points=" + points +
+                ", rank=" + ranking +
                 '}';
     }
 }

@@ -1,10 +1,7 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.OverallStandingRepository;
-import com.lipskii.ski_jumping_system.entity.OverallStanding;
-import com.lipskii.ski_jumping_system.entity.PointsScaleValue;
-import com.lipskii.ski_jumping_system.entity.Result;
-import com.lipskii.ski_jumping_system.entity.Series;
+import com.lipskii.ski_jumping_system.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
@@ -43,28 +40,76 @@ public class OverallStandingService implements ServiceInterface {
     }
 
     public void calculateStandings(int seriesId, int season) {
-        List<Result> results = resultService.findBySeriesIdAndSeason(seriesId, season);
         Series series = seriesService.findById(seriesId).orElseThrow(() -> new ResourceNotFoundException("no series found for id = " + seriesId));
-        List<PointsScaleValue> pointsScaleValues = pointsScaleValueService.findByPointsScale(series.getPointsScale());
 
-        for (Result result : results) {
-            OverallStanding overallStanding = overallStandingRepository.findBySeasonSeasonAndSeriesAndSkiJumper(season, series, result.getSkiJumper());
-            int rank = result.getTotalRank();
+        if (series.getPointsScale() != null) {
+            List<Result> results = resultService.findBySeriesIdAndSeason(seriesId, season);
 
-            PointsScaleValue pointsScaleValue = pointsScaleValues.stream()
-                    .filter(pointsScaleValue1 -> pointsScaleValue1.getRank() == rank)
-                    .findFirst()
-                    .orElse(null);
+            List<PointsScaleValue> pointsScaleValues = pointsScaleValueService.findByPointsScale(series.getPointsScale());
 
-            if (pointsScaleValue != null) {
-                if (overallStanding != null) {
-                    overallStanding.setPoints(overallStanding.getPoints().add(BigDecimal.valueOf(rank)));
-                } else {
-                    overallStanding = new OverallStanding(series, result.getCompetition().getSeason(), result.getSkiJumper(), BigDecimal.valueOf(pointsScaleValue.getPoints()));
+            setOverallStandingsRankToZero(season, series);
+
+            for (Result result : results) {
+                OverallStanding overallStanding = overallStandingRepository.findBySeasonSeasonAndSeriesAndSkiJumper(season, series, result.getSkiJumper());
+                int rank = result.getTotalRank();
+
+                PointsScaleValue pointsScaleValue = getPointScaleValueByRank(pointsScaleValues, rank);
+
+                if (pointsScaleValue != null) {
+                    if (overallStanding != null) {
+                        overallStanding.setPoints(overallStanding.getPoints().add(BigDecimal.valueOf(pointsScaleValue.getPoints())));
+                    } else {
+                        overallStanding = new OverallStanding(series, result.getCompetition().getSeason(), result.getSkiJumper(), BigDecimal.valueOf(pointsScaleValue.getPoints()), 0);
+                    }
+                    overallStandingRepository.save(overallStanding);
                 }
-                overallStandingRepository.save(overallStanding);
             }
+            setRankingsForOverallStandings(season, series);
         }
+    }
+
+    private void setOverallStandingsRankToZero(int season, Series series) {
+        List<OverallStanding> overallStandings = overallStandingRepository.findAllBySeasonSeasonAndSeriesOrderByPointsDesc(season, series);
+        for (OverallStanding overallStanding : overallStandings) {
+            overallStanding.setPoints(BigDecimal.valueOf(0));
+            overallStanding.setRanking(0);
+            overallStandingRepository.save(overallStanding);
+        }
+    }
+
+    private void setRankingsForOverallStandings(int season, Series series) {
+        List<OverallStanding> overallStandings = overallStandingRepository.findAllBySeasonSeasonAndSeriesOrderByPointsDesc(season, series);
+
+        for (int i = 0; i < overallStandings.size(); i++) {
+            OverallStanding overallStanding = overallStandings.get(i);
+            BigDecimal formerPoints;
+
+            if (overallStanding.getPoints().equals(BigDecimal.ZERO)) {
+                overallStanding.setRanking(0);
+            } else {
+                if (i == 0) {
+                    formerPoints = BigDecimal.valueOf(-1);
+                } else {
+                    formerPoints = overallStandings.get(i - 1).getPoints();
+                }
+
+                if (overallStanding.getPoints().equals(formerPoints)) {
+                    overallStanding.setRanking(overallStandings.get(i - 1).getRanking());
+                } else {
+                    overallStanding.setRanking(i + 1);
+                }
+            }
+
+            overallStandingRepository.save(overallStanding);
+        }
+    }
+
+    private PointsScaleValue getPointScaleValueByRank(List<PointsScaleValue> pointsScaleValues, int rank) {
+        PointsScaleValue pointsScaleValue = pointsScaleValues.stream()
+                .filter(pointsScaleValue1 -> pointsScaleValue1.getRank() == rank)
+                .findFirst()
+                .orElse(null);
+        return pointsScaleValue;
     }
 
     @Override
