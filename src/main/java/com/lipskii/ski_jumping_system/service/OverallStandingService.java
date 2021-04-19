@@ -41,32 +41,57 @@ public class OverallStandingService implements ServiceInterface {
 
     public void calculateStandings(int seriesId, int season) {
         Series series = seriesService.findById(seriesId).orElseThrow(() -> new ResourceNotFoundException("no series found for id = " + seriesId));
-
         if (series.getPointsScale() != null) {
-            List<Result> results = resultService.findBySeriesIdAndSeason(seriesId, season);
-
-            List<PointsScaleValue> pointsScaleValues = pointsScaleValueService.findByPointsScale(series.getPointsScale());
-
-            setOverallStandingsRankToZero(season, series);
-
-            for (Result result : results) {
-                OverallStanding overallStanding = overallStandingRepository.findBySeasonSeasonAndSeriesAndSkiJumper(season, series, result.getSkiJumper());
-                int rank = result.getTotalRank();
-
-                PointsScaleValue pointsScaleValue = getPointScaleValueByRank(pointsScaleValues, rank);
-
-                if (pointsScaleValue != null) {
-                    if (overallStanding != null) {
-                        overallStanding.setPoints(overallStanding.getPoints().add(BigDecimal.valueOf(pointsScaleValue.getPoints())));
-                    } else {
-                        overallStanding = new OverallStanding(series, result.getCompetition().getSeason(), result.getSkiJumper(), BigDecimal.valueOf(pointsScaleValue.getPoints()), 0);
-                    }
-                    overallStandingRepository.save(overallStanding);
-                }
+            if (series.getPointsScale().getId() == 6) {
+                List<Result> results = resultService.findBySeriesMinorIdAndSeason(seriesId,season);
+                calculateStandingsByNote(season, series, results);
+            } else {
+                List<Result> results = resultService.findBySeriesMajorIdAndSeason(seriesId, season);
+                calculateStandingsByPointScale(season, series, results);
             }
             setRankingsForOverallStandings(season, series);
         }
     }
+
+    private void calculateStandingsByNote(int season, Series series, List<Result> results) {
+        setOverallStandingsRankToZero(season, series);
+        for (Result result : results) {
+            OverallStanding overallStanding = overallStandingRepository.findBySeasonSeasonAndSeriesAndSkiJumper(season, series, result.getSkiJumper());
+            if (overallStanding != null) {
+                overallStanding.setPoints(overallStanding.getPoints().add(result.getTotalPoints()));
+            } else {
+                overallStanding = new OverallStanding(series, result.getCompetition().getSeason(), result.getSkiJumper(), result.getTotalPoints(), 0);
+            }
+            overallStandingRepository.save(overallStanding);
+        }
+    }
+
+    private void calculateStandingsByPointScale(int season, Series series, List<Result> results) {
+        List<PointsScaleValue> pointsScaleValues = pointsScaleValueService.findByPointsScale(series.getPointsScale());
+
+        setOverallStandingsRankToZero(season, series);
+
+        for (Result result : results) {
+            OverallStanding overallStanding = overallStandingRepository.findBySeasonSeasonAndSeriesAndSkiJumper(season, series, result.getSkiJumper());
+            int rank = result.getTotalRank();
+
+            PointsScaleValue pointsScaleValue = getPointScaleValueByRank(pointsScaleValues, rank);
+
+            if (pointsScaleValue != null) {
+                if (overallStanding != null) {
+                    overallStanding.setPoints(overallStanding.getPoints().add(BigDecimal.valueOf(pointsScaleValue.getPoints())));
+                } else {
+                    overallStanding = new OverallStanding(
+                            series,
+                            result.getCompetition().getSeason(),
+                            result.getSkiJumper(),
+                            BigDecimal.valueOf(pointsScaleValue.getPoints()), 0);
+                }
+                overallStandingRepository.save(overallStanding);
+            }
+        }
+    }
+
 
     private void setOverallStandingsRankToZero(int season, Series series) {
         List<OverallStanding> overallStandings = overallStandingRepository.findAllBySeasonSeasonAndSeriesOrderByPointsDesc(season, series);

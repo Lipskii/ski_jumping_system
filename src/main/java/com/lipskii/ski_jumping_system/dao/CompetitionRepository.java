@@ -17,6 +17,8 @@ public interface CompetitionRepository extends JpaRepository<Competition,Integer
 
     List<Competition> findAllBySeasonSeasonAndSeriesMajorIdOrderByDate1(int season, int seriesMajorId);
 
+    List<Competition> findAllBySeasonSeasonAndSeriesMinorIdOrderByDate1(int season, int seriesMinorId);
+
     List<Competition> findAllByHillVersionHillOrderByDate1Desc(Hill hill);
 
     List<Competition> findAllBySeriesMajorIdAndHillVersionHillOrderByDate1Desc(int seriesId, Hill hill);

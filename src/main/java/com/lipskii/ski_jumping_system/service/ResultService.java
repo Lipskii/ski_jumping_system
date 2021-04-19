@@ -99,9 +99,22 @@ public class ResultService implements ServiceInterface {
         return hillRecordDTO;
     }
 
-    public List<Result> findBySeriesIdAndSeason(int seriesId, int season) {
+    public List<Result> findBySeriesMajorIdAndSeason(int seriesId, int season) {
         List<Result> results = new ArrayList<>();
-        List<Competition> competitions = competitionService.findAllBySeriesIdAndSeason(seriesId,season);
+        List<Competition> competitions = competitionService.findAllBySeriesMajorIdAndSeason(seriesId,season);
+        for (Competition competition : competitions) {
+            List<Result> resultsCompetition = competition.getResults();
+            for (Result result : resultsCompetition) {
+                results.add(result);
+            }
+        }
+
+        return results;
+    }
+
+    public List<Result> findBySeriesMinorIdAndSeason(int seriesId, int season) {
+        List<Result> results = new ArrayList<>();
+        List<Competition> competitions = competitionService.findAllBySeriesMinorIdAndSeason(seriesId,season);
         for (Competition competition : competitions) {
             List<Result> resultsCompetition = competition.getResults();
             for (Result result : resultsCompetition) {

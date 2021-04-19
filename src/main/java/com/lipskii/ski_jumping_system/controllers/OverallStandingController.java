@@ -4,6 +4,8 @@ import com.lipskii.ski_jumping_system.dto.CalculateOverallStandingsDTO;
 import com.lipskii.ski_jumping_system.entity.OverallStanding;
 import com.lipskii.ski_jumping_system.service.OverallStandingService;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
+import net.kaczmarzyk.spring.data.jpa.domain.GreaterThan;
+import net.kaczmarzyk.spring.data.jpa.domain.LessThan;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,8 @@ public class OverallStandingController {
                     @Spec(path = "season.id", params = "seasonId", spec = Equal.class),
                     @Spec(path = "season.season", params = "season", spec = Equal.class),
                     @Spec(path = "series.id", params = "seriesId", spec = Equal.class),
+                    @Spec(path = "ranking", params = "rankingLessThan", spec = LessThan.class),
+                    @Spec(path = "ranking", params = "rankingGreaterThan", spec = GreaterThan.class),
             }) Specification<OverallStanding> spec) {
         return overallStandingService.get(spec, Sort.by(Sort.Direction.DESC, "points"));
     }

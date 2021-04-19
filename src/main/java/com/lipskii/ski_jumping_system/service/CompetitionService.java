@@ -40,8 +40,12 @@ public class CompetitionService implements ServiceInterface {
         return competitionRepository.findAllBySeriesMajorIdOrderByDate1Desc(seriesId);
     }
 
-    public List<Competition> findAllBySeriesIdAndSeason(int seriesId, int season){
+    public List<Competition> findAllBySeriesMajorIdAndSeason(int seriesId, int season){
         return competitionRepository.findAllBySeasonSeasonAndSeriesMajorIdOrderByDate1(season, seriesId);
+    }
+
+    public List<Competition> findAllBySeriesMinorIdAndSeason(int seriesId, int season){
+        return competitionRepository.findAllBySeasonSeasonAndSeriesMinorIdOrderByDate1(season, seriesId);
     }
 
     public List<Competition> findAllByHillId(int hillId){
