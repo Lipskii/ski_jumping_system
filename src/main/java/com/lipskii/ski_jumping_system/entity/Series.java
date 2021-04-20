@@ -1,11 +1,9 @@
 package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
-//TODO Finish it after changes to db.
 @Entity
 @Table(name = "series")
 public class Series {
@@ -26,6 +24,7 @@ public class Series {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "points_scale_idpoints_scale")
     private PointsScale pointsScale;
+
 
     public Series() {
     }
@@ -68,6 +67,7 @@ public class Series {
     public void setPointsScale(PointsScale pointsScale) {
         this.pointsScale = pointsScale;
     }
+
 
     @Override
     public String toString() {

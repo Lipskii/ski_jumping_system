@@ -29,16 +29,19 @@ public class Competition {
 
 
     @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
+    @JsonIgnoreProperties(value = "competitions", allowSetters = true)
     @JoinColumn(name = "series_idseries_major")
     private Series seriesMajor;
 
 
     @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
+    @JsonIgnoreProperties(value = "competitions", allowSetters = true)
     @JoinColumn(name = "series_idseries_minor")
     private Series seriesMinor;
 
 
     @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
+    @JsonIgnoreProperties(value = "competitions", allowSetters = true)
     @JoinColumn(name = "hill_version_idhill_version")
     private HillVersion hillVersion;
 
