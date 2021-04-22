@@ -1,5 +1,6 @@
 package com.lipskii.ski_jumping_system.service;
 
+import com.lipskii.ski_jumping_system.dao.PersonRepository;
 import com.lipskii.ski_jumping_system.dao.SkiJumperRepository;
 import com.lipskii.ski_jumping_system.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ import java.util.Optional;
 public class SkiJumperService implements ServiceInterface {
 
     private final SkiJumperRepository skiJumperRepository;
+    private final PersonService personService;
 
     @Autowired
-    public SkiJumperService(SkiJumperRepository skiJumperRepository) {
+    public SkiJumperService(SkiJumperRepository skiJumperRepository, PersonService personService) {
         this.skiJumperRepository = skiJumperRepository;
+        this.personService = personService;
     }
 
     @Override
@@ -48,12 +51,12 @@ public class SkiJumperService implements ServiceInterface {
         return skiJumperRepository.save((SkiJumper) obj);
     }
 
-    @Transactional
+   // @Transactional
     @Override
     public void deleteById(int id) {
-        SkiJumper skiJumper = skiJumperRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ski jumper does not exist!"));
-        System.out.println(skiJumper);
-        skiJumperRepository.delete(skiJumper);
+        skiJumperRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ski jumper does not exist!"));
+        skiJumperRepository.deleteSkiJumperById(id);
+        System.out.println(skiJumperRepository.findById(id).isPresent());
     }
 
 }

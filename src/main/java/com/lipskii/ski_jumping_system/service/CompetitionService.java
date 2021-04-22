@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -78,6 +80,17 @@ public class CompetitionService implements ServiceInterface {
     @Override
     public Optional<Competition> findById(int id) {
         return competitionRepository.findById(id);
+    }
+
+    public Competition updateCompetition(int competitionId, Competition competition){
+        if (findById(competitionId).isPresent()) {
+            competition.setId(competitionId);
+            save(competition);
+        } else {
+            throw new ResourceNotFoundException("No competition found for id: " + competitionId);
+        }
+
+        return competition;
     }
 
     @Override

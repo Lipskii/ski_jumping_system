@@ -77,6 +77,11 @@ public class CompetitionController {
         return competition;
     }
 
+    @PutMapping("/{competitionId}")
+    public Competition updateCompetition(@PathVariable int competitionId, @RequestBody Competition competition){
+        return competitionService.updateCompetition(competitionId,competition);
+    }
+
     @DeleteMapping("/{competitionId}")
     public void deleteCompetition(@PathVariable("competitionId") int competitionId) {
         competitionService.deleteById(competitionId);

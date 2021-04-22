@@ -1,5 +1,6 @@
 package com.lipskii.ski_jumping_system.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -27,6 +28,16 @@ public class Person implements Comparable<Person> {
     @JoinColumn(name = "gender_idgender")
     private Gender gender;
 
+    @OneToOne(mappedBy = "person", cascade={CascadeType.REFRESH, CascadeType.DETACH},
+    orphanRemoval = true)
+    @JsonIgnoreProperties({"person","skiClub","results"})
+    private SkiJumper skiJumper;
+
+//    @OneToOne(mappedBy = "person", orphanRemoval = true)
+//    @JsonIgnoreProperties({"person","skiClub","results"})
+//    private SkiJumper skiJumper;
+
+
     @Column(name = "birthdate")
     private LocalDate birthdate;
 
@@ -48,7 +59,7 @@ public class Person implements Comparable<Person> {
     private City city;
 
     @JsonIgnoreProperties(value = "person", allowSetters = true)
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
     private List<Jury> juryList;
 
     @Column(name = "photo")
@@ -129,7 +140,16 @@ public class Person implements Comparable<Person> {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
-//
+
+    public SkiJumper getSkiJumper() {
+        return skiJumper;
+    }
+
+    public void setSkiJumper(SkiJumper skiJumper) {
+        this.skiJumper = skiJumper;
+    }
+
+    //
 //    public List<Jury> getJuryList() {
 //        return juryList;
 //    }

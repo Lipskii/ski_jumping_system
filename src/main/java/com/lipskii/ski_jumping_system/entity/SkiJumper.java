@@ -15,7 +15,7 @@ public class SkiJumper implements Comparable<SkiJumper> {
     @Column(name = "idski_jumper")
     private int id;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.MERGE},orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "person_idperson")
     private Person person;
 
@@ -39,8 +39,10 @@ public class SkiJumper implements Comparable<SkiJumper> {
     private BigDecimal all_time_points;
 
     @JsonIgnoreProperties(value = "skiJumper", allowSetters = true)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "skiJumper", cascade = {CascadeType.PERSIST})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "skiJumper")
     private List<Result> results;
+
+
 
     public SkiJumper() {
     }
