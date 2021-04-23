@@ -39,8 +39,12 @@ public class SkiJumper implements Comparable<SkiJumper> {
     private BigDecimal all_time_points;
 
     @JsonIgnoreProperties(value = "skiJumper", allowSetters = true)
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "skiJumper")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "skiJumper")
     private List<Result> results;
+
+//    @JsonIgnoreProperties(value = "skiJumper", allowSetters = true)
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "skiJumper")
+//    private List<TeamResult> teamResults;
 
 
 
@@ -110,6 +114,14 @@ public class SkiJumper implements Comparable<SkiJumper> {
     public void setResults(List<Result> results) {
         this.results = results;
     }
+//
+//    public List<TeamResult> getTeamResults() {
+//        return teamResults;
+//    }
+//
+//    public void setTeamResults(List<TeamResult> teamResults) {
+//        this.teamResults = teamResults;
+//    }
 
     @Override
     public int compareTo(SkiJumper o) {

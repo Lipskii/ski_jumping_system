@@ -32,6 +32,11 @@ public class Country implements Comparable<Country> {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "country", cascade = {CascadeType.PERSIST})
     private List<Person> people;
 
+    @JsonIgnoreProperties(value = {"country","skiJumper1","skiJumper2","skiJumper3","skiJumper4"}, allowSetters = true)
+    @OrderBy("totalRank")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "country") //, cascade = {CascadeType.PERSIST,CascadeType.REMOVE}
+    private List<TeamResult> teamResults;
+
     public Country() {
     }
 
@@ -79,6 +84,14 @@ public class Country implements Comparable<Country> {
 
     public void setPeople(List<Person> people) {
         this.people = people;
+    }
+
+    public List<TeamResult> getTeamResults() {
+        return teamResults;
+    }
+
+    public void setTeamResults(List<TeamResult> teamResults) {
+        this.teamResults = teamResults;
     }
 
     @Override

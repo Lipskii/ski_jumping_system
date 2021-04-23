@@ -28,9 +28,9 @@ public class Person implements Comparable<Person> {
     @JoinColumn(name = "gender_idgender")
     private Gender gender;
 
-    @OneToOne(mappedBy = "person", cascade={CascadeType.REFRESH, CascadeType.DETACH},
-    orphanRemoval = true)
-    @JsonIgnoreProperties({"person","skiClub","results"})
+    @OneToOne(mappedBy = "person", cascade={CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = true)
+   // @JsonIgnoreProperties({"person","skiClub","results","id","fisCode"})
+    @JsonIgnore
     private SkiJumper skiJumper;
 
 //    @OneToOne(mappedBy = "person", orphanRemoval = true)
@@ -45,7 +45,7 @@ public class Person implements Comparable<Person> {
      * Current country that athlete represents with his fis license.
      */
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnoreProperties({"people","cities"})
+    @JsonIgnoreProperties({"people","cities","teamResults"})
     @JoinColumn(name = "country_idcountry")
     private Country country;
 

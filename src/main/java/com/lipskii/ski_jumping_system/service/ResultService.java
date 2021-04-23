@@ -6,6 +6,7 @@ import com.lipskii.ski_jumping_system.dto.HillRecordDTO;
 import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Result;
 import com.lipskii.ski_jumping_system.controllers.FilesPaths;
+import com.lipskii.ski_jumping_system.entity.Series;
 import com.lipskii.ski_jumping_system.entity.SkiJumper;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -99,16 +100,14 @@ public class ResultService implements ServiceInterface {
         return hillRecordDTO;
     }
 
-    public List<Result> findBySeriesMajorIdAndSeason(int seriesId, int season) {
+    public List<Result> findBySeriesMajorIdAndSeason(Series series, int season) {
         List<Result> results = new ArrayList<>();
-        List<Competition> competitions = competitionService.findAllBySeriesMajorIdAndSeason(seriesId,season);
+        //List<Competition> competitions = competitionService.findAllBySeriesMajorIdAndSeason(seriesId,season);
+        List<Competition> competitions = competitionService.findAllBySeriesMajorAndSeason(series,season);
         for (Competition competition : competitions) {
             List<Result> resultsCompetition = competition.getResults();
-            for (Result result : resultsCompetition) {
-                results.add(result);
-            }
+            results.addAll(resultsCompetition);
         }
-
         return results;
     }
 
@@ -117,9 +116,7 @@ public class ResultService implements ServiceInterface {
         List<Competition> competitions = competitionService.findAllBySeriesMinorIdAndSeason(seriesId,season);
         for (Competition competition : competitions) {
             List<Result> resultsCompetition = competition.getResults();
-            for (Result result : resultsCompetition) {
-                results.add(result);
-            }
+            results.addAll(resultsCompetition);
         }
 
         return results;
@@ -162,6 +159,7 @@ public class ResultService implements ServiceInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public void saveFromCSV(Path path, Competition competition) {
@@ -200,7 +198,6 @@ public class ResultService implements ServiceInterface {
                 resultRepository.save(result);
             }
         });
-
     }
 
     @Override

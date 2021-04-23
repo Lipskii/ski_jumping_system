@@ -16,12 +16,10 @@ import java.util.Optional;
 public class SkiJumperService implements ServiceInterface {
 
     private final SkiJumperRepository skiJumperRepository;
-    private final PersonService personService;
 
     @Autowired
-    public SkiJumperService(SkiJumperRepository skiJumperRepository, PersonService personService) {
+    public SkiJumperService(SkiJumperRepository skiJumperRepository) {
         this.skiJumperRepository = skiJumperRepository;
-        this.personService = personService;
     }
 
     @Override

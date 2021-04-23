@@ -10,6 +10,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -46,7 +47,7 @@ public class OverallStandingService implements ServiceInterface {
                 List<Result> results = resultService.findBySeriesMinorIdAndSeason(seriesId,season);
                 calculateStandingsByNote(season, series, results);
             } else {
-                List<Result> results = resultService.findBySeriesMajorIdAndSeason(seriesId, season);
+                List<Result> results = resultService.findBySeriesMajorIdAndSeason(series, season);
                 calculateStandingsByPointScale(season, series, results);
             }
             setRankingsForOverallStandings(season, series);
@@ -68,16 +69,14 @@ public class OverallStandingService implements ServiceInterface {
 
     private void calculateStandingsByPointScale(int season, Series series, List<Result> results) {
         List<PointsScaleValue> pointsScaleValues = pointsScaleValueService.findByPointsScale(series.getPointsScale());
-
         setOverallStandingsRankToZero(season, series);
 
         for (Result result : results) {
-            OverallStanding overallStanding = overallStandingRepository.findBySeasonSeasonAndSeriesAndSkiJumper(season, series, result.getSkiJumper());
             int rank = result.getTotalRank();
-
             PointsScaleValue pointsScaleValue = getPointScaleValueByRank(pointsScaleValues, rank);
 
             if (pointsScaleValue != null) {
+                OverallStanding overallStanding = overallStandingRepository.findBySeasonSeasonAndSeriesAndSkiJumper(season, series, result.getSkiJumper());
                 if (overallStanding != null) {
                     overallStanding.setPoints(overallStanding.getPoints().add(BigDecimal.valueOf(pointsScaleValue.getPoints())));
                 } else {
@@ -87,6 +86,7 @@ public class OverallStandingService implements ServiceInterface {
                             result.getSkiJumper(),
                             BigDecimal.valueOf(pointsScaleValue.getPoints()), 0);
                 }
+
                 overallStandingRepository.save(overallStanding);
             }
         }
@@ -104,11 +104,9 @@ public class OverallStandingService implements ServiceInterface {
 
     private void setRankingsForOverallStandings(int season, Series series) {
         List<OverallStanding> overallStandings = overallStandingRepository.findAllBySeasonSeasonAndSeriesOrderByPointsDesc(season, series);
-
         for (int i = 0; i < overallStandings.size(); i++) {
             OverallStanding overallStanding = overallStandings.get(i);
             BigDecimal formerPoints;
-
             if (overallStanding.getPoints().equals(BigDecimal.ZERO)) {
                 overallStanding.setRanking(0);
             } else {

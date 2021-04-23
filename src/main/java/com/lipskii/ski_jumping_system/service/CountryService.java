@@ -96,6 +96,10 @@ public class CountryService implements ServiceInterface {
         return countries;
     }
 
+    public Country findByCode(String code){
+        return countryRepository.findByCode(code);
+    }
+
 
 
 }

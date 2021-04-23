@@ -3,6 +3,7 @@ package com.lipskii.ski_jumping_system.service;
 import com.lipskii.ski_jumping_system.dao.CompetitionRepository;
 import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Hill;
+import com.lipskii.ski_jumping_system.entity.Series;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
@@ -44,6 +45,10 @@ public class CompetitionService implements ServiceInterface {
 
     public List<Competition> findAllBySeriesMajorIdAndSeason(int seriesId, int season){
         return competitionRepository.findAllBySeasonSeasonAndSeriesMajorIdOrderByDate1(season, seriesId);
+    }
+
+    public List<Competition> findAllBySeriesMajorAndSeason(Series series, int season){
+        return competitionRepository.findAllBySeasonSeasonAndSeriesMajorOrderByDate1(season, series);
     }
 
     public List<Competition> findAllBySeriesMinorIdAndSeason(int seriesId, int season){
