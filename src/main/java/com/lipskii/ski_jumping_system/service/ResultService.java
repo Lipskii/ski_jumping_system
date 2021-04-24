@@ -37,16 +37,21 @@ public class ResultService implements ServiceInterface {
     private final SkiJumperService skiJumperService;
     private final DisqualificationTypeService disqualificationTypeService;
     private final OverallStandingService overallStandingService;
+    private final TeamOverallStandingService teamOverallStandingService;
 
     @Autowired
-    public ResultService(ResultRepository resultRepository, CompetitionService competitionService,
-                         SkiJumperService skiJumperService, DisqualificationTypeService disqualificationTypeService
-    ,OverallStandingService overallStandingService) {
+    public ResultService(ResultRepository resultRepository,
+                         CompetitionService competitionService,
+                         SkiJumperService skiJumperService,
+                         DisqualificationTypeService disqualificationTypeService,
+                         TeamOverallStandingService teamOverallStandingService,
+                         OverallStandingService overallStandingService) {
         this.resultRepository = resultRepository;
         this.competitionService = competitionService;
         this.skiJumperService = skiJumperService;
         this.disqualificationTypeService = disqualificationTypeService;
         this.overallStandingService = overallStandingService;
+        this.teamOverallStandingService = teamOverallStandingService;
     }
 
     @Override
@@ -100,7 +105,7 @@ public class ResultService implements ServiceInterface {
         return hillRecordDTO;
     }
 
-    public List<Result> findBySeriesMajorIdAndSeason(Series series, int season) {
+    public List<Result> findAllBySeriesMajorAndSeason(Series series, int season) {
         List<Result> results = new ArrayList<>();
         //List<Competition> competitions = competitionService.findAllBySeriesMajorIdAndSeason(seriesId,season);
         List<Competition> competitions = competitionService.findAllBySeriesMajorAndSeason(series,season);
@@ -111,9 +116,9 @@ public class ResultService implements ServiceInterface {
         return results;
     }
 
-    public List<Result> findBySeriesMinorIdAndSeason(int seriesId, int season) {
+    public List<Result> findBySeriesMinorAndSeason(Series series, int season) {
         List<Result> results = new ArrayList<>();
-        List<Competition> competitions = competitionService.findAllBySeriesMinorIdAndSeason(seriesId,season);
+        List<Competition> competitions = competitionService.findAllBySeriesMinorAndSeason(series,season);
         for (Competition competition : competitions) {
             List<Result> resultsCompetition = competition.getResults();
             results.addAll(resultsCompetition);
@@ -153,6 +158,9 @@ public class ResultService implements ServiceInterface {
             csvWriterAll(resultsArray, pathCsv);
             saveFromCSV(pathCsv, competition);
             overallStandingService.calculateStandings(competition.getSeriesMajor().getId(),competition.getSeason().getSeason());
+            if(competition.getSeriesMajor().getId() == 9){
+                teamOverallStandingService.calculateNationsCupByPointScaleIndividualCompetitions(competition.getSeason().getSeason());
+            }
             if(competition.getSeriesMinor() != null){
                 overallStandingService.calculateStandings(competition.getSeriesMinor().getId(),competition.getSeason().getSeason());
             }

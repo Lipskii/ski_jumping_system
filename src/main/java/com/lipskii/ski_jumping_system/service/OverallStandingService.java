@@ -10,7 +10,6 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -18,15 +17,17 @@ public class OverallStandingService implements ServiceInterface {
 
     private final OverallStandingRepository overallStandingRepository;
     private final ResultService resultService;
+    private final TeamResultService teamResultService;
     private final PointsScaleValueService pointsScaleValueService;
     private final SeriesService seriesService;
 
     @Autowired
-    public OverallStandingService(OverallStandingRepository overallStandingRepository, @Lazy ResultService resultService,
+    public OverallStandingService(OverallStandingRepository overallStandingRepository, @Lazy ResultService resultService, TeamResultService teamResultService,
                                   PointsScaleValueService pointsScaleValueService, SeriesService seriesService) {
         this.overallStandingRepository = overallStandingRepository;
         this.resultService = resultService;
         this.pointsScaleValueService = pointsScaleValueService;
+        this.teamResultService = teamResultService;
         this.seriesService = seriesService;
     }
 
@@ -40,19 +41,24 @@ public class OverallStandingService implements ServiceInterface {
         return overallStandingRepository.findAll(spec, sort);
     }
 
+    public List<OverallStanding> findAllBySeriesAndSeasonSeason(Series series, int season){
+        return overallStandingRepository.findAllBySeasonSeasonAndSeriesOrderByPointsDesc(season,series);
+    }
+
     public void calculateStandings(int seriesId, int season) {
         Series series = seriesService.findById(seriesId).orElseThrow(() -> new ResourceNotFoundException("no series found for id = " + seriesId));
         if (series.getPointsScale() != null) {
             if (series.getPointsScale().getId() == 6) {
-                List<Result> results = resultService.findBySeriesMinorIdAndSeason(seriesId,season);
+                List<Result> results = resultService.findBySeriesMinorAndSeason(series,season);
                 calculateStandingsByNote(season, series, results);
             } else {
-                List<Result> results = resultService.findBySeriesMajorIdAndSeason(series, season);
+                List<Result> results = resultService.findAllBySeriesMajorAndSeason(series, season);
                 calculateStandingsByPointScale(season, series, results);
             }
             setRankingsForOverallStandings(season, series);
         }
     }
+
 
     private void calculateStandingsByNote(int season, Series series, List<Result> results) {
         setOverallStandingsRankToZero(season, series);

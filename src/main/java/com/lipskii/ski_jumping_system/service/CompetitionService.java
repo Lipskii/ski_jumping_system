@@ -115,4 +115,7 @@ public class CompetitionService implements ServiceInterface {
     }
 
 
+    public List<Competition> findAllBySeriesMinorAndSeason(Series series, int season) {
+        return competitionRepository.findAllBySeasonSeasonAndSeriesMinorOrderByDate1(season, series);
+    }
 }

@@ -2,19 +2,19 @@ package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.TeamResultRepository;
 import com.lipskii.ski_jumping_system.db_data.FetchedTeamResultObject;
-import com.lipskii.ski_jumping_system.entity.Competition;
-import com.lipskii.ski_jumping_system.entity.SkiJumper;
-import com.lipskii.ski_jumping_system.entity.TeamResult;
+import com.lipskii.ski_jumping_system.entity.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +27,16 @@ public class TeamResultService implements ServiceInterface {
     CompetitionService competitionService;
     CountryService countryService;
     SkiJumperService skiJumperService;
+    TeamOverallStandingService teamOverallStandingService;
 
     @Autowired
-    public TeamResultService(TeamResultRepository teamResultRepository, CompetitionService competitionService, CountryService countryService, SkiJumperService skiJumperService) {
+    public TeamResultService(TeamResultRepository teamResultRepository, CompetitionService competitionService,
+                             CountryService countryService, SkiJumperService skiJumperService, @Lazy TeamOverallStandingService teamOverallStandingService) {
         this.teamResultRepository = teamResultRepository;
         this.competitionService = competitionService;
         this.countryService = countryService;
         this.skiJumperService = skiJumperService;
+        this.teamOverallStandingService = teamOverallStandingService;
     }
 
     @Override
@@ -61,13 +64,19 @@ public class TeamResultService implements ServiceInterface {
     }
 
     public void saveFromLink(String link, int competitionId) {
-        link = link.replace("%3A", ":");
-        link = link.replace("%2F", "/");
-        link = link.replace("%3F", "?");
-
         Competition competition = competitionService
                 .findById(competitionId)
                 .orElseThrow(() -> new ResourceNotFoundException("no competition found for id = " + competitionId));
+        saveTeamResult(link,competition);
+
+        teamOverallStandingService.calculateNationsCupStandings(competition.getSeriesMajor().getId(),competition.getSeason().getSeason());
+    }
+
+    @Transactional
+    public void saveTeamResult(String link, Competition competition){
+        link = link.replace("%3A", ":");
+        link = link.replace("%2F", "/");
+        link = link.replace("%3F", "?");
 
         if (!competition.getTeamResults().isEmpty()) {
             for (TeamResult teamResult : competition.getTeamResults()) {
@@ -100,10 +109,11 @@ public class TeamResultService implements ServiceInterface {
             teamResult.setTotalPoints(BigDecimal.valueOf(fetchedTeamResultObject.getTotalPoints()));
 
             teamResult.setTotalRank(fetchedTeamResultObject.getRank());
-            teamResultRepository.save(teamResult);
-        }
+            save(teamResult);
 
+        }
     }
+
 
     private List<FetchedTeamResultObject> fetchResults(String link) {
         List<FetchedTeamResultObject> fetchedTeamResultObjects = new ArrayList<>();
@@ -147,5 +157,15 @@ public class TeamResultService implements ServiceInterface {
             e.printStackTrace();
         }
         return fetchedTeamResultObjects;
+    }
+
+    public List<TeamResult> findBySeriesMajorAndSeason(Series series, int season) {
+        List<TeamResult> results = new ArrayList<>();
+        List<Competition> competitions = competitionService.findAllBySeriesMajorAndSeason(series,season);
+        for (Competition competition : competitions) {
+            List<TeamResult> resultsCompetition = competition.getTeamResults();
+            results.addAll(resultsCompetition);
+        }
+        return results;
     }
 }

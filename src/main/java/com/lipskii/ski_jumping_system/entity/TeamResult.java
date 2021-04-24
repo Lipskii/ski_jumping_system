@@ -20,7 +20,7 @@ public class TeamResult {
     private Competition competition;
 
     @ManyToOne//(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnoreProperties(value = "teamResults", allowSetters = true)
+    @JsonIgnoreProperties(value = {"teamResults","people"}, allowSetters = true)
     @JoinColumn(name = "country_idcountry")
     private Country country;
 

@@ -28,4 +28,6 @@ public interface CompetitionRepository extends JpaRepository<Competition,Integer
 
     List<Competition> findAllBySeasonId(int seasonId);
 
+    List<Competition> findAllBySeasonSeasonAndSeriesMinorOrderByDate1(int season, Series series);
+
 }
