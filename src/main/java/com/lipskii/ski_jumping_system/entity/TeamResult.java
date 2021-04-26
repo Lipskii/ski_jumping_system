@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "team_result")
@@ -24,25 +25,9 @@ public class TeamResult {
     @JoinColumn(name = "country_idcountry")
     private Country country;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnoreProperties(value = {"teamResults","skiClub","city","results"}, allowSetters = true)
-    @JoinColumn(name = "ski_jumper_idski_jumper1")
-    private SkiJumper skiJumper1;
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnoreProperties(value = {"teamResults","skiClub","city","results"}, allowSetters = true)
-    @JoinColumn(name = "ski_jumper_idski_jumper2")
-    private SkiJumper skiJumper2;
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnoreProperties(value = {"teamResults","skiClub","city","results"}, allowSetters = true)
-    @JoinColumn(name = "ski_jumper_idski_jumper3")
-    private SkiJumper skiJumper3;
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnoreProperties(value = {"teamResults","skiClub","city","results"}, allowSetters = true)
-    @JoinColumn(name = "ski_jumper_idski_jumper4")
-    private SkiJumper skiJumper4;
+    @JsonIgnoreProperties(value = "teamResult", allowSetters = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "teamResult")
+    private List<TeamResultIndividual> teamResultsIndividual;
 
     @Column(name = "total_points")
     private BigDecimal totalPoints;
@@ -53,13 +38,9 @@ public class TeamResult {
     public TeamResult() {
     }
 
-    public TeamResult(Competition competition, Country country, SkiJumper skiJumper1, SkiJumper skiJumper2, SkiJumper skiJumper3, SkiJumper skiJumper4, BigDecimal totalPoints, int totalRank) {
+    public TeamResult(Competition competition, Country country, BigDecimal totalPoints, int totalRank) {
         this.competition = competition;
         this.country = country;
-        this.skiJumper1 = skiJumper1;
-        this.skiJumper2 = skiJumper2;
-        this.skiJumper3 = skiJumper3;
-        this.skiJumper4 = skiJumper4;
         this.totalPoints = totalPoints;
         this.totalRank = totalRank;
     }
@@ -88,38 +69,6 @@ public class TeamResult {
         this.country = country;
     }
 
-    public SkiJumper getSkiJumper1() {
-        return skiJumper1;
-    }
-
-    public void setSkiJumper1(SkiJumper skiJumper1) {
-        this.skiJumper1 = skiJumper1;
-    }
-
-    public SkiJumper getSkiJumper2() {
-        return skiJumper2;
-    }
-
-    public void setSkiJumper2(SkiJumper skiJumper2) {
-        this.skiJumper2 = skiJumper2;
-    }
-
-    public SkiJumper getSkiJumper3() {
-        return skiJumper3;
-    }
-
-    public void setSkiJumper3(SkiJumper skiJumper3) {
-        this.skiJumper3 = skiJumper3;
-    }
-
-    public SkiJumper getSkiJumper4() {
-        return skiJumper4;
-    }
-
-    public void setSkiJumper4(SkiJumper skiJumper4) {
-        this.skiJumper4 = skiJumper4;
-    }
-
     public BigDecimal getTotalPoints() {
         return totalPoints;
     }
@@ -136,16 +85,21 @@ public class TeamResult {
         this.totalRank = totalRank;
     }
 
+    public List<TeamResultIndividual> getTeamResultsIndividual() {
+        return teamResultsIndividual;
+    }
+
+    public void setTeamResultsIndividual(List<TeamResultIndividual> teamResultsIndividual) {
+        this.teamResultsIndividual = teamResultsIndividual;
+    }
+
     @Override
     public String toString() {
         return "TeamResult{" +
                 "id=" + id +
                 ", competition=" + competition +
                 ", country=" + country +
-                ", skiJumper1=" + skiJumper1 +
-                ", skiJumper2=" + skiJumper2 +
-                ", skiJumper3=" + skiJumper3 +
-                ", skiJumper4=" + skiJumper4 +
+                ", teamResultsIndividual=" + teamResultsIndividual +
                 ", totalPoints=" + totalPoints +
                 ", totalRank=" + totalRank +
                 '}';

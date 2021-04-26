@@ -59,6 +59,10 @@ public class ResultService implements ServiceInterface {
         return resultRepository.findAll();
     }
 
+    public List<Result> findAllByHillVersionIdAndCompetitionSeriesMajorId(int hillVersionId, int seriesMajorId){
+        return resultRepository.findAllByCompetitionHillVersionIdAndCompetitionSeriesMajorId(hillVersionId,seriesMajorId);
+    }
+
     public List<Result> findAllByCompetitionId(int competitionId) {
         return resultRepository.findAllByCompetitionIdOrderByTotalRank(competitionId);
     }
@@ -67,47 +71,9 @@ public class ResultService implements ServiceInterface {
         return resultRepository.findAll(spec, sort);
     }
 
-    public List<HillRecordDTO> getHillRecords(Specification<Result> spec, Sort sort) {
-        List<Result> results = resultRepository.findAll(spec, sort);
-        List<HillRecordDTO> hillRecordDTOS = new ArrayList<>();
-        BigDecimal hillRecord = BigDecimal.valueOf(0);
-        for (Result result : results) {
-            List<BigDecimal> distances = new ArrayList<>();
-            if (result.getFirstRoundDistance() != null) {
-                distances.add(result.getFirstRoundDistance());
-            }
-            if (result.getSecondRoundDistance() != null) {
-                distances.add(result.getSecondRoundDistance());
-            }
-            if (result.getThirdRoundDistance() != null) {
-                distances.add(result.getThirdRoundDistance());
-            }
-            if (result.getFourthRoundDistance() != null) {
-                distances.add(result.getFourthRoundDistance());
-            }
-            for (BigDecimal distance : distances) {
-                if (distance.doubleValue() > hillRecord.doubleValue()) {
-                    hillRecordDTOS.clear();
-                    hillRecordDTOS.add(convertToHillRecordDTO(result, distance));
-                    hillRecord = distance;
-                } else if (distance.doubleValue() == hillRecord.doubleValue()) {
-                    hillRecordDTOS.add(convertToHillRecordDTO(result, distance));
-                }
-            }
-        }
-        return hillRecordDTOS;
-    }
-
-    private HillRecordDTO convertToHillRecordDTO(Result result, BigDecimal distance) {
-        HillRecordDTO hillRecordDTO = new HillRecordDTO();
-        hillRecordDTO.setResult(result);
-        hillRecordDTO.setHillRecord(distance);
-        return hillRecordDTO;
-    }
 
     public List<Result> findAllBySeriesMajorAndSeason(Series series, int season) {
         List<Result> results = new ArrayList<>();
-        //List<Competition> competitions = competitionService.findAllBySeriesMajorIdAndSeason(seriesId,season);
         List<Competition> competitions = competitionService.findAllBySeriesMajorAndSeason(series,season);
         for (Competition competition : competitions) {
             List<Result> resultsCompetition = competition.getResults();

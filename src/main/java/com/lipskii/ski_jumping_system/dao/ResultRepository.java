@@ -12,4 +12,6 @@ public interface ResultRepository extends JpaRepository<Result,Integer>, JpaSpec
 
     List<Result> findAllByCompetitionIdOrderByTotalRank(int competitionId);
 
+    List<Result> findAllByCompetitionHillVersionIdAndCompetitionSeriesMajorId(int hillVersionId, int seriesMajorId);
+
 }

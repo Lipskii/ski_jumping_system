@@ -1,23 +1,16 @@
 package com.lipskii.ski_jumping_system.dto;
 
+import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Result;
+import com.lipskii.ski_jumping_system.entity.SkiJumper;
 
 import java.math.BigDecimal;
 
 public class HillRecordDTO {
-    private Result result;
     private BigDecimal hillRecord;
+    private SkiJumper skiJumper;
+    private Competition competition;
 
-    public HillRecordDTO() {
-    }
-
-    public Result getResult() {
-        return result;
-    }
-
-    public void setResult(Result result) {
-        this.result = result;
-    }
 
     public BigDecimal getHillRecord() {
         return hillRecord;
@@ -27,11 +20,28 @@ public class HillRecordDTO {
         this.hillRecord = hillRecord;
     }
 
+    public SkiJumper getSkiJumper() {
+        return skiJumper;
+    }
+
+    public void setSkiJumper(SkiJumper skiJumper) {
+        this.skiJumper = skiJumper;
+    }
+
+    public Competition getCompetition() {
+        return competition;
+    }
+
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
+    }
+
     @Override
     public String toString() {
         return "HillRecordDTO{" +
-                "result=" + result.getSkiJumper().getPerson().getLastName() +
-                ", hillRecord=" + hillRecord +
+                "hillRecord=" + hillRecord +
+                ", skiJumper=" + skiJumper +
+                ", competition=" + competition +
                 '}';
     }
 }

@@ -23,11 +23,16 @@ public class CompetitionService implements ServiceInterface {
 
     private final CompetitionRepository competitionRepository;
     private final HillService hillService;
+    private final TeamOverallStandingService teamOverallStandingService;
 
     @Autowired
-    public CompetitionService(CompetitionRepository competitionRepository, @Lazy ResultService resultService, HillService hillService) {
+    public CompetitionService(CompetitionRepository competitionRepository,
+                              @Lazy ResultService resultService,
+                              HillService hillService,
+                              @Lazy TeamOverallStandingService teamOverallStandingService) {
         this.competitionRepository = competitionRepository;
         this.hillService = hillService;
+        this.teamOverallStandingService = teamOverallStandingService;
     }
 
     @Override
@@ -107,6 +112,9 @@ public class CompetitionService implements ServiceInterface {
     @Override
     public void deleteById(int id) {
         Competition competition = competitionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("competition does not exist!"));
+        if(competition.getSeriesMajor().getId() == 9){
+            teamOverallStandingService.teamOverallStandingsSubtractionByIndCompetition(competition);
+        }
         competitionRepository.delete(competition);
     }
 

@@ -1,5 +1,7 @@
 package com.lipskii.ski_jumping_system.controllers;
 
+import com.lipskii.ski_jumping_system.dto.HillRecordDTO;
+import com.lipskii.ski_jumping_system.dto.HillVersionDTO;
 import com.lipskii.ski_jumping_system.entity.HillVersion;
 import com.lipskii.ski_jumping_system.service.HillVersionService;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
@@ -38,6 +40,14 @@ public class HillVersionController {
             }) Specification<HillVersion> spec) {
         return hillVersionService.get(spec, Sort.by(Sort.Direction.ASC, "id"));
     }
+
+    @Transactional
+    @GetMapping(value = "/hillRecord/{hillVersionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<HillRecordDTO> getHillVersionRecord(@PathVariable("hillVersionId") int hillVersionId) {
+        return hillVersionService.getHillRecords(hillVersionId);
+    }
+
 
 
     @PostMapping("")

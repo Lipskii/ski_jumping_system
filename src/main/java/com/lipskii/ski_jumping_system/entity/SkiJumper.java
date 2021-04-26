@@ -42,11 +42,6 @@ public class SkiJumper implements Comparable<SkiJumper> {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "skiJumper")
     private List<Result> results;
 
-//    @JsonIgnoreProperties(value = "skiJumper", allowSetters = true)
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "skiJumper")
-//    private List<TeamResult> teamResults;
-
-
 
     public SkiJumper() {
     }

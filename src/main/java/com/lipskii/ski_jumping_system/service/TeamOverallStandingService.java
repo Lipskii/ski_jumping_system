@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -173,4 +174,29 @@ public class TeamOverallStandingService implements ServiceInterface {
         }
     }
 
+    @Transactional
+    public void teamOverallStandingsSubtractionByIndCompetition(Competition competition) {
+        Series series;
+
+        if(competition.getSeriesMajor().getId() == 9){
+            series = seriesService.findById(11).orElseThrow(() -> new ResourceNotFoundException("no series found for id = 9"));
+        } else {
+            series = seriesService.findById(11).orElseThrow(() -> new ResourceNotFoundException("no series found for id = 9")); //TODO later change it to womens nations cup
+        }
+
+        List<PointsScaleValue> pointsScaleValues = pointsScaleValueService.findByPointsScale(competition.getSeriesMajor().getPointsScale());
+
+        for(Result result : competition.getResults()){
+
+            TeamOverallStanding teamOverallStanding = teamOverallStandingRepository.findBySeasonSeasonAndSeriesAndCountry(
+                    competition.getSeason().getSeason(), series, result.getSkiJumper().getPerson().getCountry());
+
+            int rank = result.getTotalRank();
+            PointsScaleValue pointsScaleValue = getPointScaleValueByRank(pointsScaleValues, rank);
+            if(pointsScaleValue != null){
+                teamOverallStanding.setPoints(teamOverallStanding.getPoints().subtract(BigDecimal.valueOf(pointsScaleValue.getPoints())));
+                teamOverallStandingRepository.save(teamOverallStanding);
+            }
+        }
+    }
 }
