@@ -17,9 +17,9 @@ public class JuryType {
     @Column(name = "jury_type")
     private String juryType;
 
-    @JsonIgnoreProperties(value = "juryType", allowSetters = true)
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "juryType")
-    private List<Jury> juryList;
+//    @JsonIgnoreProperties(value = "juryType", allowSetters = true)
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "juryType")
+//    private List<Jury> juryList;
 
     public JuryType() {
     }
@@ -44,13 +44,13 @@ public class JuryType {
         this.juryType = juryType;
     }
 
-    public List<Jury> getJuryList() {
-        return juryList;
-    }
-
-    public void setJuryList(List<Jury> juryList) {
-        this.juryList = juryList;
-    }
+//    public List<Jury> getJuryList() {
+//        return juryList;
+//    }
+//
+//    public void setJuryList(List<Jury> juryList) {
+//        this.juryList = juryList;
+//    }
 
     @Override
     public String toString() {
