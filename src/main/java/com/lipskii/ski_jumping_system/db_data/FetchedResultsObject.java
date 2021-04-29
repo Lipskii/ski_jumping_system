@@ -7,6 +7,10 @@ public class FetchedResultsObject {
     private float firstRoundPoints;
     private float secondRoundDistance;
     private float secondRoundPoints;
+    private float thirdRoundDistance;
+    private float thirdRoundPoints;
+    private float fourthRoundDistance;
+    private float fourthRoundPoints;
     private float totalPoints;
 
 
@@ -58,6 +62,38 @@ public class FetchedResultsObject {
         this.secondRoundPoints = secondRoundPoints;
     }
 
+    public float getThirdRoundDistance() {
+        return thirdRoundDistance;
+    }
+
+    public void setThirdRoundDistance(float thirdRoundDistance) {
+        this.thirdRoundDistance = thirdRoundDistance;
+    }
+
+    public float getThirdRoundPoints() {
+        return thirdRoundPoints;
+    }
+
+    public void setThirdRoundPoints(float thirdRoundPoints) {
+        this.thirdRoundPoints = thirdRoundPoints;
+    }
+
+    public float getFourthRoundDistance() {
+        return fourthRoundDistance;
+    }
+
+    public void setFourthRoundDistance(float fourthRoundDistance) {
+        this.fourthRoundDistance = fourthRoundDistance;
+    }
+
+    public float getFourthRoundPoints() {
+        return fourthRoundPoints;
+    }
+
+    public void setFourthRoundPoints(float fourthRoundPoints) {
+        this.fourthRoundPoints = fourthRoundPoints;
+    }
+
     public float getTotalPoints() {
         return totalPoints;
     }
@@ -75,6 +111,10 @@ public class FetchedResultsObject {
                 ", firstRoundPoints=" + firstRoundPoints +
                 ", secondRoundDistance=" + secondRoundDistance +
                 ", secondRoundPoints=" + secondRoundPoints +
+                ", thirdRoundDistance=" + thirdRoundDistance +
+                ", thirdRoundPoints=" + thirdRoundPoints +
+                ", fourthRoundDistance=" + fourthRoundDistance +
+                ", fourthRoundPoints=" + fourthRoundPoints +
                 ", totalPoints=" + totalPoints +
                 '}';
     }

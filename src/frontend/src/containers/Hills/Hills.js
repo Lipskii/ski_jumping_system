@@ -42,32 +42,32 @@ class Hills extends Component {
                     sizes: sizesData.data,
                     venues: venuesData.data,
                 }, () => {
-                    for (const hill of this.state.hills) {
-                        this.setHillRecords(hill)
-                    }
+                        this.setHillRecords(this.state.hills)
                 })
             }))
             .catch(error => console.log(error))
-            .finally(() => this.setState({
-                competitionsLoading: false,
-                pageLoading: false,
-            }))
     }
 
-    setHillRecords = (hill) => {
-        if (hill.hillVersions.length > 0) {
-            let hillRecords = this.state.hillRecords
-            axios.get("/api/hillVersions/hillRecord/" + hill.hillVersions[0].id)
-                .then(res => {
-                    if (res.data.length > 0) {
-                        hillRecords.push(...res.data)
-                        this.setState({
-                            hillRecords: hillRecords
-                        })
-                    }
-                })
-                .catch(error => console.log(error))
+    setHillRecords = (hills) => {
+        for (const hill of hills){
+            if (hill.hillVersions.length > 0) {
+                let hillRecords = this.state.hillRecords
+                axios.get("/api/hillVersions/hillRecord/" + hill.hillVersions[0].id)
+                    .then(res => {
+                        if (res.data.length > 0) {
+                            hillRecords.push(...res.data)
+                            this.setState({
+                                hillRecords: hillRecords
+                            })
+                        }
+                    })
+                    .catch(error => console.log(error))
+            }
         }
+        this.setState({
+            pageLoading: false
+        })
+
     }
 
     render() {

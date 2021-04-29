@@ -13,16 +13,32 @@ const ResultsTable = (props) => {
                 <th style={{width: "15px", textAlign: "center"}}>Rank</th>
                 <th/>
                 <th>1. Round</th>
-                <th>2. Round</th>
+                {props.results[0].secondRoundDistance !== 0 ? <th>2. Round</th> : null}
+                {props.results[0].thirdRoundDistance !== 0 ? <th>3. Round</th> : null}
+                {props.results[0].fourthRoundDistance !== 0 ? <th>4. Round</th> : null}
                 <th>Total Score</th>
                 <th>Difference</th>
                 <tbody>
                 {props.results.map(result => (
                         <tr key={result.id} id={result.id}>
                             <td style={{textAlign: "center"}}>{result.totalRank !== 999 ? <div>{result.totalRank}.</div> : <div>DSQ</div> }</td>
+
                             <ResultsTableAthleteRow result={result}/>
+
                             <td>{result.firstRoundDistance !== 0 ? <div>{result.firstRoundDistance} m</div> : <div>-</div>}</td>
-                            <td>{result.secondRoundDistance !== 0 ? <div>{result.secondRoundDistance} m</div> : <div>-</div>}</td>
+
+                            {props.results[0].secondRoundDistance !== 0 ?
+                                <td>{result.secondRoundDistance !== 0 ? <div>{result.secondRoundDistance} m</div> : <div>-</div>}</td>
+                                : null}
+
+                            {props.results[0].thirdRoundDistance !== 0 ?
+                                <td>{result.thirdRoundDistance !== 0 ? <div>{result.thirdRoundDistance} m</div> : <div>-</div>}</td>
+                                : null}
+
+                            {props.results[0].fourthRoundDistance !== 0 ?
+                                <td>{result.fourthRoundDistance !== 0 ? <div>{result.fourthRoundDistance} m</div> : <div>-</div>}</td>
+                                : null}
+
                             <td><b>{result.totalPoints !== 0 ? <div>{result.totalPoints} p.</div> : <div>DSQ</div>}</b></td>
                             <td>{result.totalPoints === bestScore ? <div/> : <div>-{(bestScore - result.totalPoints).toFixed(1)}</div> }</td>
                         </tr>

@@ -1,8 +1,8 @@
 import {Table} from "react-bootstrap";
 import React from "react";
-import ResultsTableAthleteRow from "./ResultsTableAthleteRow";
 import TeamResultsTableCountryRow from "./TeamResultsTableCountryRow";
 import {LinkContainer} from "react-router-bootstrap";
+import {Link} from "react-router-dom";
 
 const TeamResultsTable = (props) => {
 
@@ -27,33 +27,42 @@ const TeamResultsTable = (props) => {
                             <td>
                                 <ul>
                                     {result.teamResultsIndividual[0] !== undefined ?
-                                        <LinkContainer to={"/skiJumper/" + result.teamResultsIndividual[0].skiJumper.id}
-                                                       style={{cursor: "pointer"}}>
+                                        <Link to={"/skiJumper/" + result.teamResultsIndividual[0].skiJumper.id}
+                                              style={{cursor: "pointer", color: "black"}}>
                                             <li>
-                                                {result.teamResultsIndividual[0].skiJumper.person.firstName} {result.teamResultsIndividual[0].skiJumper.person.lastName}
+                                                <div>
+                                                    {result.teamResultsIndividual[0].skiJumper.person.firstName} {result.teamResultsIndividual[0].skiJumper.person.lastName} ({result.teamResultsIndividual[0].firstRoundDistance} m, {result.teamResultsIndividual[0].secondRoundDistance} m)
+                                                </div>
                                             </li>
-                                        </LinkContainer> : null}
+                                        </Link>
+                                        : null}
                                     {result.teamResultsIndividual[1] !== undefined ?
-                                        <LinkContainer to={"/skiJumper/" + result.teamResultsIndividual[1].skiJumper.id}
-                                                       style={{cursor: "pointer"}}>
+                                        <Link to={"/skiJumper/" + result.teamResultsIndividual[1].skiJumper.id}
+                                              style={{cursor: "pointer", color: "black"}}>
                                             <li>
-                                                {result.teamResultsIndividual[1].skiJumper.person.firstName} {result.teamResultsIndividual[1].skiJumper.person.lastName}
+                                                <div>
+                                                    {result.teamResultsIndividual[1].skiJumper.person.firstName} {result.teamResultsIndividual[1].skiJumper.person.lastName} ({result.teamResultsIndividual[1].firstRoundDistance} m, {result.teamResultsIndividual[1].secondRoundDistance} m)
+                                                </div>
                                             </li>
-                                        </LinkContainer> : null}
-                                    {result.teamResultsIndividual[2]!== undefined ?
-                                        <LinkContainer to={"/skiJumper/" + result.teamResultsIndividual[2].skiJumper.id}
-                                                       style={{cursor: "pointer"}}>
+                                        </Link> : null}
+                                    {result.teamResultsIndividual[2] !== undefined ?
+                                        <Link to={"/skiJumper/" + result.teamResultsIndividual[2].skiJumper.id}
+                                              style={{cursor: "pointer", color: "black"}}>
                                             <li>
-                                                {result.teamResultsIndividual[2].skiJumper.person.firstName} {result.teamResultsIndividual[2].skiJumper.person.lastName}
+                                                <div>
+                                                    {result.teamResultsIndividual[2].skiJumper.person.firstName} {result.teamResultsIndividual[2].skiJumper.person.lastName} ({result.teamResultsIndividual[2].firstRoundDistance} m, {result.teamResultsIndividual[2].secondRoundDistance} m)
+                                                </div>
                                             </li>
-                                        </LinkContainer> : null}
+                                        </Link> : null}
                                     {result.teamResultsIndividual[3] !== undefined ?
-                                        <LinkContainer to={"/skiJumper/" + result.teamResultsIndividual[3].skiJumper.id}
-                                                       style={{cursor: "pointer"}}>
+                                        <Link to={"/skiJumper/" + result.teamResultsIndividual[3].skiJumper.id}
+                                              style={{cursor: "pointer", color: "black"}}>
                                             <li>
-                                                result.teamResultsIndividual[3].skiJumper.person.firstName} {result.teamResultsIndividual[3].skiJumper.person.lastName}
+                                                <div>
+                                                    {result.teamResultsIndividual[3].skiJumper.person.firstName} {result.teamResultsIndividual[3].skiJumper.person.lastName} ({result.teamResultsIndividual[3].firstRoundDistance} m, {result.teamResultsIndividual[3].secondRoundDistance} m)
+                                                </div>
                                             </li>
-                                        </LinkContainer> : null}
+                                        </Link> : null}
                                 </ul>
                             </td>
                             <td><b>{result.totalPoints !== 0 ? <div>{result.totalPoints} p.</div> : <div>DSQ</div>}</b></td>

@@ -6,7 +6,6 @@ import SearchingField from "../Results/SearchingField";
 import SearchHillsTable from "./SearchHillsTable";
 
 
-const {RangePicker} = DatePicker;
 
 class SearchHills extends Component {
 

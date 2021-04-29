@@ -25,7 +25,7 @@ const UpcomingCompetitions = (props) => {
                                     style={{height: "15px", marginRight: "5px"}}/>
                                 <small>(HS:{competition.hillVersion.hillSize} m)</small></ListGroup.Item>
                         ))}
-                        <ListGroup.Item>DFSAFFGAFGERGTWERIRGWENTGRTNGR</ListGroup.Item>
+                        <ListGroup.Item></ListGroup.Item>
                     </ListGroup>
                     </Accordion.Collapse>
                 </Card>

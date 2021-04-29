@@ -41,13 +41,25 @@ const ShowSkiJumperTable = (props) => {
                                 <td>
                                     {result.firstRoundDistance !== 0 ? <div>{result.firstRoundDistance} m</div> : null}
                                 </td> : null}
+
                             {result.secondRoundDistance !== null ?
                                 <td>
                                     {result.secondRoundDistance !== 0 ?
                                         <div>{result.secondRoundDistance} m</div> : null}
                                 </td> : null}
-                            {result.thirdRoundDistance !== null ? <td>{result.thirdRoundDistance} m</td> : null}
-                            {result.fourthRoundDistance !== null ? <td>{result.fourthRoundDistance} m</td> : null}
+
+                            {result.thirdRoundDistance !== null ?
+                                <td>
+                                    {result.thirdRoundDistance !== 0 ?
+                                        <div>{result.thirdRoundDistance} m</div> : null}
+                                </td> : null}
+
+                            {result.fourthRoundDistance !== null ?
+                                <td>
+                                    {result.fourthRoundDistance !== 0 ?
+                                        <div>{result.fourthRoundDistance} m</div> : null}
+                                </td> : null}
+
                             {result.totalPoints !== null ?
                                 <td>
                                     <b>

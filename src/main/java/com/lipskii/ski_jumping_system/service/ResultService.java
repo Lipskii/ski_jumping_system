@@ -2,14 +2,10 @@ package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.ResultRepository;
 import com.lipskii.ski_jumping_system.db_data.FetchedResultsObject;
-import com.lipskii.ski_jumping_system.dto.HillRecordDTO;
 import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Result;
-import com.lipskii.ski_jumping_system.controllers.FilesPaths;
 import com.lipskii.ski_jumping_system.entity.Series;
 import com.lipskii.ski_jumping_system.entity.SkiJumper;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,11 +16,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.io.FileReader;
-import java.io.FileWriter;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -59,8 +52,8 @@ public class ResultService implements ServiceInterface {
         return resultRepository.findAll();
     }
 
-    public List<Result> findAllByHillVersionIdAndCompetitionSeriesMajorId(int hillVersionId, int seriesMajorId){
-        return resultRepository.findAllByCompetitionHillVersionIdAndCompetitionSeriesMajorId(hillVersionId,seriesMajorId);
+    public List<Result> findAllByHillVersionIdAndCompetitionSeriesMajorId(int hillVersionId, int seriesMajorId) {
+        return resultRepository.findAllByCompetitionHillVersionIdAndCompetitionSeriesMajorId(hillVersionId, seriesMajorId);
     }
 
     public List<Result> findAllByCompetitionId(int competitionId) {
@@ -74,7 +67,7 @@ public class ResultService implements ServiceInterface {
 
     public List<Result> findAllBySeriesMajorAndSeason(Series series, int season) {
         List<Result> results = new ArrayList<>();
-        List<Competition> competitions = competitionService.findAllBySeriesMajorAndSeason(series,season);
+        List<Competition> competitions = competitionService.findAllBySeriesMajorAndSeason(series, season);
         for (Competition competition : competitions) {
             List<Result> resultsCompetition = competition.getResults();
             results.addAll(resultsCompetition);
@@ -84,7 +77,7 @@ public class ResultService implements ServiceInterface {
 
     public List<Result> findBySeriesMinorAndSeason(Series series, int season) {
         List<Result> results = new ArrayList<>();
-        List<Competition> competitions = competitionService.findAllBySeriesMinorAndSeason(series,season);
+        List<Competition> competitions = competitionService.findAllBySeriesMinorAndSeason(series, season);
         for (Competition competition : competitions) {
             List<Result> resultsCompetition = competition.getResults();
             results.addAll(resultsCompetition);
@@ -104,6 +97,7 @@ public class ResultService implements ServiceInterface {
         return resultRepository.save((Result) obj);
     }
 
+
     public void saveFromLink(String link, int competitionId) {
         link = link.replace("%3A", ":");
         link = link.replace("%2F", "/");
@@ -118,17 +112,16 @@ public class ResultService implements ServiceInterface {
                 resultRepository.deleteById(result.getId());
             }
         }
-        List<String[]> resultsArray = fetchResultsIntoStringArray(link);
-        Path pathCsv = Paths.get(FilesPaths.RESULTS_PATH + competitionId + "_" + competition.getDate1().toString() + ".csv");
+        List<FetchedResultsObject> fetchedResultsObjects = fetchResults(link);
+        assert fetchedResultsObjects != null;
+        saveResultsFromFetchedResultsObjects(fetchedResultsObjects, competition);
         try {
-            csvWriterAll(resultsArray, pathCsv);
-            saveFromCSV(pathCsv, competition);
-            overallStandingService.calculateStandings(competition.getSeriesMajor().getId(),competition.getSeason().getSeason());
-            if(competition.getSeriesMajor().getId() == 9){
+            overallStandingService.calculateStandings(competition.getSeriesMajor().getId(), competition.getSeason().getSeason());
+            if (competition.getSeriesMajor().getId() == 9) {
                 teamOverallStandingService.calculateNationsCupByPointScaleIndividualCompetitions(competition.getSeason().getSeason());
             }
-            if(competition.getSeriesMinor() != null){
-                overallStandingService.calculateStandings(competition.getSeriesMinor().getId(),competition.getSeason().getSeason());
+            if (competition.getSeriesMinor() != null) {
+                overallStandingService.calculateStandings(competition.getSeriesMinor().getId(), competition.getSeason().getSeason());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -136,50 +129,37 @@ public class ResultService implements ServiceInterface {
 
     }
 
-    public void saveFromCSV(Path path, Competition competition) {
-        try (CSVReader reader = new CSVReader(new FileReader(path.toString()))) {
-            List<String[]> results = reader.readAll();
-            int numOfColumns = results.get(0).length;
-            switch (numOfColumns) {
-                case 7:
-                    saveTwoRoundsRCMPMPT(results, competition);
-                    break;
-                default:
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveTwoRoundsRCMPMPT(List<String[]> results, Competition competition) {
-        results.forEach(resultData -> {
+    @Transactional
+    public void saveResultsFromFetchedResultsObjects(List<FetchedResultsObject> fetchedResultsObjects, Competition competition) {
+        for (FetchedResultsObject fetchedResultsObject : fetchedResultsObjects) {
             Result result = new Result();
-            result.setCompetition(competition);
-            result.setTotalRank(Integer.parseInt(resultData[0]));
-            String skiJumperCode = resultData[1];
-            SkiJumper skiJumper = skiJumperService.findByCode(skiJumperCode);
+            SkiJumper skiJumper = skiJumperService.findByCode(String.valueOf(fetchedResultsObject.getCode()));
             if (skiJumper != null) {
                 result.setSkiJumper(skiJumper);
-                result.setFirstRoundDistance(BigDecimal.valueOf(Double.parseDouble(resultData[2])));
-                result.setFirstRoundTotal(BigDecimal.valueOf(Double.parseDouble(resultData[3])));
-                result.setSecondRoundDistance(BigDecimal.valueOf(Double.parseDouble(resultData[4])));
-                result.setSecondRoundTotal(BigDecimal.valueOf(Double.parseDouble(resultData[5])));
-                result.setTotalPoints(BigDecimal.valueOf(Double.parseDouble(resultData[6])));
-                result.setDisqualificationType(disqualificationTypeService.findById(1)
-                        .orElseThrow(() -> new ResourceNotFoundException("no dsq type found for id = "
-                                + 1)));
+                result.setCompetition(competition);
+                result.setTotalRank(fetchedResultsObject.getRank());
+                result.setTotalPoints(BigDecimal.valueOf(fetchedResultsObject.getTotalPoints()));
+                result.setFirstRoundDistance(BigDecimal.valueOf(fetchedResultsObject.getFirstRoundDistance()));
+                result.setFirstRoundTotal(BigDecimal.valueOf(fetchedResultsObject.getFirstRoundPoints()));
+                result.setSecondRoundDistance(BigDecimal.valueOf(fetchedResultsObject.getSecondRoundDistance()));
+                result.setSecondRoundTotal(BigDecimal.valueOf(fetchedResultsObject.getSecondRoundPoints()));
+                result.setThirdRoundDistance(BigDecimal.valueOf(fetchedResultsObject.getThirdRoundDistance()));
+                result.setThirdRoundTotal(BigDecimal.valueOf(fetchedResultsObject.getThirdRoundPoints()));
+                result.setFourthRoundDistance(BigDecimal.valueOf(fetchedResultsObject.getFourthRoundDistance()));
+                result.setFourthRoundTotal(BigDecimal.valueOf(fetchedResultsObject.getFourthRoundPoints()));
                 resultRepository.save(result);
             }
-        });
+        }
     }
+
+
 
     @Override
     public void deleteById(int id) {
         resultRepository.deleteById(id);
     }
 
-    public static List<String[]> fetchResultsIntoStringArray(String link) {
+    public static List<FetchedResultsObject> fetchResults(String link) {
         try {
             Document doc = Jsoup.connect(link).get();
             Elements elements = doc.getElementsByClass("table-row");
@@ -207,11 +187,24 @@ public class ResultService implements ServiceInterface {
                         String[] distances = element.getElementsByClass("g-row justify-right bold")
                                 .text().split(" ");
 
-                        if (distances.length == 1) {
-                            fetchedResultsObject.setFirstRoundDistance(Float.parseFloat(distances[0]));
-                        } else {
-                            fetchedResultsObject.setFirstRoundDistance(Float.parseFloat(distances[0]));
-                            fetchedResultsObject.setSecondRoundDistance(Float.parseFloat(distances[1]));
+                        switch (distances.length) {
+                            case 1:
+                                fetchedResultsObject.setFirstRoundDistance(Float.parseFloat(distances[0]));
+                                break;
+                            case 2:
+                                fetchedResultsObject.setFirstRoundDistance(Float.parseFloat(distances[0]));
+                                fetchedResultsObject.setSecondRoundDistance(Float.parseFloat(distances[1]));
+                                break;
+                            case 3:
+                                fetchedResultsObject.setFirstRoundDistance(Float.parseFloat(distances[0]));
+                                fetchedResultsObject.setSecondRoundDistance(Float.parseFloat(distances[1]));
+                                fetchedResultsObject.setThirdRoundDistance(Float.parseFloat(distances[2]));
+                                break;
+                            case 4:
+                                fetchedResultsObject.setFirstRoundDistance(Float.parseFloat(distances[0]));
+                                fetchedResultsObject.setSecondRoundDistance(Float.parseFloat(distances[1]));
+                                fetchedResultsObject.setThirdRoundDistance(Float.parseFloat(distances[2]));
+                                fetchedResultsObject.setFourthRoundDistance(Float.parseFloat(distances[3]));
                         }
                     }
                     if (!element.getElementsByClass("g-lg-24 justify-right bold")
@@ -219,11 +212,24 @@ public class ResultService implements ServiceInterface {
                         String[] points = element.getElementsByClass("g-lg-24 justify-right bold")
                                 .text().split(" ");
 
-                        if (points.length == 1) {
-                            fetchedResultsObject.setFirstRoundPoints(Float.parseFloat(points[0]));
-                        } else {
-                            fetchedResultsObject.setFirstRoundPoints(Float.parseFloat(points[0]));
-                            fetchedResultsObject.setSecondRoundPoints(Float.parseFloat(points[1]));
+                        switch (points.length) {
+                            case 1:
+                                fetchedResultsObject.setFirstRoundPoints(Float.parseFloat(points[0]));
+                                break;
+                            case 2:
+                                fetchedResultsObject.setFirstRoundPoints(Float.parseFloat(points[0]));
+                                fetchedResultsObject.setSecondRoundPoints(Float.parseFloat(points[1]));
+                                break;
+                            case 3:
+                                fetchedResultsObject.setFirstRoundPoints(Float.parseFloat(points[0]));
+                                fetchedResultsObject.setSecondRoundPoints(Float.parseFloat(points[1]));
+                                fetchedResultsObject.setThirdRoundPoints(Float.parseFloat(points[2]));
+                                break;
+                            case 4:
+                                fetchedResultsObject.setFirstRoundPoints(Float.parseFloat(points[0]));
+                                fetchedResultsObject.setSecondRoundPoints(Float.parseFloat(points[1]));
+                                fetchedResultsObject.setThirdRoundPoints(Float.parseFloat(points[2]));
+                                fetchedResultsObject.setFourthRoundPoints(Float.parseFloat(points[3]));
                         }
                     }
                     if (!element.getElementsByClass("g-lg-2 g-md-2 g-sm-3 g-xs-5 justify-right blue bold ")
@@ -236,21 +242,7 @@ public class ResultService implements ServiceInterface {
 
             }
 
-            List<String[]> stringArray = new ArrayList<>();
-            for (FetchedResultsObject fetchedResultsObject : fetchedResultsObjects) {
-                String[] row = new String[7];
-                row[0] = String.valueOf(fetchedResultsObject.getRank());
-                row[1] = String.valueOf(fetchedResultsObject.getCode());
-                row[2] = String.valueOf(fetchedResultsObject.getFirstRoundDistance());
-                row[3] = String.valueOf(fetchedResultsObject.getFirstRoundPoints());
-                row[4] = String.valueOf(fetchedResultsObject.getSecondRoundDistance());
-                row[5] = String.valueOf(fetchedResultsObject.getSecondRoundPoints());
-                row[6] = String.valueOf(fetchedResultsObject.getTotalPoints());
-                stringArray.add(row);
-
-            }
-
-            return stringArray;
+            return fetchedResultsObjects;
 
 
         } catch (Exception e) {
@@ -259,12 +251,5 @@ public class ResultService implements ServiceInterface {
 
         return null;
     }
-
-    public static void csvWriterAll(List<String[]> stringArray, Path path) throws Exception {
-        CSVWriter writer = new CSVWriter(new FileWriter(path.toString()));
-        writer.writeAll(stringArray);
-        writer.close();
-    }
-
 
 }
