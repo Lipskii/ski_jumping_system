@@ -70,10 +70,11 @@ const SearchHillsTable = (props) => {
 
                                             <td>{hill.sizeOfHill.designation}</td>
 
-                                            <td>{latestHillVersion.kPoint !== null ?
+
+                                            <td>{latestHillVersion !== undefined && latestHillVersion.kPoint !== null ?
                                                 <div>{latestHillVersion.kPoint} m</div> : null}</td>
 
-                                            <td>{latestHillVersion.hillSize !== null ?
+                                            <td>{latestHillVersion !== undefined && latestHillVersion.hillSize !== null ?
                                                 <div>{latestHillVersion.hillSize} m</div> : null}</td>
 
                                             {hillRecord !== undefined ?
@@ -83,7 +84,7 @@ const SearchHillsTable = (props) => {
                                                 :
                                                 <td/>}
 
-                                            <td>{oldestHillVersion.validSince !== null ? <div>{oldestHillVersion.validSince.slice(0, 4)}</div> : null}</td>
+                                            <td>{oldestHillVersion !== undefined && oldestHillVersion.validSince !== null ? <div>{oldestHillVersion.validSince.slice(0, 4)}</div> : null}</td>
                                         </tr>
                                     </LinkContainer>
                                 )

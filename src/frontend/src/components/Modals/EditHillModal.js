@@ -3,9 +3,10 @@ import {Button, Form, Modal} from "react-bootstrap";
 import {Formik} from "formik"
 import * as Yup from 'yup';
 import FormikTextInputForm from "../CommonForms/FormikTextInputForm";
+import FormikSelectInputForm from "../CommonForms/FormikSelectInputForm";
 
 
-const EditNameModal = (props) => {
+const EditHillModal = (props) => {
 
     return (
         <Modal show={props.show} onHide={props.onHide} size={"lg"} centered>
@@ -15,10 +16,12 @@ const EditNameModal = (props) => {
             <Modal.Body>
                 <Formik
                     initialValues={{
-                        name: props.name
+                        name: props.name,
+                        sizeOfHillId: props.sizeOfHill.id
                     }}
                     validationSchema={Yup.object({
-                        name: Yup.string().required('Required')
+                        name: Yup.string().required('Required'),
+                        sizeOfHillId: Yup.number().required('Required')
                         }
                     )}
 
@@ -37,6 +40,16 @@ const EditNameModal = (props) => {
                                 name="name"
                                 label={"New name:"}
                               />
+
+                              <FormikSelectInputForm
+                                  name="sizeOfHillId"
+                                  label="Size of hill*:"
+                              >
+                                  <option value={""} disabled>Choose...</option>
+                                  {props.sizesOfHill.map(sizeOfHill => (
+                                      <option key={sizeOfHill.id} value={sizeOfHill.id}>{sizeOfHill.designation}</option>
+                                  ))}
+                              </FormikSelectInputForm>
                               <div style={{textAlign: "right"}}>
                               <Button type={"submit"}>Update</Button>
                               </div>
@@ -52,4 +65,4 @@ const EditNameModal = (props) => {
 
 }
 
-export default EditNameModal
+export default EditHillModal

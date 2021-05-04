@@ -11,11 +11,11 @@ import SelectInputForm from "../../../components/CommonForms/SelectInputForm";
 import ResultsModal from "./ResultsModal";
 import AddResultsModal from "./AddResultsModal";
 import AddQualificationsModal from "./AddQualificationsModal";
-import ResultsFormModal from "./ResultsFormModal";
+import CompetitionFormModal from "./CompetitionFormModal";
 import TeamResultsModal from "./TeamResultsModal";
 
 
-class DBResults extends Component {
+class DBCompetitions extends Component {
 
     state = {
         activePage: 1,
@@ -140,7 +140,7 @@ class DBResults extends Component {
     }
 
     handleResultsButton = (competition) => {
-        if(competition.team){
+        if (competition.team) {
             axios.get('/api/teamResults?competitionId=' + competition.id)
                 .then(res => this.setState({
                     results: res.data,
@@ -288,25 +288,12 @@ class DBResults extends Component {
             seriesMajor: this.state.series.find(series => series.id === parseInt(values.seriesMajorId)),
             seriesMinor: this.state.series.find(series => series.id === parseInt(values.seriesMinorId)),
             hillVersion: this.state.hillVersions.find(hillVersion => hillVersion.id === parseInt(values.hillVersionId)),
-            judgeA: this.state.judges.find(judge => judge.id === parseInt(values.judgeAId)),
-            judgeB: this.state.judges.find(judge => judge.id === parseInt(values.judgeBId)),
-            judgeC: this.state.judges.find(judge => judge.id === parseInt(values.judgeCId)),
-            judgeD: this.state.judges.find(judge => judge.id === parseInt(values.judgeDId)),
-            judgeE: this.state.judges.find(judge => judge.id === parseInt(values.judgeEId)),
-            judgeSC: this.state.judges.find(judge => judge.id === parseInt(values.judgeSCId)),
-            raceDirector: this.state.raceDirectors.find(rd => rd.id === parseInt(values.raceDirectorId)),
-            technicalDelegate: this.state.technicalDelegates.find(td => td.id === parseInt(values.technicalDelegateId)),
-            chiefOfCompetition: this.state.chiefsOfCompetition.find(coc => coc.id === parseInt(values.chiefOfCompetitionId)),
-            assistantTD: this.state.assistantsTD.find(aTd => aTd.id === parseInt(values.assistantTDId)),
-            assistantRD: this.state.assistantsRD.find(aRD => aRD.id === parseInt(values.assistantRDId)),
-            equipmentController1: this.state.equipmentControllers.find(ec => ec.id === parseInt(values.equipmentController1Id)),
-            equipmentController2: this.state.equipmentControllers.find(ec => ec.id === parseInt(values.equipmentController2Id)),
             meterValue: values.meterValue,
             gateFactor: values.gateFactor,
             windFactorTail: values.windFactorTail,
             windFactorFront: values.windFactorFront,
             firstRoundBaseGate: values.firstRoundBaseGate,
-            firstRoundWeather: this.state.weather.find(weather => weather.id === values.firstRoundWeatherId),
+            weather: this.state.weather.find(weather => weather.id === values.weatherId),
             firstRoundAirTempStart: values.firstRoundAirTempStart,
             firstRoundAirTempFinish: values.firstRoundAirTempFinish,
             firstRoundSnowTempStart: values.firstRoundSnowTempStart,
@@ -318,7 +305,6 @@ class DBResults extends Component {
             firstRoundMaxWind: values.firstRoundMaxWind,
             firstRoundAvgWind: values.firstRoundAvgWind,
             secondRoundBaseGate: values.secondRoundBaseGate,
-            secondRoundWeather: this.state.weather.find(weather => weather.id === values.secondRoundWeatherId),
             secondRoundAirTempStart: values.secondRoundAirTempStart,
             secondRoundAirTempFinish: values.secondRoundAirTempFinish,
             secondRoundSnowTempStart: values.secondRoundSnowTempStart,
@@ -329,7 +315,6 @@ class DBResults extends Component {
             secondRoundMaxWind: values.secondRoundMaxWind,
             secondRoundAvgWind: values.secondRoundAvgWind,
             thirdRoundBaseGate: values.thirdRoundBaseGate,
-            thirdRoundWeather: this.state.weather.find(weather => weather.id === values.thirdRoundWeatherId),
             thirdRoundAirTempStart: values.thirdRoundAirTempStart,
             thirdRoundAirTempFinish: values.thirdRoundAirTempFinish,
             thirdRoundSnowTempStart: values.thirdRoundSnowTempStart,
@@ -340,7 +325,6 @@ class DBResults extends Component {
             thirdRoundMaxWind: values.thirdRoundMaxWind,
             thirdRoundAvgWind: values.thirdRoundAvgWind,
             fourthRoundBaseGate: values.fourthRoundBaseGate,
-            fourthRoundWeather: this.state.weather.find(weather => weather.id === values.fourthRoundWeatherId),
             fourthRoundAirTempStart: values.fourthRoundAirTempStart,
             fourthRoundAirTempFinish: values.fourthRoundAirTempFinish,
             fourthRoundSnowTempStart: values.fourthRoundSnowTempStart,
@@ -354,14 +338,6 @@ class DBResults extends Component {
         }
         axios.put("/api/competitions/" + this.state.competitionToForm.id, {...dataValues})
             .then(res => {
-                // if (values.resultsLink !== '') {
-                //     axios.post('/api/results/link/' + res.data.id, values.resultsLink)
-                //         .then(res => console.log(res))
-                //         .catch(error => {
-                //             console.log(error)
-                //             successful = false
-                //         })
-                // }
                 this.setState({
                     showCompletedModal: true,
                     completedModalStatus: successful,
@@ -380,7 +356,7 @@ class DBResults extends Component {
 
     postResults = (values) => {
         let successful = true
-        if(this.state.addResultsCompetition.team === true){
+        if (this.state.addResultsCompetition.team === true) {
             axios.post('/api/teamResults/link/' + this.state.addResultsCompetition.id, values.resultsLink)
                 .then(res => console.log(res))
                 .catch(error => {
@@ -566,7 +542,7 @@ class DBResults extends Component {
                     })}
                 /> : null}
 
-                <Header3>Results</Header3>
+                <Header3>Competitions</Header3>
 
                 <StyledDivCentered1200>
                     {/*Select Country*/}
@@ -712,7 +688,7 @@ class DBResults extends Component {
                                                                              })}>
                                                                 details
                                                             </TableButton>
-                                                            {competition.results.length > 0 || competition.teamResults.length > 0?
+                                                            {competition.results.length > 0 || competition.teamResults.length > 0 ?
                                                                 <TableButton id={competition.id + "tbEdit"}
                                                                              name={competition.name}
                                                                              size="sm"
@@ -770,33 +746,33 @@ class DBResults extends Component {
                                                                     Add results
                                                                 </TableButton>}
 
-                                                            {competition.qualification !== null ?
-                                                                <TableButton id={competition.id}
-                                                                             name={competition.name}
-                                                                             size="sm"
-                                                                             variant={"outline-info"}
-                                                                             onClick={() => {
-                                                                                 this.setState({
-                                                                                     showQualificationsModal: true,
-                                                                                     qualificationsCompetition: competition,
-                                                                                 })
-                                                                             }
-                                                                             }>
-                                                                    Edit qualifying
-                                                                </TableButton> :
-                                                                <TableButton id={competition.id}
-                                                                             name={competition.name}
-                                                                             size="sm"
-                                                                             variant={"outline-warning"}
-                                                                             onClick={() => {
-                                                                                 this.setState({
-                                                                                     showQualificationsModal: true,
-                                                                                     qualificationsCompetition: competition,
-                                                                                 })
-                                                                             }
-                                                                             }>
-                                                                    Add qualifiying
-                                                                </TableButton>}
+                                                            {/*{competition.qualification !== null ?*/}
+                                                            {/*    <TableButton id={competition.id}*/}
+                                                            {/*                 name={competition.name}*/}
+                                                            {/*                 size="sm"*/}
+                                                            {/*                 variant={"outline-info"}*/}
+                                                            {/*                 onClick={() => {*/}
+                                                            {/*                     this.setState({*/}
+                                                            {/*                         showQualificationsModal: true,*/}
+                                                            {/*                         qualificationsCompetition: competition,*/}
+                                                            {/*                     })*/}
+                                                            {/*                 }*/}
+                                                            {/*                 }>*/}
+                                                            {/*        Edit qualifying*/}
+                                                            {/*    </TableButton> :*/}
+                                                            {/*    <TableButton id={competition.id}*/}
+                                                            {/*                 name={competition.name}*/}
+                                                            {/*                 size="sm"*/}
+                                                            {/*                 variant={"outline-warning"}*/}
+                                                            {/*                 onClick={() => {*/}
+                                                            {/*                     this.setState({*/}
+                                                            {/*                         showQualificationsModal: true,*/}
+                                                            {/*                         qualificationsCompetition: competition,*/}
+                                                            {/*                     })*/}
+                                                            {/*                 }*/}
+                                                            {/*                 }>*/}
+                                                            {/*        Add qualifiying*/}
+                                                            {/*    </TableButton>}*/}
                                                             <TableButton id={competition.id + "tbDelete"}
                                                                          name={competition.name} size="sm"
                                                                          variant={"danger"}
@@ -835,39 +811,39 @@ class DBResults extends Component {
                     </div>
 
 
-                    {this.state.showFormModal ? <ResultsFormModal showModal={this.state.showFormModal}
-                                                                  aRDs={this.state.assistantsRD}
-                                                                  aTDs={this.state.assistantsTD}
-                                                                  chiefsOfCompetition={this.state.chiefsOfCompetition}
-                                                                  countries={this.state.countries}
-                                                                  equipmentControllers={this.state.equipmentControllers}
-                                                                  judges={this.state.judges}
-                                                                  hills={this.state.hills}
-                                                                  onSubmit={(values) => {
-                                                                      this.setState({
-                                                                          showAddingModal: true
-                                                                      }, () => {
-                                                                          if (!this.state.editing) {
-                                                                              this.postCompetition(values)
-                                                                          } else {
-                                                                              this.updateCompetition(values)
-                                                                          }
-                                                                      })
-                                                                  }}
-                                                                  raceDirectors={this.state.raceDirectors}
-                                                                  seasons={this.state.seasons}
-                                                                  series={this.state.series}
-                                                                  technicalDelegates={this.state.technicalDelegates}
-                                                                  venues={this.state.venues}
-                                                                  weather={this.state.weather}
-                                                                  {...this.state.competitionToForm}
-                                                                  onHide={() => {
-                                                                      let competitionNull = this.setCompetitionToFormWithNull(this.state.competitionToForm)
-                                                                      this.setState({
-                                                                          competitionToForm: competitionNull,
-                                                                          showFormModal: false
-                                                                      })
-                                                                  }}
+                    {this.state.showFormModal ? <CompetitionFormModal showModal={this.state.showFormModal}
+                                                                      aRDs={this.state.assistantsRD}
+                                                                      aTDs={this.state.assistantsTD}
+                                                                      chiefsOfCompetition={this.state.chiefsOfCompetition}
+                                                                      countries={this.state.countries}
+                                                                      equipmentControllers={this.state.equipmentControllers}
+                                                                      judges={this.state.judges}
+                                                                      hills={this.state.hills}
+                                                                      onSubmit={(values) => {
+                                                                          this.setState({
+                                                                              showAddingModal: true
+                                                                          }, () => {
+                                                                              if (!this.state.editing) {
+                                                                                  this.postCompetition(values)
+                                                                              } else {
+                                                                                  this.updateCompetition(values)
+                                                                              }
+                                                                          })
+                                                                      }}
+                                                                      raceDirectors={this.state.raceDirectors}
+                                                                      seasons={this.state.seasons}
+                                                                      series={this.state.series}
+                                                                      technicalDelegates={this.state.technicalDelegates}
+                                                                      venues={this.state.venues}
+                                                                      weather={this.state.weather}
+                                                                      {...this.state.competitionToForm}
+                                                                      onHide={() => {
+                                                                          let competitionNull = this.setCompetitionToFormWithNull(this.state.competitionToForm)
+                                                                          this.setState({
+                                                                              competitionToForm: competitionNull,
+                                                                              showFormModal: false
+                                                                          })
+                                                                      }}
                     /> : null}
 
 
@@ -880,4 +856,4 @@ class DBResults extends Component {
 }
 
 
-export default DBResults
+export default DBCompetitions

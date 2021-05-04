@@ -1,10 +1,6 @@
 import React from "react";
 import {Formik} from "formik";
-import {
-    Header3,
-    StyledDiv2Right1200,
-    StyledForm
-} from "../../../components/StyledComponents";
+import {Header3, StyledDiv2Right1200, StyledForm} from "../../../components/StyledComponents";
 import {Button, Modal} from "react-bootstrap";
 import FormikSelectInputForm from "../../../components/CommonForms/FormikSelectInputForm";
 import {FormikDatePicker} from "../../../components/CommonForms/FormikDatePicker";

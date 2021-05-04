@@ -53,8 +53,9 @@ public class HillService implements ServiceInterface {
         return hillRepository.save((Hill) obj);
     }
 
-    @Transactional
+
     @Override
+    @Transactional
     public void deleteById(int id) {
         Hill hill = hillRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("hill does not exist!"));
         System.out.println(hill);

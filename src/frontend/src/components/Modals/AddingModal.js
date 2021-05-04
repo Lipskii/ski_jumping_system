@@ -1,4 +1,4 @@
-import { Modal} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import React from "react";
 import Loader from "react-loader-spinner";
 

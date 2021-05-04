@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {Form, ListGroup, ListGroupItem, Button, Accordion} from "react-bootstrap";
+import {Accordion, Button, Form, ListGroup, ListGroupItem} from "react-bootstrap";
 
 export const AccordionWithPadding = styled(Accordion)`
   padding: 10px;

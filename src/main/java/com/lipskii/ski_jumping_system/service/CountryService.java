@@ -1,8 +1,8 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.CountryRepository;
-import com.lipskii.ski_jumping_system.dto.VenueDTO;
 import com.lipskii.ski_jumping_system.entity.Country;
+import com.lipskii.ski_jumping_system.entity.Venue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -69,9 +69,9 @@ public class CountryService implements ServiceInterface {
 
     public List<Country> findAllWithVenuesWithHills(){
         List<Country> countries = new ArrayList<>();
-        List<VenueDTO> venueDTOS = venueService.findAllWithHillsDTO();
-        for(VenueDTO venueDTO : venueDTOS){
-            countries.add(venueDTO.getCountry());
+        List<Venue> venueDTOS = venueService.findAllWithHills();
+        for(Venue venue : venueDTOS){
+            countries.add(venue.getCity().getRegion().getCountry());
         }
      //   countries =;
         return  countries.stream().distinct().collect(Collectors.toList());

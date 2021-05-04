@@ -27,87 +27,20 @@ public class Competition {
     @Column(name = "date_2")
     private LocalDate date2;
 
-
     @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JsonIgnoreProperties(value = "competitions", allowSetters = true)
     @JoinColumn(name = "series_idseries_major")
     private Series seriesMajor;
-
 
     @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JsonIgnoreProperties(value = "competitions", allowSetters = true)
     @JoinColumn(name = "series_idseries_minor")
     private Series seriesMinor;
 
-
     @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
     @JsonIgnoreProperties(value = "competitions", allowSetters = true)
     @JoinColumn(name = "hill_version_idhill_version")
     private HillVersion hillVersion;
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "judge_idjudge_a")
-    private Jury judgeA;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "judge_idjudge_b")
-    private Jury judgeB;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
-    @JoinColumn(name = "judge_idjudge_c")
-    private Jury judgeC;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
-    @JoinColumn(name = "judge_idjudge_d")
-    private Jury judgeD;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "judge_idjudge_e")
-    private Jury judgeE;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "judge_idjudge_sc")
-    private Jury judgeSC;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "jury_idrace_director")
-    private Jury raceDirector;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "jury_idtechnical_delegate")
-    private Jury technicalDelegate;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
-    @JoinColumn(name = "jury_idchief_of_competition")
-    private Jury chiefOfCompetition;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "jury_idassistant_td")
-    private Jury assistantTD;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "jury_idassistant_rd")
-    private Jury assistantRD;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
-    @JoinColumn(name = "jury_idequipment_controller1")
-    private Jury equipmentController1;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "jury_idequipment_controller2")
-    private Jury equipmentController2;
 
     @Column(name = "meter_value")
     private BigDecimal meterValue;
@@ -131,8 +64,8 @@ public class Competition {
     private int firstRoundBaseGate;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "weather_idfirst_round_weather")
-    private Weather firstRoundWeather;
+    @JoinColumn(name = "weather_idweather")
+    private Weather weather;
 
     @Column(name = "first_round_air_temp_start")
     private BigDecimal firstRoundAirTempStart;
@@ -170,11 +103,6 @@ public class Competition {
     @Column(name = "second_round_base_gate")
     private int secondRoundBaseGate;
 
-
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "weather_idsecond_round_weather")
-    private Weather secondRoundWeather;
-
     @Column(name = "second_round_air_temp_start")
     private BigDecimal secondRoundAirTempStart;
 
@@ -210,11 +138,6 @@ public class Competition {
 
     @Column(name = "third_round_base_gate")
     private int thirdRoundBaseGate;
-
-
-    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
-    @JoinColumn(name = "weather_idthird_round_weather")
-    private Weather thirdRoundWeather;
 
     @Column(name = "third_round_air_temp_start")
     private BigDecimal thirdRoundAirTempStart;
@@ -252,9 +175,6 @@ public class Competition {
     @Column(name = "fourth_round_base_gate")
     private int fourthRoundBaseGate;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,  CascadeType.REFRESH})
-    @JoinColumn(name = "weather_idfourth_round_weather")
-    private Weather fourthRoundWeather;
 
     @Column(name = "fourth_round_air_temp_start")
     private BigDecimal fourthRoundAirTempStart;
@@ -283,14 +203,6 @@ public class Competition {
     @Column(name = "fourth_round_avg_wind")
     private BigDecimal fourthRoundAvgWind;
 
-    @Column(name = "pdf_file")
-    private String pdfFile;
-
-    @Column(name = "csv_file")
-    private String csvFile;
-
-    @Column(name = "cancelled_at_round")
-    private int cancelledAtRound;
 
     @JsonIgnoreProperties(value = "competition", allowSetters = true)
     @OrderBy("totalRank")
@@ -312,26 +224,13 @@ public class Competition {
     public Competition() {
     }
 
-    public Competition(Season season, LocalDate date1, LocalDate date2, Series seriesMajor, Series seriesMinor, HillVersion hillVersion, Jury judgeA, Jury judgeB, Jury judgeC, Jury judgeD, Jury judgeE, Jury judgeSC, Jury raceDirector, Jury technicalDelegate, Jury chiefOfCompetition, Jury assistantTD, Jury assistantRD, Jury equipmentController1, Jury equipmentController2, BigDecimal meterValue, BigDecimal gateFactor, BigDecimal windFactorTail, BigDecimal windFactorFront, LocalDateTime firstRoundStartTime, LocalDateTime firstRoundEndTime, int firstRoundBaseGate, Weather firstRoundWeather, BigDecimal firstRoundAirTempStart, BigDecimal firstRoundAirTempFinish, BigDecimal firstRoundSnowTempStart, BigDecimal firstRoundSnowTempFinish, BigDecimal firstRoundHumidityStart, BigDecimal firstRoundHumidityFinish, BigDecimal firstRoundMinWind, BigDecimal firstRoundMaxWind, BigDecimal firstRoundAvgWind, LocalDateTime secondRoundStartTime, LocalDateTime secondRoundEndTime, int secondRoundBaseGate, Weather secondRoundWeather, BigDecimal secondRoundAirTempStart, BigDecimal secondRoundAirTempFinish, BigDecimal secondRoundSnowTempStart, BigDecimal secondRoundSnowTempFinish, BigDecimal secondRoundHumidityStart, BigDecimal secondRoundHumidityFinish, BigDecimal secondRoundMinWind, BigDecimal secondRoundMaxWind, BigDecimal secondRoundAvgWind, LocalDateTime thirdRoundStartTime, LocalDateTime thirdRoundEndTime, int thirdRoundBaseGate, Weather thirdRoundWeather, BigDecimal thirdRoundAirTempStart, BigDecimal thirdRoundAirTempFinish, BigDecimal thirdRoundSnowTempStart, BigDecimal thirdRoundSnowTempFinish, BigDecimal thirdRoundHumidityStart, BigDecimal thirdRoundHumidityFinish, BigDecimal thirdRoundMinWind, BigDecimal thirdRoundMaxWind, BigDecimal thirdRoundAvgWind, LocalDateTime fourthRoundStartTime, LocalDateTime fourthRoundEndTime, int fourthRoundBaseGate, Weather fourthRoundWeather, BigDecimal fourthRoundAirTempStart, BigDecimal fourthRoundAirTempFinish, BigDecimal fourthRoundSnowTempStart, BigDecimal fourthRoundSnowTempFinish, BigDecimal fourthRoundHumidityStart, BigDecimal fourthRoundHumidityFinish, BigDecimal fourthRoundMinWind, BigDecimal fourthRoundMaxWind, BigDecimal fourthRoundAvgWind, String pdfFile, String csvFile, int cancelledAtRound, Qualification qualification, boolean isTeam) {
+    public Competition(Season season, LocalDate date1, LocalDate date2, Series seriesMajor, Series seriesMinor, HillVersion hillVersion, BigDecimal meterValue, BigDecimal gateFactor, BigDecimal windFactorTail, BigDecimal windFactorFront, LocalDateTime firstRoundStartTime, LocalDateTime firstRoundEndTime, int firstRoundBaseGate, Weather weather, BigDecimal firstRoundAirTempStart, BigDecimal firstRoundAirTempFinish, BigDecimal firstRoundSnowTempStart, BigDecimal firstRoundSnowTempFinish, BigDecimal firstRoundHumidityStart, BigDecimal firstRoundHumidityFinish, BigDecimal firstRoundMinWind, BigDecimal firstRoundMaxWind, BigDecimal firstRoundAvgWind, LocalDateTime secondRoundStartTime, LocalDateTime secondRoundEndTime, int secondRoundBaseGate, BigDecimal secondRoundAirTempStart, BigDecimal secondRoundAirTempFinish, BigDecimal secondRoundSnowTempStart, BigDecimal secondRoundSnowTempFinish, BigDecimal secondRoundHumidityStart, BigDecimal secondRoundHumidityFinish, BigDecimal secondRoundMinWind, BigDecimal secondRoundMaxWind, BigDecimal secondRoundAvgWind, LocalDateTime thirdRoundStartTime, LocalDateTime thirdRoundEndTime, int thirdRoundBaseGate, BigDecimal thirdRoundAirTempStart, BigDecimal thirdRoundAirTempFinish, BigDecimal thirdRoundSnowTempStart, BigDecimal thirdRoundSnowTempFinish, BigDecimal thirdRoundHumidityStart, BigDecimal thirdRoundHumidityFinish, BigDecimal thirdRoundMinWind, BigDecimal thirdRoundMaxWind, BigDecimal thirdRoundAvgWind, LocalDateTime fourthRoundStartTime, LocalDateTime fourthRoundEndTime, int fourthRoundBaseGate, BigDecimal fourthRoundAirTempStart, BigDecimal fourthRoundAirTempFinish, BigDecimal fourthRoundSnowTempStart, BigDecimal fourthRoundSnowTempFinish, BigDecimal fourthRoundHumidityStart, BigDecimal fourthRoundHumidityFinish, BigDecimal fourthRoundMinWind, BigDecimal fourthRoundMaxWind, BigDecimal fourthRoundAvgWind, List<Result> results, List<TeamResult> teamResults, Qualification qualification, boolean isTeam) {
         this.season = season;
         this.date1 = date1;
         this.date2 = date2;
         this.seriesMajor = seriesMajor;
         this.seriesMinor = seriesMinor;
         this.hillVersion = hillVersion;
-        this.judgeA = judgeA;
-        this.judgeB = judgeB;
-        this.judgeC = judgeC;
-        this.judgeD = judgeD;
-        this.judgeE = judgeE;
-        this.judgeSC = judgeSC;
-        this.raceDirector = raceDirector;
-        this.technicalDelegate = technicalDelegate;
-        this.chiefOfCompetition = chiefOfCompetition;
-        this.assistantTD = assistantTD;
-        this.assistantRD = assistantRD;
-        this.equipmentController1 = equipmentController1;
-        this.equipmentController2 = equipmentController2;
         this.meterValue = meterValue;
         this.gateFactor = gateFactor;
         this.windFactorTail = windFactorTail;
@@ -339,7 +238,7 @@ public class Competition {
         this.firstRoundStartTime = firstRoundStartTime;
         this.firstRoundEndTime = firstRoundEndTime;
         this.firstRoundBaseGate = firstRoundBaseGate;
-        this.firstRoundWeather = firstRoundWeather;
+        this.weather = weather;
         this.firstRoundAirTempStart = firstRoundAirTempStart;
         this.firstRoundAirTempFinish = firstRoundAirTempFinish;
         this.firstRoundSnowTempStart = firstRoundSnowTempStart;
@@ -352,7 +251,6 @@ public class Competition {
         this.secondRoundStartTime = secondRoundStartTime;
         this.secondRoundEndTime = secondRoundEndTime;
         this.secondRoundBaseGate = secondRoundBaseGate;
-        this.secondRoundWeather = secondRoundWeather;
         this.secondRoundAirTempStart = secondRoundAirTempStart;
         this.secondRoundAirTempFinish = secondRoundAirTempFinish;
         this.secondRoundSnowTempStart = secondRoundSnowTempStart;
@@ -365,7 +263,6 @@ public class Competition {
         this.thirdRoundStartTime = thirdRoundStartTime;
         this.thirdRoundEndTime = thirdRoundEndTime;
         this.thirdRoundBaseGate = thirdRoundBaseGate;
-        this.thirdRoundWeather = thirdRoundWeather;
         this.thirdRoundAirTempStart = thirdRoundAirTempStart;
         this.thirdRoundAirTempFinish = thirdRoundAirTempFinish;
         this.thirdRoundSnowTempStart = thirdRoundSnowTempStart;
@@ -378,7 +275,6 @@ public class Competition {
         this.fourthRoundStartTime = fourthRoundStartTime;
         this.fourthRoundEndTime = fourthRoundEndTime;
         this.fourthRoundBaseGate = fourthRoundBaseGate;
-        this.fourthRoundWeather = fourthRoundWeather;
         this.fourthRoundAirTempStart = fourthRoundAirTempStart;
         this.fourthRoundAirTempFinish = fourthRoundAirTempFinish;
         this.fourthRoundSnowTempStart = fourthRoundSnowTempStart;
@@ -388,27 +284,10 @@ public class Competition {
         this.fourthRoundMinWind = fourthRoundMinWind;
         this.fourthRoundMaxWind = fourthRoundMaxWind;
         this.fourthRoundAvgWind = fourthRoundAvgWind;
-        this.pdfFile = pdfFile;
-        this.csvFile = csvFile;
-        this.cancelledAtRound = cancelledAtRound;
+        this.results = results;
+        this.teamResults = teamResults;
         this.qualification = qualification;
         this.isTeam = isTeam;
-    }
-
-    public Qualification getQualification() {
-        return qualification;
-    }
-
-    public void setQualification(Qualification qualification) {
-        this.qualification = qualification;
-    }
-
-    public boolean isTeam() {
-        return isTeam;
-    }
-
-    public void setTeam(boolean team) {
-        isTeam = team;
     }
 
     public int getId() {
@@ -467,111 +346,6 @@ public class Competition {
         this.hillVersion = hillVersion;
     }
 
-
-    public Jury getJudgeA() {
-        return judgeA;
-    }
-
-    public void setJudgeA(Jury judgeA) {
-        this.judgeA = judgeA;
-    }
-
-    public Jury getJudgeB() {
-        return judgeB;
-    }
-
-    public void setJudgeB(Jury judgeB) {
-        this.judgeB = judgeB;
-    }
-
-    public Jury getJudgeC() {
-        return judgeC;
-    }
-
-    public void setJudgeC(Jury judgeC) {
-        this.judgeC = judgeC;
-    }
-
-    public Jury getJudgeD() {
-        return judgeD;
-    }
-
-    public void setJudgeD(Jury judgeD) {
-        this.judgeD = judgeD;
-    }
-
-    public Jury getJudgeE() {
-        return judgeE;
-    }
-
-    public void setJudgeE(Jury judgeE) {
-        this.judgeE = judgeE;
-    }
-
-    public Jury getJudgeSC() {
-        return judgeSC;
-    }
-
-    public void setJudgeSC(Jury judgeSC) {
-        this.judgeSC = judgeSC;
-    }
-
-    public Jury getRaceDirector() {
-        return raceDirector;
-    }
-
-    public void setRaceDirector(Jury raceDirector) {
-        this.raceDirector = raceDirector;
-    }
-
-    public Jury getTechnicalDelegate() {
-        return technicalDelegate;
-    }
-
-    public void setTechnicalDelegate(Jury technicalDelegate) {
-        this.technicalDelegate = technicalDelegate;
-    }
-
-    public Jury getChiefOfCompetition() {
-        return chiefOfCompetition;
-    }
-
-    public void setChiefOfCompetition(Jury chiefOfCompetition) {
-        this.chiefOfCompetition = chiefOfCompetition;
-    }
-
-    public Jury getAssistantTD() {
-        return assistantTD;
-    }
-
-    public void setAssistantTD(Jury assistantTD) {
-        this.assistantTD = assistantTD;
-    }
-
-    public Jury getAssistantRD() {
-        return assistantRD;
-    }
-
-    public void setAssistantRD(Jury assistantRD) {
-        this.assistantRD = assistantRD;
-    }
-
-    public Jury getEquipmentController1() {
-        return equipmentController1;
-    }
-
-    public void setEquipmentController1(Jury equipmentController1) {
-        this.equipmentController1 = equipmentController1;
-    }
-
-    public Jury getEquipmentController2() {
-        return equipmentController2;
-    }
-
-    public void setEquipmentController2(Jury equipmentController2) {
-        this.equipmentController2 = equipmentController2;
-    }
-
     public BigDecimal getMeterValue() {
         return meterValue;
     }
@@ -604,6 +378,21 @@ public class Competition {
         this.windFactorFront = windFactorFront;
     }
 
+    public LocalDateTime getFirstRoundStartTime() {
+        return firstRoundStartTime;
+    }
+
+    public void setFirstRoundStartTime(LocalDateTime firstRoundStartTime) {
+        this.firstRoundStartTime = firstRoundStartTime;
+    }
+
+    public LocalDateTime getFirstRoundEndTime() {
+        return firstRoundEndTime;
+    }
+
+    public void setFirstRoundEndTime(LocalDateTime firstRoundEndTime) {
+        this.firstRoundEndTime = firstRoundEndTime;
+    }
 
     public int getFirstRoundBaseGate() {
         return firstRoundBaseGate;
@@ -613,12 +402,12 @@ public class Competition {
         this.firstRoundBaseGate = firstRoundBaseGate;
     }
 
-    public Weather getFirstRoundWeather() {
-        return firstRoundWeather;
+    public Weather getWeather() {
+        return weather;
     }
 
-    public void setFirstRoundWeather(Weather firstRoundWeather) {
-        this.firstRoundWeather = firstRoundWeather;
+    public void setWeather(Weather weather) {
+        this.weather = weather;
     }
 
     public BigDecimal getFirstRoundAirTempStart() {
@@ -693,20 +482,28 @@ public class Competition {
         this.firstRoundAvgWind = firstRoundAvgWind;
     }
 
+    public LocalDateTime getSecondRoundStartTime() {
+        return secondRoundStartTime;
+    }
+
+    public void setSecondRoundStartTime(LocalDateTime secondRoundStartTime) {
+        this.secondRoundStartTime = secondRoundStartTime;
+    }
+
+    public LocalDateTime getSecondRoundEndTime() {
+        return secondRoundEndTime;
+    }
+
+    public void setSecondRoundEndTime(LocalDateTime secondRoundEndTime) {
+        this.secondRoundEndTime = secondRoundEndTime;
+    }
+
     public int getSecondRoundBaseGate() {
         return secondRoundBaseGate;
     }
 
     public void setSecondRoundBaseGate(int secondRoundBaseGate) {
         this.secondRoundBaseGate = secondRoundBaseGate;
-    }
-
-    public Weather getSecondRoundWeather() {
-        return secondRoundWeather;
-    }
-
-    public void setSecondRoundWeather(Weather secondRoundWeather) {
-        this.secondRoundWeather = secondRoundWeather;
     }
 
     public BigDecimal getSecondRoundAirTempStart() {
@@ -781,20 +578,28 @@ public class Competition {
         this.secondRoundAvgWind = secondRoundAvgWind;
     }
 
+    public LocalDateTime getThirdRoundStartTime() {
+        return thirdRoundStartTime;
+    }
+
+    public void setThirdRoundStartTime(LocalDateTime thirdRoundStartTime) {
+        this.thirdRoundStartTime = thirdRoundStartTime;
+    }
+
+    public LocalDateTime getThirdRoundEndTime() {
+        return thirdRoundEndTime;
+    }
+
+    public void setThirdRoundEndTime(LocalDateTime thirdRoundEndTime) {
+        this.thirdRoundEndTime = thirdRoundEndTime;
+    }
+
     public int getThirdRoundBaseGate() {
         return thirdRoundBaseGate;
     }
 
     public void setThirdRoundBaseGate(int thirdRoundBaseGate) {
         this.thirdRoundBaseGate = thirdRoundBaseGate;
-    }
-
-    public Weather getThirdRoundWeather() {
-        return thirdRoundWeather;
-    }
-
-    public void setThirdRoundWeather(Weather thirdRoundWeather) {
-        this.thirdRoundWeather = thirdRoundWeather;
     }
 
     public BigDecimal getThirdRoundAirTempStart() {
@@ -869,20 +674,28 @@ public class Competition {
         this.thirdRoundAvgWind = thirdRoundAvgWind;
     }
 
+    public LocalDateTime getFourthRoundStartTime() {
+        return fourthRoundStartTime;
+    }
+
+    public void setFourthRoundStartTime(LocalDateTime fourthRoundStartTime) {
+        this.fourthRoundStartTime = fourthRoundStartTime;
+    }
+
+    public LocalDateTime getFourthRoundEndTime() {
+        return fourthRoundEndTime;
+    }
+
+    public void setFourthRoundEndTime(LocalDateTime fourthRoundEndTime) {
+        this.fourthRoundEndTime = fourthRoundEndTime;
+    }
+
     public int getFourthRoundBaseGate() {
         return fourthRoundBaseGate;
     }
 
     public void setFourthRoundBaseGate(int fourthRoundBaseGate) {
         this.fourthRoundBaseGate = fourthRoundBaseGate;
-    }
-
-    public Weather getFourthRoundWeather() {
-        return fourthRoundWeather;
-    }
-
-    public void setFourthRoundWeather(Weather fourthRoundWeather) {
-        this.fourthRoundWeather = fourthRoundWeather;
     }
 
     public BigDecimal getFourthRoundAirTempStart() {
@@ -957,86 +770,6 @@ public class Competition {
         this.fourthRoundAvgWind = fourthRoundAvgWind;
     }
 
-    public LocalDateTime getFirstRoundStartTime() {
-        return firstRoundStartTime;
-    }
-
-    public void setFirstRoundStartTime(LocalDateTime firstRoundStartTime) {
-        this.firstRoundStartTime = firstRoundStartTime;
-    }
-
-    public LocalDateTime getFirstRoundEndTime() {
-        return firstRoundEndTime;
-    }
-
-    public void setFirstRoundEndTime(LocalDateTime firstRoundEndTime) {
-        this.firstRoundEndTime = firstRoundEndTime;
-    }
-
-    public LocalDateTime getSecondRoundStartTime() {
-        return secondRoundStartTime;
-    }
-
-    public void setSecondRoundStartTime(LocalDateTime secondRoundStartTime) {
-        this.secondRoundStartTime = secondRoundStartTime;
-    }
-
-    public LocalDateTime getSecondRoundEndTime() {
-        return secondRoundEndTime;
-    }
-
-    public void setSecondRoundEndTime(LocalDateTime secondRoundEndTime) {
-        this.secondRoundEndTime = secondRoundEndTime;
-    }
-
-    public LocalDateTime getThirdRoundStartTime() {
-        return thirdRoundStartTime;
-    }
-
-    public void setThirdRoundStartTime(LocalDateTime thirdRoundStartTime) {
-        this.thirdRoundStartTime = thirdRoundStartTime;
-    }
-
-    public LocalDateTime getThirdRoundEndTime() {
-        return thirdRoundEndTime;
-    }
-
-    public void setThirdRoundEndTime(LocalDateTime thirdRoundEndTime) {
-        this.thirdRoundEndTime = thirdRoundEndTime;
-    }
-
-    public LocalDateTime getFourthRoundStartTime() {
-        return fourthRoundStartTime;
-    }
-
-    public void setFourthRoundStartTime(LocalDateTime fourthRoundStartTime) {
-        this.fourthRoundStartTime = fourthRoundStartTime;
-    }
-
-    public LocalDateTime getFourthRoundEndTime() {
-        return fourthRoundEndTime;
-    }
-
-    public void setFourthRoundEndTime(LocalDateTime fourthRoundEndTime) {
-        this.fourthRoundEndTime = fourthRoundEndTime;
-    }
-
-    public String getPdfFile() {
-        return pdfFile;
-    }
-
-    public void setPdfFile(String pdfFile) {
-        this.pdfFile = pdfFile;
-    }
-
-    public String getCsvFile() {
-        return csvFile;
-    }
-
-    public void setCsvFile(String csvFile) {
-        this.csvFile = csvFile;
-    }
-
     public List<Result> getResults() {
         return results;
     }
@@ -1045,20 +778,28 @@ public class Competition {
         this.results = results;
     }
 
-    public int getCancelledAtRound() {
-        return cancelledAtRound;
-    }
-
-    public void setCancelledAtRound(int cancelledAtRound) {
-        this.cancelledAtRound = cancelledAtRound;
-    }
-
     public List<TeamResult> getTeamResults() {
         return teamResults;
     }
 
     public void setTeamResults(List<TeamResult> teamResults) {
         this.teamResults = teamResults;
+    }
+
+    public Qualification getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(Qualification qualification) {
+        this.qualification = qualification;
+    }
+
+    public boolean isTeam() {
+        return isTeam;
+    }
+
+    public void setTeam(boolean team) {
+        isTeam = team;
     }
 
     @Override
@@ -1071,19 +812,6 @@ public class Competition {
                 ", seriesMajor=" + seriesMajor +
                 ", seriesMinor=" + seriesMinor +
                 ", hillVersion=" + hillVersion +
-                ", judgeA=" + judgeA +
-                ", judgeB=" + judgeB +
-                ", judgeC=" + judgeC +
-                ", judgeD=" + judgeD +
-                ", judgeE=" + judgeE +
-                ", judgeSC=" + judgeSC +
-                ", raceDirector=" + raceDirector +
-                ", technicalDelegate=" + technicalDelegate +
-                ", chiefOfCompetition=" + chiefOfCompetition +
-                ", assistantTD=" + assistantTD +
-                ", assistantRD=" + assistantRD +
-                ", equipmentController1=" + equipmentController1 +
-                ", equipmentController2=" + equipmentController2 +
                 ", meterValue=" + meterValue +
                 ", gateFactor=" + gateFactor +
                 ", windFactorTail=" + windFactorTail +
@@ -1091,7 +819,7 @@ public class Competition {
                 ", firstRoundStartTime=" + firstRoundStartTime +
                 ", firstRoundEndTime=" + firstRoundEndTime +
                 ", firstRoundBaseGate=" + firstRoundBaseGate +
-                ", firstRoundWeather=" + firstRoundWeather +
+                ", weather=" + weather +
                 ", firstRoundAirTempStart=" + firstRoundAirTempStart +
                 ", firstRoundAirTempFinish=" + firstRoundAirTempFinish +
                 ", firstRoundSnowTempStart=" + firstRoundSnowTempStart +
@@ -1104,7 +832,6 @@ public class Competition {
                 ", secondRoundStartTime=" + secondRoundStartTime +
                 ", secondRoundEndTime=" + secondRoundEndTime +
                 ", secondRoundBaseGate=" + secondRoundBaseGate +
-                ", secondRoundWeather=" + secondRoundWeather +
                 ", secondRoundAirTempStart=" + secondRoundAirTempStart +
                 ", secondRoundAirTempFinish=" + secondRoundAirTempFinish +
                 ", secondRoundSnowTempStart=" + secondRoundSnowTempStart +
@@ -1117,7 +844,6 @@ public class Competition {
                 ", thirdRoundStartTime=" + thirdRoundStartTime +
                 ", thirdRoundEndTime=" + thirdRoundEndTime +
                 ", thirdRoundBaseGate=" + thirdRoundBaseGate +
-                ", thirdRoundWeather=" + thirdRoundWeather +
                 ", thirdRoundAirTempStart=" + thirdRoundAirTempStart +
                 ", thirdRoundAirTempFinish=" + thirdRoundAirTempFinish +
                 ", thirdRoundSnowTempStart=" + thirdRoundSnowTempStart +
@@ -1130,7 +856,6 @@ public class Competition {
                 ", fourthRoundStartTime=" + fourthRoundStartTime +
                 ", fourthRoundEndTime=" + fourthRoundEndTime +
                 ", fourthRoundBaseGate=" + fourthRoundBaseGate +
-                ", fourthRoundWeather=" + fourthRoundWeather +
                 ", fourthRoundAirTempStart=" + fourthRoundAirTempStart +
                 ", fourthRoundAirTempFinish=" + fourthRoundAirTempFinish +
                 ", fourthRoundSnowTempStart=" + fourthRoundSnowTempStart +
@@ -1140,6 +865,10 @@ public class Competition {
                 ", fourthRoundMinWind=" + fourthRoundMinWind +
                 ", fourthRoundMaxWind=" + fourthRoundMaxWind +
                 ", fourthRoundAvgWind=" + fourthRoundAvgWind +
+                ", results=" + results +
+                ", teamResults=" + teamResults +
+                ", qualification=" + qualification +
+                ", isTeam=" + isTeam +
                 '}';
     }
 }

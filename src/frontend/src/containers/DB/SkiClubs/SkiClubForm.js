@@ -27,7 +27,6 @@ const SkiClubForm = (props) => {
 
     return (
         <React.Fragment>
-            {/*to prevent premature component did mount in NewCityModal*/}
             {showModal ? <NewCityModal
                 show={showModal}
                 onHide={() => {
@@ -39,7 +38,7 @@ const SkiClubForm = (props) => {
                 cities={cities}
                 afterAdding={() => {
                     setCurrentCountry("")
-                    props.updateCities()   //TODO change it, so the citiesForForm would be updated
+                    props.updateCities()
                 }}
             /> : null}
 
@@ -68,7 +67,6 @@ const SkiClubForm = (props) => {
                         <Header3>{props.mainHeader}</Header3>
                     </Modal.Header>
                            <Modal.Body>
-
 
                             <small>Fields with (*) are mandatory</small>
 

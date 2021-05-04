@@ -1,11 +1,8 @@
 import React, {useState} from "react";
 import {Formik} from "formik";
 import {VenuesValidationSchema} from "./VenuesValidationSchema";
-import {
-    Header3,
-    StyledDiv2Right1200, StyledForm,
-} from "../../../components/StyledComponents";
-import {Button,  Modal} from "react-bootstrap";
+import {Header3, StyledDiv2Right1200, StyledForm,} from "../../../components/StyledComponents";
+import {Button, Modal} from "react-bootstrap";
 import FormikTextInputForm from "../../../components/CommonForms/FormikTextInputForm";
 import FormikSelectInputForm from "../../../components/CommonForms/FormikSelectInputForm";
 import SelectInputForm from "../../../components/CommonForms/SelectInputForm";

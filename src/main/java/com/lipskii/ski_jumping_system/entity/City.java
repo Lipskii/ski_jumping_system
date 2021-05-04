@@ -25,7 +25,6 @@ public class City implements Comparable<City> {
 
     @JsonIgnoreProperties(value ={"city","skiJumpers","venues"}, allowSetters = true)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "city", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    // @Fetch(value = FetchMode.SUBSELECT)
     private List<SkiClub> skiClubs;
 
     @JsonIgnoreProperties(value = {"city","skiClub"}, allowSetters = true)

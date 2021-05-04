@@ -1,20 +1,17 @@
 import React, {Component} from "react";
-import {
-    Header3, HillNameTd, StyledDiv2Right1200, StyledDivCentered1200, TableButton
-} from "../../../components/StyledComponents";
+import {Header3, StyledDiv2Right1200, StyledDivCentered1200, TableButton} from "../../../components/StyledComponents";
 import {Button, Form, Table} from "react-bootstrap";
 import axios from "axios";
 import SelectInputForm from "../../../components/CommonForms/SelectInputForm";
 import HillForm from "./HillForm";
 import DeleteModal from "../../../components/Modals/DeleteModal";
 import HillVersionReadMoreModal from "./HillVersionReadMoreModal";
-import EditNameModal from "../../../components/Modals/EditNameModal";
+import EditHillModal from "../../../components/Modals/EditHillModal";
 import Loader from "react-loader-spinner";
 import AddingModal from "../../../components/Modals/AddingModal";
 import CompletedModal from "../../../components/Modals/CompletedModal";
 
 
-//TODO refactor this class
 class DBHills extends Component {
 
     state = {
@@ -44,14 +41,15 @@ class DBHills extends Component {
         showReadMoreModal: false,
         showCompletedModal: false,
         completedModalText: "",
-        completedModalStatus: false
+        completedModalStatus: false,
+        filterVenueId: "",
     }
 
     componentDidMount() {
         axios.all([
             axios.get('/api/countries/venues'),
             axios.get('/api/sizeOfHill'),
-            axios.get('/api/venues')
+            axios.get('/api/venues'),
 
         ])
             .then(axios.spread((countriesData, sizesData, venuesData) => {
@@ -69,28 +67,22 @@ class DBHills extends Component {
     filter = () => {
         axios.all([
             axios.get('/api/venues?countryId=' + this.state.filterCountryId
-                 ),
+            ),
             axios.get('/api/cities?&countryId=' + this.state.filterCountryId),
             axios.get('/api/skiClubs?&countryId=' + this.state.filterCountryId),
+            axios.get('/api/hills?countryId=' + this.state.filterCountryId + "&venueId=" + this.state.filterVenueId),
         ])
-            .then(axios.spread((venuesData, citiesData, skiClubsData) => {
+            .then(axios.spread((venuesData, citiesData, skiClubsData, hillsData) => {
                 this.setState({
                     venues: venuesData.data,
                     clubs: skiClubsData.data,
                     cities: citiesData.data,
-                    venuesLoading: false
+                    hills: hillsData.data,
+                    venuesLoading: false,
+                    hillsLoading: false
                 })
             }))
             .catch(error => console.log(error))
-    }
-
-    updateHillsList = () => {
-        if (this.state.selectedVenueId !== "") {
-            const venue = this.state.venues.find(venue => venue.id === this.state.selectedVenueId)
-            this.setState({
-                hills: venue.hills
-            })
-        }
     }
 
     handleAddVersionButton = (e) => {
@@ -236,8 +228,8 @@ class DBHills extends Component {
         let successful = true
         axios.put("/api/hills/" + parseInt(this.state.selectedHillId), {
             name: values.name,
-            venue: this.state.venues.find(venue => venue.id === this.state.selectedVenueId),
-            sizeOfHill: this.state.sizesOfHill.find(size => size.id === parseInt(this.state.selectedHillSize))
+            venue: this.state.venues.find(venue => venue.id === this.state.filterVenueId),
+            sizeOfHill: this.state.sizesOfHill.find(size => size.id === parseInt(values.sizeOfHillId))
         })
             .then(function (res) {
                 console.log(res.data)
@@ -258,7 +250,7 @@ class DBHills extends Component {
                     completedModalText: modalText,
                     completedModalStatus: successful,
                     showAddingModal: false
-                })
+                }, () => this.filter())
             })
     }
 
@@ -285,7 +277,7 @@ class DBHills extends Component {
                     show={this.state.showReadMoreModal}
                     onHide={() => this.setState({
                         showReadMoreModal: false
-                    })}
+                    }, () => this.filter())}
                 />
 
                 <CompletedModal
@@ -358,15 +350,16 @@ class DBHills extends Component {
                             defaultValue={""}
                             onChange={e =>
                                 this.setState({
-                                    selectedVenueId: parseInt(e.target.value),
+                                    filterVenueId: parseInt(e.target.value),
+                                    hillsLoading: true,
                                     selectedHillName: "",
                                     selectedHillId: "",
-                                }, () => this.updateHillsList())}
+                                }, () => this.filter())}
                         >
                             <option value={""} disabled>Choose...</option>
                             {this.state.venues.map(venue =>
                                 <option key={venue.id} value={venue.id} name={venue.name}>
-                                    {venue.name}
+                                    {venue.name}, {venue.city.name}
                                 </option>
                             )}
                         </SelectInputForm>}
@@ -387,7 +380,8 @@ class DBHills extends Component {
                             <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Latest version</th>
+                                <th>Size</th>
+                                <th>Versions</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -395,37 +389,30 @@ class DBHills extends Component {
                             {this.state.hills.map(
                                 hill => (
                                     <tr key={hill.id} id={hill.id}>
-                                        <HillNameTd>{hill.name}</HillNameTd>
+                                        <td>{hill.name}</td>
+                                        <td>{hill.sizeOfHill.designation}</td>
                                         <td>
-                                            <ul>
-                                                {hill.hillVersions.map(hillVersion => (
-                                                    <li key={hill.id + '_' + hillVersion.id}
-                                                        style={{textDecoration: "underline"}}>
-                                                        <Button variant={"link"} onClick={() => {
-                                                            this.setState({
-                                                                showReadMoreModal: true,
-                                                                hillToReadMore: hill,
-                                                                hillVersionToReadMore: hillVersion
-                                                            })
-                                                        }}>
-                                                            {hillVersion.validSince} / {hillVersion.validUntil} (K: {hillVersion.kPoint} m,
-                                                            HS: {hillVersion.hillSize} m)
-                                                        </Button>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                            <small>Click on version to read more about it</small>
-                                            {/*<Button*/}
-                                            {/*    size={"sm"}*/}
-                                            {/*    variant={"outline-dark"}*/}
-                                            {/*    onClick={() => this.setState({*/}
-                                            {/*        showReadMoreModal: true,*/}
-                                            {/*        hillToReadMore: hill,*/}
-                                            {/*        hillVersionToReadMore: ''*/}
-                                            {/*    })}*/}
-                                            {/*>Read more</Button>*/}
+                                            {hill.hillVersions.length > 0 ? <ul>
+                                                    {hill.hillVersions.map(hillVersion => (
+                                                        <li key={hill.id + '_' + hillVersion.id}
+                                                            style={{textDecoration: "underline"}}>
+                                                            <Button variant={"link"} onClick={() => {
+                                                                this.setState({
+                                                                    showReadMoreModal: true,
+                                                                    hillToReadMore: hill,
+                                                                    hillVersionToReadMore: hillVersion
+                                                                })
+                                                            }}>
+                                                                {hillVersion.validSince} / {hillVersion.validUntil} (K: {hillVersion.kPoint} m,
+                                                                HS: {hillVersion.hillSize} m)
+                                                            </Button>
+                                                        </li>
+                                                    ))}
+                                                    <small>Click on version to read more</small>
+                                                </ul> :
+                                                <small>Hill doesn't have versions yet</small>}
                                         </td>
-                                        <td>
+                                        <td width={"300px"}>
                                             <TableButton id={hill.id} name={hill.name} size="sm"
                                                          onClick={e => this.handleAddVersionButton(e)}>
                                                 Add version
@@ -435,14 +422,16 @@ class DBHills extends Component {
                                                              this.setState({
                                                                  selectedHillName: hill.name,
                                                                  selectedHillId: hill.id,
-                                                                 selectHillSize: hill.sizeOfHill,
+                                                                 selectedHillSize: hill.sizeOfHill,
                                                                  showEditModal: true,
                                                              })
                                                          }}>
                                                 Edit hill
                                             </TableButton>
-                                            <EditNameModal
+                                            <EditHillModal
                                                 name={this.state.selectedHillName}
+                                                sizeOfHill={this.state.selectedHillSize}
+                                                sizesOfHill={this.state.sizesOfHill}
                                                 show={this.state.showEditModal}
                                                 onHide={() => this.setState({
                                                     showEditModal: false
@@ -470,12 +459,12 @@ class DBHills extends Component {
                         :
                         null
                     }
-                    {this.state.selectedVenueId !== "" && !this.state.hills.length > 0 ?
+                    {this.state.filterVenueId !== "" && !this.state.hills.length > 0 ?
                         <Form.Text muted>no hills yet in this venue</Form.Text> : null
                     }
 
                     {/*Add Hill Button*/}
-                    {this.state.selectedVenueId !== "" ? <StyledDiv2Right1200>
+                    {this.state.filterVenueId !== "" ? <StyledDiv2Right1200>
                         <Button onClick={() => this.setState({
                             selectedHillId: "",
                             selectedHillName: "",
@@ -486,7 +475,7 @@ class DBHills extends Component {
 
 
                     {/*New Version Form*/}
-                    {this.state.showHillForm && this.state.selectedVenueId !== "" ?
+                    {this.state.showHillForm && this.state.filterVenueId !== "" ?
                         <React.Fragment>
                             <StyledDiv2Right1200>
                                 <Button size={"sm"} onClick={() => this.setState({
@@ -496,7 +485,7 @@ class DBHills extends Component {
                             <HillForm
                                 mainHeader={this.state.formHeaderText}
                                 showNameField={this.state.selectedHillId === ""}
-                                selectedVenueId={this.state.selectedVenueId}
+                                selectedVenueId={this.state.filterVenueId}
                                 initialName={this.state.selectedHillName}
                                 sizesOfHill={this.state.sizesOfHill}
                                 onSubmit={this.postData}

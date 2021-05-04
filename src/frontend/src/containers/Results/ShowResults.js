@@ -50,6 +50,7 @@ class ShowResults extends Component {
         return (
             <div style={{marginLeft: "30px", paddingBottom: "10px"}}>
 
+
                 {this.state.competition !== '' ?
 
                     <Container fluid>
@@ -121,40 +122,8 @@ class ShowResults extends Component {
                                                 </Accordion.Collapse>
                                             </Card>
                                             <Card>
-                                                <Accordion.Toggle as={Card.Header} eventKey="1">
-                                                    Jury
-                                                </Accordion.Toggle>
-                                                <Accordion.Collapse eventKey="1">
-                                                    <ListGroup variant="flush">
-                                                        <ListGroup.Item style={{fontSize: "13px"}}>
-                                                            {this.state.competition.raceDirector != null ? <div>
-                                                                <label style={{marginRight: "5px"}}>Race
-                                                                    director:</label>
-                                                                <b>
-                                                                    {this.state.competition.raceDirector.person.firstName} {this.state
-                                                                    .competition.raceDirector.person.lastName}
-                                                                </b>
-                                                            </div> : <div>no info</div>}
-                                                        </ListGroup.Item>
-                                                    </ListGroup>
-                                                </Accordion.Collapse>
-                                            </Card>
-                                            <Card>
-                                                <Accordion.Toggle as={Card.Header} eventKey="2">
-                                                    Judges
-                                                </Accordion.Toggle>
-                                                <Accordion.Collapse eventKey="2">
-                                                    <ListGroup variant="flush">
-                                                        <ListGroup.Item style={{fontSize: "13px"}}>
-                                                            <label style={{marginRight: "5px"}}>Date:</label>
-                                                            <b>{this.state.competition.date1}</b>
-                                                        </ListGroup.Item>
-                                                    </ListGroup>
-                                                </Accordion.Collapse>
-                                            </Card>
-                                            <Card>
                                                 <Accordion.Toggle as={Card.Header} eventKey="3">
-                                                    Weather info
+                                                    Detailed info
                                                 </Accordion.Toggle>
                                                 <Accordion.Collapse eventKey="3">
                                                     <ListGroup variant="flush">

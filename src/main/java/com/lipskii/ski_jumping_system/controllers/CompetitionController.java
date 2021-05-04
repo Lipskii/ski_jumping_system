@@ -24,7 +24,6 @@ public class CompetitionController {
 
     private final CompetitionService competitionService;
 
-
     @Autowired
     public CompetitionController(CompetitionService competitionService) {
         this.competitionService = competitionService;

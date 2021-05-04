@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Form, FormControl, Nav, Navbar, NavDropdown} from "react-bootstrap";
+import {Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {LinkContainer} from 'react-router-bootstrap'
 
 const Toolbar = () => {
@@ -67,14 +67,14 @@ const Toolbar = () => {
                         <LinkContainer to='/dbAthletes'>
                             <NavDropdown.Item>Athletes</NavDropdown.Item>
                         </LinkContainer>
+                        <LinkContainer to='/dbCompetitions'>
+                            <NavDropdown.Item>Competitions</NavDropdown.Item>
+                        </LinkContainer>
                         <LinkContainer to='/dbHills'>
                             <NavDropdown.Item>Hills</NavDropdown.Item>
                         </LinkContainer>
                         <LinkContainer to='/dbJury'>
                             <NavDropdown.Item>Jury</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to='/dbResults'>
-                            <NavDropdown.Item>Results</NavDropdown.Item>
                         </LinkContainer>
                         <LinkContainer to='/dbClubs'>
                             <NavDropdown.Item>Ski clubs</NavDropdown.Item>

@@ -7,7 +7,6 @@ import ShowHillVersionTable from "./ShowHillVersionTable";
 import ShowHillCompetitionsTable from "./ShowHillCompetitionsTable";
 
 
-
 class ShowHill extends Component {
     state = {
         competitions: [],

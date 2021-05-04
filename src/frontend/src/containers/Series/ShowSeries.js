@@ -31,17 +31,20 @@ class ShowSeries extends Component {
 
     fetchData = () => {
         let seriesGet = this.getSeriesGetUrl()
-        const seriesId = parseInt(this.props.match.params.series) + 2
+        const teamSeriesId = parseInt(this.props.match.params.series) + 2
+
         axios.all([
             axios.get(seriesGet),
+            axios.get("/api/competitions?seriesMajorId=" + teamSeriesId + "&season=" + 2021),
             axios.get("/api/overallStandings?seriesId=" + this.props.match.params.series + "&season=" + 2021),
             axios.get("/api/overallStandings?seriesId=" + this.props.match.params.series + "&rankingLessThan=4"
                 + "&rankingGreaterThan=0"),
             axios.get("/api/series?id=" + this.props.match.params.series),
             axios.get("/api/seasons"),
-            axios.get("/api/teamOverallStandings?seriesId=" + seriesId + "&season=" + 2021)
+            axios.get("/api/teamOverallStandings?seriesId=" + teamSeriesId + "&season=" + 2021)
         ]).then(axios.spread((
             competitionsData,
+            teamCompetitionData,
             overallStandingsData,
             overallStandingsPodiumsData,
             seriesData,
@@ -49,8 +52,14 @@ class ShowSeries extends Component {
             nationsCupOverallStandingsData
         ) => {
             let overallStandingsPodiumsDataSorted = overallStandingsPodiumsData.data.sort((a, b) => parseInt(b.season.season) - parseInt(a.season.season))
+            let competitions = competitionsData.data
+            for(let teamCompetition of teamCompetitionData.data) {
+                competitions.push(teamCompetition)
+            }
+            competitions.sort((a,b) => new Date(a.date1) - new Date(b.date1))
+
             this.setState({
-                competitions: competitionsData.data.reverse(),
+                competitions: competitions,
                 nationsCupOverallStandings: nationsCupOverallStandingsData.data,
                 overallStandings: overallStandingsData.data,
                 overallStandingsPodiums: overallStandingsPodiumsDataSorted,

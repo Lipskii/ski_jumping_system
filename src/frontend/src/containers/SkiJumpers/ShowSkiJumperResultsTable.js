@@ -1,5 +1,6 @@
 import {Table} from "react-bootstrap";
 import React from "react";
+import {Link} from "react-router-dom";
 
 
 const ShowSkiJumperTable = (props) => {
@@ -31,11 +32,15 @@ const ShowSkiJumperTable = (props) => {
                                 .seriesMajor.name} {result.competition.seriesMinor !== null ? <small>
                                 ({result.competition.seriesMinor.name})</small> : null}
                             </a></td>
-                            <td><img
+                            <td>
+                                <img
                                 height={24}
                                 className="mr-3"
                                 src={props.photos['result_' + result.id]}
-                                alt="Generic placeholder"/>{result.competition.hillVersion.hill.venue.city.name} (HS: {result.competition.hillVersion.hillSize} m)
+                                alt="Generic placeholder"/>
+                                <Link to={"/hill/" + result.competition.hillVersion.hill.id} style={{color: "black"}}>
+                                    {result.competition.hillVersion.hill.venue.city.name} (HS: {result.competition.hillVersion.hillSize} m)
+                                </Link>
                             </td>
                             {result.firstRoundDistance !== null ?
                                 <td>

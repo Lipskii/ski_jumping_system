@@ -16,11 +16,6 @@ public class Series {
     @Column(name = "name")
     private String name;
 
-    @JsonBackReference
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "all_time_points_system_idall_time_points_system")
-    private AllTimePointsSystem allTimePointsSystem;
-
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "points_scale_idpoints_scale")
     private PointsScale pointsScale;
@@ -30,9 +25,8 @@ public class Series {
     }
 
 
-    public Series(String name, AllTimePointsSystem allTimePointsSystem, PointsScale pointsScale) {
+    public Series(String name, PointsScale pointsScale) {
         this.name = name;
-        this.allTimePointsSystem = allTimePointsSystem;
         this.pointsScale = pointsScale;
     }
 
@@ -52,14 +46,6 @@ public class Series {
         this.name = name;
     }
 
-    public AllTimePointsSystem getAllTimePointsSystem() {
-        return allTimePointsSystem;
-    }
-
-    public void setAllTimePointsSystem(AllTimePointsSystem allTimePointsSystem) {
-        this.allTimePointsSystem = allTimePointsSystem;
-    }
-
     public PointsScale getPointsScale() {
         return pointsScale;
     }
@@ -74,7 +60,6 @@ public class Series {
         return "Series{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", allTimePointsSystem=" + allTimePointsSystem +
                 ", pointsScale=" + pointsScale +
                 '}';
     }

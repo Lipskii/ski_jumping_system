@@ -3,45 +3,35 @@ import {Form, Formik} from "formik";
 import axios from "axios";
 import * as Yup from 'yup';
 import {Button, Modal} from "react-bootstrap";
-import SelectInputForm from "../CommonForms/SelectInputForm";
 import FormikSelectInputForm from "../CommonForms/FormikSelectInputForm";
 import {Header3, StyledDiv2Right1200} from "../StyledComponents";
 import FormikTextInputForm from "../CommonForms/FormikTextInputForm";
 import AddingModal from "./AddingModal";
 import CompletedModal from "./CompletedModal";
 
-class NewCityModal extends Component {
+class NewSeriesModal extends Component {
 
     state = {
         completedModalStatus: true,
-        countries: this.props.countries,
-        country: "",
-        regions: [],
+        countries: this.props.series,
+        pointsScales: [],
         showAddingModal: false,
         showCompletedModal: false,
     }
 
 
-    updateRegions = () => {
-        let urlString
-        if (this.state.country === "" || this.state.country === undefined) {
-            urlString = '/api/regions'
-        } else {
-            urlString = "/api/regions/country/" + this.state.country
-        }
-        axios.get(urlString)
-            .then(res => {
-                this.setState({
-                    regions: res.data
-                })
-            })
+    componentDidMount() {
+        axios.get("/api/pointsScales")
+            .then(res => this.setState({
+                pointsScales: res.data
+            }))
             .catch(error => console.log(error))
     }
 
     onSubmit = (values) => {
-        axios.post("/api/cities", {
+        axios.post("/api/series", {
             name: values.name,
-            region: this.state.regions.find(region => region.id = values.regionId)
+            pointsScale: this.state.pointsScales.find(pointsScale => pointsScale.id = values.pointsScaleId)
         })
             .then(() => {
                 this.setState({
@@ -64,10 +54,7 @@ class NewCityModal extends Component {
 
 
     render() {
-
         console.log(this.state)
-        console.log(this)
-
         return (
             <React.Fragment>
                 <AddingModal
@@ -89,13 +76,12 @@ class NewCityModal extends Component {
                     isInitialValid={false}
                     initialValues={{
                         name: '',
-                        regionId: ''
+                        pointsScaleId: ''
                     }}
                     validationSchema={Yup.object({
                         name: Yup.string()
                             .required('Required'),
-                        regionId: Yup.number()
-                            .required('Required')
+                        points_scaleId: Yup.number()
                     })}
                     onSubmit={values =>{
                         this.setState({
@@ -122,29 +108,15 @@ class NewCityModal extends Component {
                                         label="Name*:"
                                     />
 
-                                    <SelectInputForm
-                                        title={"Country:"}
-                                        defaultValue={""}
-                                        onChange={e => {
-                                            this.setState({
-                                                country: e.target.value
-                                            }, () => this.updateRegions())
-                                        }}
-                                    >
-                                        <option value={""}>All Countries...</option>
-                                        {this.state.countries.map(country =>
-                                            <option key={country.id} value={country.id}>
-                                                {country.name}
-                                            </option>)}
-                                    </SelectInputForm>
-
                                     <FormikSelectInputForm
-                                        name="regionId"
-                                        label="Region*:"
+                                        name="pointsScaleId"
+                                        label="Points scale:"
                                     >
-                                        <option value={""} disabled>Choose...</option>
-                                        {this.state.regions.map(region => (
-                                            <option key={region.id} value={region.id}>{region.name}</option>
+                                        <option value={""}>Choose...</option>
+                                        {this.state.pointsScales.map(pointScale => (
+                                            <option key={pointScale.id} value={pointScale.id}>
+                                                {pointScale.pointsScaleValues[0].points}, {pointScale.pointsScaleValues[1].points}, {pointScale.pointsScaleValues[2].points}, ...
+                                            </option>
                                         ))}
                                     </FormikSelectInputForm>
 
@@ -163,4 +135,4 @@ class NewCityModal extends Component {
 
 }
 
-export default NewCityModal
+export default NewSeriesModal

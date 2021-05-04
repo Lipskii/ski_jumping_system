@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,7 @@ public class SeriesService implements ServiceInterface {
         return seriesRepository.findById(id);
     }
 
+    @Transactional
     @Override
     public Series save(Object obj) {
         return seriesRepository.save((Series) obj);

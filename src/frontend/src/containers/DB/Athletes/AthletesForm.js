@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import NewCityModal from "../../../components/Modals/NewCityModal";
-import {Formik, Field} from "formik";
+import {Field, Formik} from "formik";
 import {ErrorLabel, Header3, StyledDiv2Right1200} from "../../../components/StyledComponents";
 import {Button, Col, Form, Modal, Row} from "react-bootstrap";
 import FormikTextInputForm from "../../../components/CommonForms/FormikTextInputForm";

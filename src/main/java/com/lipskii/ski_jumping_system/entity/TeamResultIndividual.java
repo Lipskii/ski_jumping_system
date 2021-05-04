@@ -60,8 +60,8 @@ public class TeamResultIndividual {
         return teamResult;
     }
 
-    public void setTeamResult(TeamResult teamResultl) {
-        this.teamResult = teamResultl;
+    public void setTeamResult(TeamResult teamResult) {
+        this.teamResult = teamResult;
     }
 
     public BigDecimal getFirstRoundDistance() {

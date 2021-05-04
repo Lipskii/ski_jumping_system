@@ -29,7 +29,6 @@ const SeriesPodiumTable = (props) => {
                             <tbody>
                             {seasons.map(season => {
                                 const podiums = props.overallStandings.filter(overallStanding => overallStanding.season.season === season)
-                                console.log(podiums)
                                 return (
                                     <tr>
                                         <td>{season}</td>

@@ -39,4 +39,12 @@ public class SeriesController {
         return seriesService.get(spec, Sort.by(Sort.Direction.ASC, "name"));
     }
 
+
+    @PostMapping("")
+    public Series addSeries(@RequestBody Series series) {
+        seriesService.save(series);
+        return series;
+    }
+
+
 }

@@ -18,15 +18,15 @@ const SeriesScheduleTable = (props) => {
                             <th>Location</th>
                             <th>K</th>
                             <th>HS</th>
-                        <th/>
-                        <th>Winner</th>
+                            <th/>
+                            <th>Winner</th>
                             <tbody>
                             {props.competitions.map(competition => (
                                     <LinkContainer to={"/showResults/" + competition.id}
                                                    style={{cursor: "pointer"}}>
                                         <tr key={competition.id} id={competition.id}>
                                             <td>{competition.date1}</td>
-                                            <td>Ind</td>
+                                            <td>{competition.team ? <>Team</> : <>Ind.</>}</td>
                                             <td>
                                                 <img
                                                     className="mr-3"
@@ -54,7 +54,17 @@ const SeriesScheduleTable = (props) => {
                                                         {competition.results[0].skiJumper.person.firstName} {competition.results[0]
                                                         .skiJumper.person.lastName}
                                                     </div>
-                                                    : <div>-</div>}
+                                                    : null}
+                                                {competition.teamResults.length > 0 ?
+                                                    <div>
+                                                        <img
+                                                            className="mr-3"
+                                                            src={props.photos['flag_' + competition.teamResults[0].country.code]}
+                                                            alt={competition.teamResults[0].country.code}
+                                                        />
+                                                        {competition.teamResults[0].country.name}
+                                                    </div>
+                                                    : null}
                                             </td>
 
                                         </tr>

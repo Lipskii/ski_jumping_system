@@ -1,10 +1,9 @@
 import {Row} from "react-bootstrap";
 import React, {Component} from "react";
-import {DatePicker, Select} from "antd";
+import {Select} from "antd";
 import axios from "axios";
 import SearchingField from "../Results/SearchingField";
 import SearchHillsTable from "./SearchHillsTable";
-
 
 
 class SearchHills extends Component {

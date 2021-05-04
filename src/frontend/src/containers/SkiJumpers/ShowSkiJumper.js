@@ -6,8 +6,6 @@ import ShowSkiJumperResultsTable from "./ShowSkiJumperResultsTable";
 import WinsModal from "./WinsModal";
 import OverallStandingsTable from "./OverallStandingsTable";
 
-
-
 class ShowSkiJumper extends Component {
     state = {
         competitionsForModal: [],

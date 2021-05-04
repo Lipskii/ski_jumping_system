@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,7 +104,6 @@ public class HillVersionService implements ServiceInterface {
         return hillRecordDTO;
     }
 
-
     @Override
     public List<HillVersion> findAll() {
         return hillVersionRepository.findAll();
@@ -120,7 +120,9 @@ public class HillVersionService implements ServiceInterface {
     }
 
     @Override
+    @Transactional
     public void deleteById(int id) {
+        hillVersionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("HillVersion doesn't exist for id=" + id));
         hillVersionRepository.deleteById(id);
     }
 }

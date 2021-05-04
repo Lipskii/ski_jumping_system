@@ -1,7 +1,6 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.VenueRepository;
-import com.lipskii.ski_jumping_system.dto.VenueDTO;
 import com.lipskii.ski_jumping_system.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class VenueService implements ServiceInterface {
@@ -35,23 +33,12 @@ public class VenueService implements ServiceInterface {
     }
 
 
-    public List<VenueDTO> findAllDTO() {
-        return venueRepository.findAllByOrderByName()
-                .stream()
-                .map(this::convertToVenueDTO).collect(Collectors.toList());
-    }
-
-    public List<VenueDTO> findAllWithHillsDTO(){
-        List<VenueDTO> venues = venueRepository.findAllByOrderByName().stream().map(this::convertToVenueDTO).collect(Collectors.toList());
+    public List<Venue> findAllWithHills(){
+        List<Venue> venues = venueRepository.findAllByOrderByName();
         venues.removeIf(venue -> hillService.findAllByVenueId(venue.getId()).isEmpty());
         return venues;
     }
 
-    public List<VenueDTO> findAllByCountryDTO(int id) {
-        return venueRepository.findAllByCityRegionCountryIdOrderByName(id)
-                .stream().map(this::convertToVenueDTO)
-                .collect(Collectors.toList());
-    }
 
     public List<Venue> findAllByCountry(int id) {
         return venueRepository.findAllByCityRegionCountryIdOrderByName(id);
@@ -61,10 +48,6 @@ public class VenueService implements ServiceInterface {
     @Override
     public Optional<Venue> findById(int id) {
         return venueRepository.findById(id);
-    }
-
-    public List<VenueDTO> getVenuesByCity(int cityId) {
-        return venueRepository.findAllByCityIdOrderByName(cityId).stream().map(this::convertToVenueDTO).collect(Collectors.toList());
     }
 
     public List<Venue> findAllByCity(City city){
@@ -87,19 +70,6 @@ public class VenueService implements ServiceInterface {
 
     List<Venue> findAllByCountry(Country country){
         return venueRepository.findAllByCityRegionCountry(country);
-    }
-
-    private VenueDTO convertToVenueDTO(Venue venue){
-        VenueDTO venueDTO = new VenueDTO();
-        venueDTO.setId(venue.getId());
-        venueDTO.setName(venue.getName());
-        venueDTO.setYearOfOpening(venue.getYearOfOpening());
-        venueDTO.setCapacity(venue.getCapacity());
-        venueDTO.setHills(venue.getHills());
-        venueDTO.setSkiClub(venue.getSkiClub());
-        venueDTO.setCity(venue.getCity());
-        venueDTO.setCountry(venue.getCity().getRegion().getCountry());
-        return venueDTO;
     }
 
 

@@ -3,6 +3,7 @@ package com.lipskii.ski_jumping_system.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "points_scale_value")
@@ -22,6 +23,8 @@ public class PointsScaleValue {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "points_scale_idpoints_scale")
     private PointsScale pointsScale;
+
+
 
     public PointsScaleValue() {
     }
@@ -64,12 +67,14 @@ public class PointsScaleValue {
         this.pointsScale = pointsScale;
     }
 
+
+
     @Override
     public String toString() {
         return "PointsScaleValue{" +
                 "id=" + id +
                 ", rank=" + rank +
                 ", points=" + points +
-                '}';
+                ", pointsScale=" + pointsScale + "}";
     }
 }

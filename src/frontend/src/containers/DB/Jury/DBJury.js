@@ -11,7 +11,6 @@ import Loader from "react-loader-spinner";
 import JuryForm from "./JuryForm";
 
 
-
 class Jury extends Component {
 
     state = {
