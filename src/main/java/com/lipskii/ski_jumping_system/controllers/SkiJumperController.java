@@ -61,7 +61,8 @@ public class SkiJumperController {
         skiJumperService.deleteById(skiJumperId);
     }
 
-    @PutMapping("/{skiJumperId}")
+    @PutMapping(value = "/{skiJumperId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public SkiJumper updateSkiJumper(@RequestBody SkiJumper skiJumper, @PathVariable("skiJumperId") int skiJumperId) throws ResourceNotFoundException {
 
         if (skiJumperService.findById(skiJumperId).isPresent()) {

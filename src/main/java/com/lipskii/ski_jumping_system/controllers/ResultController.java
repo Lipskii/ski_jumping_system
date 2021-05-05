@@ -11,6 +11,7 @@ import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -62,8 +63,13 @@ public class ResultController {
 
     @PostMapping("/link/{competitionId}")
     public void uploadResultsLink(@RequestBody String link, @PathVariable("competitionId") int competitionId){
-
         resultService.saveFromLink(link, competitionId);
+    }
+
+    @PutMapping("/{resultId}")
+    public Result updateResult(@RequestBody Result result, @PathVariable("resultId") int resultId) { ;
+        resultService.updateResult(result,resultId);
+        return result;
     }
 
 

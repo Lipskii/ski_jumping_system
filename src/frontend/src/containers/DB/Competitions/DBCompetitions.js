@@ -13,6 +13,7 @@ import AddResultsModal from "./AddResultsModal";
 import AddQualificationsModal from "./AddQualificationsModal";
 import CompetitionFormModal from "./CompetitionFormModal";
 import TeamResultsModal from "./TeamResultsModal";
+import EditResultsModal from "./EditResultsModal";
 
 
 class DBCompetitions extends Component {
@@ -30,6 +31,7 @@ class DBCompetitions extends Component {
         competitionToResults: '',
         countries: [],
         editing: false,
+        showEditResultsModal: false,
         equipmentControllers: [],
         hills: [],
         hillVersions: [],
@@ -542,6 +544,16 @@ class DBCompetitions extends Component {
                     })}
                 /> : null}
 
+                {this.state.showEditResultsModal ?
+                <EditResultsModal
+                    show={this.state.showEditResultsModal}
+                    onHide={() => this.setState({
+                        showEditResultsModal: false,
+                        competitionToResults: ''
+                    })}
+                    competition={this.state.competitionToResults}
+                /> : null}
+
                 <Header3>Competitions</Header3>
 
                 <StyledDivCentered1200>
@@ -689,13 +701,27 @@ class DBCompetitions extends Component {
                                                                 details
                                                             </TableButton>
                                                             {competition.results.length > 0 || competition.teamResults.length > 0 ?
+                                                                    <TableButton id={competition.id + "tbEdit"}
+                                                                                 name={competition.name}
+                                                                                 size="sm"
+                                                                                 variant={"outline-info"}
+                                                                                 onClick={() => this.handleResultsButton(competition)}>
+                                                                        results
+                                                                    </TableButton>
+                                                                : null
+                                                            }
+                                                            {competition.results.length > 0  ?
                                                                 <TableButton id={competition.id + "tbEdit"}
                                                                              name={competition.name}
                                                                              size="sm"
                                                                              variant={"outline-info"}
-                                                                             onClick={() => this.handleResultsButton(competition)}>
-                                                                    results
-                                                                </TableButton> : null
+                                                                             onClick={() => this.setState({
+                                                                                 showEditResultsModal: true,
+                                                                                 competitionToResults: competition
+                                                                             })}>
+                                                                    Edit results
+                                                                </TableButton>
+                                                                : null
                                                             }
 
 
@@ -730,7 +756,7 @@ class DBCompetitions extends Component {
                                                                                  })
                                                                              }
                                                                              }>
-                                                                    Edit results
+                                                                    Update results
                                                                 </TableButton> :
                                                                 <TableButton id={competition.id + "tbEdit"}
                                                                              name={competition.name}

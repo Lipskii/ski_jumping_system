@@ -97,7 +97,6 @@ public class ResultService implements ServiceInterface {
         return resultRepository.save((Result) obj);
     }
 
-
     public void saveFromLink(String link, int competitionId) {
         link = link.replace("%3A", ":");
         link = link.replace("%2F", "/");
@@ -151,8 +150,6 @@ public class ResultService implements ServiceInterface {
             }
         }
     }
-
-
 
     @Override
     public void deleteById(int id) {
@@ -252,4 +249,14 @@ public class ResultService implements ServiceInterface {
         return null;
     }
 
+    @Transactional
+    public void updateResult(Result result, int resultId) throws ResourceNotFoundException {
+
+        if (resultRepository.findById(resultId).isPresent()) {
+            result.setId(resultId);
+            resultRepository.save(result);
+        } else {
+            throw new ResourceNotFoundException("No result found for id: " + resultId);
+        }
+    }
 }
