@@ -13,9 +13,9 @@ const ResultsTable = (props) => {
                 <th style={{width: "15px", textAlign: "center"}}>Rank</th>
                 <th/>
                 <th>1. Round</th>
-                {props.results[0].secondRoundDistance !== 0 ? <th>2. Round</th> : null}
-                {props.results[0].thirdRoundDistance !== 0 ? <th>3. Round</th> : null}
-                {props.results[0].fourthRoundDistance !== 0 ? <th>4. Round</th> : null}
+                {props.results[0].secondRoundDistance !== 0 && props.results[0].secondRoundDistance !== null ? <th>2. Round</th> : null}
+                {props.results[0].thirdRoundDistance !== 0 && props.results[0].thirdRoundDistance !== null ? <th>3. Round</th> : null}
+                {props.results[0].fourthRoundDistance !== 0 && props.results[0].fourthRoundDistance !== null ? <th>4. Round</th> : null}
                 <th>Total Score</th>
                 <th>Difference</th>
                 <tbody>
@@ -27,15 +27,15 @@ const ResultsTable = (props) => {
 
                             <td>{result.firstRoundDistance !== 0 ? <div>{result.firstRoundDistance} m</div> : <div>-</div>}</td>
 
-                            {props.results[0].secondRoundDistance !== 0 ?
+                            {props.results[0].secondRoundDistance !== 0 && props.results[0].secondRoundDistance !== null ?
                                 <td>{result.secondRoundDistance !== 0 ? <div>{result.secondRoundDistance} m</div> : <div>-</div>}</td>
                                 : null}
 
-                            {props.results[0].thirdRoundDistance !== 0 ?
+                            {props.results[0].thirdRoundDistance !== 0 && props.results[0].thirdRoundDistance !== null  ?
                                 <td>{result.thirdRoundDistance !== 0 ? <div>{result.thirdRoundDistance} m</div> : <div>-</div>}</td>
                                 : null}
 
-                            {props.results[0].fourthRoundDistance !== 0 ?
+                            {props.results[0].fourthRoundDistance !== 0  && props.results[0].fourthRoundDistance !== null ?
                                 <td>{result.fourthRoundDistance !== 0 ? <div>{result.fourthRoundDistance} m</div> : <div>-</div>}</td>
                                 : null}
 

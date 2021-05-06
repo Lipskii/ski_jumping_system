@@ -17,19 +17,28 @@ const Toolbar = () => {
                     <LinkContainer to="/hills">
                         <Nav.Link>Hills</Nav.Link>
                     </LinkContainer>
-                    <NavDropdown title="Series" id="collasible-nav-dropdown">
-                        <LinkContainer to="/showSeries/9">
-                            <NavDropdown.Item>World Cup</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/showSeries/10">
-                            <NavDropdown.Item>Ski Flying World Cup</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/showSeries/12">
-                            <NavDropdown.Item>Four Hills Tournament</NavDropdown.Item>
-                        </LinkContainer>
-                        <LinkContainer to="/showSeries/18">
-                            <NavDropdown.Item>Raw Air</NavDropdown.Item>
-                        </LinkContainer>
+                    <LinkContainer to="/showSeries/9">
+                        <Nav.Link>World Cup</Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to="/showSeries/12">
+                        <Nav.Link>Four Hills Tournament</Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to="/showSeries/18">
+                        <Nav.Link>Raw Air</Nav.Link>
+                    </LinkContainer>
+                    <NavDropdown title="Other Series" id="collasible-nav-dropdown">
+                        {/*<LinkContainer to="/showSeries/9">*/}
+                        {/*    <NavDropdown.Item>World Cup</NavDropdown.Item>*/}
+                        {/*</LinkContainer>*/}
+                        {/*<LinkContainer to="/showSeries/10">*/}
+                        {/*    <NavDropdown.Item>Ski Flying World Cup</NavDropdown.Item>*/}
+                        {/*</LinkContainer>*/}
+                        {/*<LinkContainer to="/showSeries/12">*/}
+                        {/*    <NavDropdown.Item>Four Hills Tournament</NavDropdown.Item>*/}
+                        {/*</LinkContainer>*/}
+                        {/*<LinkContainer to="/showSeries/18">*/}
+                        {/*    <NavDropdown.Item>Raw Air</NavDropdown.Item>*/}
+                        {/*</LinkContainer>*/}
                         <LinkContainer to="/showSeries/26">
                             <NavDropdown.Item>Continental Cup</NavDropdown.Item>
                         </LinkContainer>
@@ -55,8 +64,8 @@ const Toolbar = () => {
                             <NavDropdown.Item>Ski Flying World Championships</NavDropdown.Item>
                         </LinkContainer>
                     </NavDropdown>
-                    <Nav.Link>SJS All Time Ranking</Nav.Link>
-                    <Nav.Link>Stats</Nav.Link>
+                    {/*<Nav.Link>SJS All Time Ranking</Nav.Link>*/}
+                    {/*<Nav.Link>Stats</Nav.Link>*/}
                     {/*<Form inline>*/}
                     {/*    <FormControl type="text" placeholder="Search" className="mx-sm-2"/>*/}
                     {/*    <Button variant="secondary">Search</Button>*/}

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 @Entity
@@ -133,8 +134,12 @@ public class Person implements Comparable<Person> {
         this.city = city;
     }
 
-    public String getPhoto() {
-        return photo;
+//    public String getPhoto() {
+//        return photo;
+//    }
+
+    public Optional<String> getPhoto() {
+        return Optional.ofNullable(photo);
     }
 
     public void setPhoto(String photo) {

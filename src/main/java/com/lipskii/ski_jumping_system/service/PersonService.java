@@ -1,17 +1,26 @@
 package com.lipskii.ski_jumping_system.service;
 
+import com.lipskii.ski_jumping_system.bucket.BucketName;
 import com.lipskii.ski_jumping_system.dao.PersonRepository;
 import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.Person;
+import org.springframework.http.HttpHeaders;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
+import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Service
@@ -19,10 +28,12 @@ public class PersonService implements ServiceInterface {
 
     private final PersonRepository personRepository;
     protected final Logger log = Logger.getLogger(getClass().getName());
+    private final FileStore fileStore;
 
     @Autowired
-    public PersonService(PersonRepository personRepository) {
+    public PersonService(PersonRepository personRepository, FileStore fileStore) {
         this.personRepository = personRepository;
+        this.fileStore = fileStore;
     }
 
     @Override
@@ -32,14 +43,6 @@ public class PersonService implements ServiceInterface {
 
     public List<Person> get(Specification<Person> spec, Sort sort){
         return personRepository.findAll(spec,sort);
-    }
-
-    public List<Person> findAllOrderedByLastName(){
-        return personRepository.findAllByOrderByLastNameAsc();
-    }
-
-    public List<Person> findAllByCountryId(int countryId){
-        return personRepository.findAllByCountryIdOrderByLastName(countryId);
     }
 
     public List<Person> findAllByCountry(Country country){
@@ -61,26 +64,104 @@ public class PersonService implements ServiceInterface {
         personRepository.deleteById(id);
     }
 
-    public HashMap<String,Person> getPeopleMap(){
 
-        HashMap<String,Person> map = new HashMap<>();
-        List<Person> list = findAll();
+    public void uploadPersonPhoto(MultipartFile file, int personId) {
 
-        for (Person person : list)
-            map.put(person.toString(),person);
+        isFileEmpty(file);
 
-        return map;
-    }
+        //check if file is an image
+        isImage(file);
 
-    public void addPeopleIfNotExist(List<Person> people){
-        HashMap<String,Person> map =  getPeopleMap();
+        Person person = getPersonOrThrow(personId);
 
-        for(Person person : people){
-            if(!map.containsKey(person.toString())){
-                save(person);
-            } else {
-                log.log(Level.INFO,"Person: " + person + " already exists in db");
-            }
+        //Grab some metadata from file if any
+        Map<String, String> metadata = extractMetadata(file);
+
+        //Store the image in s3 and update database (userProfileImageLink) with s3 image link
+        String path = String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(), person.getId());
+        String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
+
+        try {
+            fileStore.save(path, filename, Optional.of(metadata), file.getInputStream());
+            person.setPhoto(filename);
+            personRepository.save(person);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
         }
     }
+
+    @Transactional
+    public void updatePerson(Person person, int personId) {
+        if (personRepository.findById(personId).isPresent()) {
+            person.setId(personId);
+            personRepository.save(person);
+        } else {
+            throw new ResourceNotFoundException("No person found for id: " + personId);
+        }
+    }
+
+//    public ResponseEntity<byte[]> downloadPersonPhoto(int personId) {
+//        Person person = personRepository.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No person found for id " + personId));
+//        File file = new File(person.getPhoto());
+//        try {
+//            byte[] image = Files.readAllBytes(file.toPath());
+//            HttpHeaders httpHeaders = new HttpHeaders();
+//            httpHeaders.setContentType(MediaType.IMAGE_JPEG);
+//            httpHeaders.setContentLength(image.length);
+//            return new ResponseEntity<>(image,httpHeaders, HttpStatus.OK);
+//        } catch (IOException e) {
+//            throw new IllegalStateException("Failed to download photo from server ",e);
+//        }
+//    }
+
+    public byte[] downloadPersonImage(int personId) {
+        Person person = getPersonOrThrow(personId);
+
+        String path = String.format("%s/%s",
+                BucketName.PROFILE_IMAGE.getBucketName(),
+                person.getId());
+
+        return person.getPhoto()
+                .map(key -> fileStore.download(path, key))
+                .orElse(new byte[0]);
+
+    }
+
+    private Map<String, String> extractMetadata(MultipartFile file) {
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("Content-Type", file.getContentType());
+        metadata.put("Content-Length", String.valueOf(file.getSize()));
+        return metadata;
+    }
+
+    private Person getPersonOrThrow(int personId) {
+        return personRepository.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No person found for id " + personId));
+    }
+
+    private void isImage(MultipartFile file) {
+        if(!Arrays.asList(
+                ContentType.IMAGE_JPEG.getMimeType(),
+                ContentType.IMAGE_PNG.getMimeType(),
+                ContentType.IMAGE_GIF.getMimeType()).contains(file.getContentType())){
+            throw new IllegalStateException("File must be an image" + file.getContentType());
+        }
+    }
+
+    private void isFileEmpty(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalStateException("Cannot upload empty file [ " + file.getSize() + "]");
+        }
+    }
+
+//    public Resource downloadPersonPhoto(int personId) {
+////        Person person = personRepository.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No person found for id " + personId));
+////        File file = new File(person.getPhoto());
+////        try {
+////            return IOUtils.toByteArray(file.toURI());
+////        } catch (IOException e) {
+////            throw new IllegalStateException("Failed to download photo from server ",e);
+////        }
+////    }
+
+
 }

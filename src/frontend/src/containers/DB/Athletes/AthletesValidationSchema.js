@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 
-const FILE_SIZE = 2000 * 1024;
+//const FILE_SIZE = 500000 * 1024;
 const SUPPORTED_FORMATS = [
     "image/jpg",
     "image/jpeg",
@@ -26,11 +26,11 @@ export const AthletesValidationSchema = () => Yup.object(
         skisId: Yup.number(),
         file: Yup.mixed()
             .required("A file is required")
-            .test(
-                "fileSize",
-                "File too large",
-                value => value && value.size <= FILE_SIZE
-            )
+            // .test(
+            //     "fileSize",
+            //     "File too large",
+            //     value => value && value.size <= FILE_SIZE
+            // )
             .test(
                 "fileFormat",
                 "Unsupported Format",

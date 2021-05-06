@@ -12,15 +12,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -59,33 +54,27 @@ public class PersonController {
         return person;
     }
 
-    @PostMapping(value = "/photo/{personId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity uploadPersonPhoto(@RequestPart MultipartFile file, @PathVariable("personId") int personId)
+    @PostMapping(
+            value = "/photo/{personId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces=  MediaType.APPLICATION_JSON_VALUE
+    )
+    public void uploadPersonPhoto(@RequestParam("file") MultipartFile file, @PathVariable("personId") int personId)
             throws ResourceNotFoundException {
-        Person person = personService.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No person found for id " + personId));
-        try {
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(FilesPaths.ATHLETES_PHOTOS_PATH + personId + "_"
-                    + person.getFirstName() + "_" + person.getLastName());
-            Files.write(path, bytes);
-            person.setPhoto(file.getOriginalFilename());
-            personService.save(person);
-        } catch (IOException e) {
-            System.out.println(e.getCause().getMessage());
-            ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok().build();
+
+        personService.uploadPersonPhoto(file,personId);
+
+    }
+
+    @GetMapping(value = "/photo/{personId}")
+    public byte[] downloadPersonPhoto(@PathVariable("personId") int personId) {
+        return personService.downloadPersonImage(personId);
     }
 
     @PutMapping("/{personId}")
-    public Person updatePerson(@RequestBody Person person, @PathVariable("personId") int personId) throws ResourceNotFoundException {
+    public Person updatePerson(@RequestBody Person person, @PathVariable("personId") int personId) {
 
-        if (personService.findById(personId).isPresent()) {
-            person.setId(personId);
-            personService.save(person);
-        } else {
-            throw new ResourceNotFoundException("No person found for id: " + personId);
-        }
+        personService.updatePerson(person,personId);
 
         return person;
     }

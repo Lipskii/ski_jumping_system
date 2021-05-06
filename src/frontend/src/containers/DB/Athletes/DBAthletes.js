@@ -47,6 +47,7 @@ class DBAthletes extends Component {
 
     componentDidMount() {
         axios.all([
+
             axios.get('/api/cities'),
             axios.get('/api/cities?hasPeople=true'),
             axios.get('/api/countries'),
@@ -88,17 +89,30 @@ class DBAthletes extends Component {
             country: this.state.countries.find(country => country.id === parseInt(values.countryId)),
             city: this.state.cities.find(city => city.id === parseInt(values.cityId))
         }
-        axios.put('api/people/' + this.state.athleteToEdit.person.id, {...person})
+        axios.put('/api/people/' + this.state.athleteToEdit.person.id, {...person})
             .then(res => {
                 console.log(res)
-                axios.put('api/skiJumpers/' + this.state.athleteToEdit.id, {
-                    person: person,
+                axios.put('/api/skiJumpers/' + this.state.athleteToEdit.id, {
+                    person: res.data,
                     isActive: values.active,
                     fisCode: values.fisCode,
                     skis: this.state.skis.find(skis => skis.id === parseInt(values.skisId)),
                     skiClub: this.state.clubsForForm.find(club => club.id === parseInt(values.clubId))
                 })
-                    .then(() => this.filter())
+                    .then((res) => {
+                        const formData = new FormData();
+                        formData.append('file', values.file)
+                        console.log("photo")
+                        axios.post('/api/people/photo/' + res.data.person.id, formData,)
+                            .then((res) => {
+                                console.log(res)
+                                this.filter()
+                            })
+                            .catch(error => {
+                                console.log(error)
+                                successful = false
+                            })
+                    })
                     .catch(error => {
                         console.log(error)
                         successful = false

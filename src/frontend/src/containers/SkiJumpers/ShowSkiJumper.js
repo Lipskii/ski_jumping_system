@@ -56,7 +56,7 @@ class ShowSkiJumper extends Component {
                 fourHillsOverallStandings: fourHillsOverallStandingsData.data,
             }, () => {
                 this.loadPhoto('flags/' + this.state.skiJumper.person.country.code, 'jumperFlag')
-                this.loadPhoto('athletes/blankProfile', 'jumperPhoto')
+           //     this.loadPhoto('athletes/blankProfile', 'jumperPhoto')
 
                 let fourHillsTournamentStarts = 0
                 let olympicGamesStarts = 0
@@ -80,7 +80,12 @@ class ShowSkiJumper extends Component {
                 for (const result of this.state.skiJumper.results) {
                     this.loadPhoto('flags/' + result.competition.hillVersion.hill.venue.city.region.country.code, 'result_' + result.id)
                     if (result.competition.seriesMajor.id === 9) {
-                        worldCupDebut = this.state.skiJumper.results.filter(result => result.competition.seriesMajor.id === 9)[0].competition
+                        if(worldCupDebut === undefined){
+                            worldCupDebut = result.competition
+                        } else if (new Date(result.competition.date1) < new Date(worldCupDebut.date1)){
+                            worldCupDebut = result.competition
+                            console.log(worldCupDebut.date1)
+                        }
                         this.setPodiums(result, 'worldCupPodiums')
                         worldCupStarts++
                     }
@@ -88,10 +93,6 @@ class ShowSkiJumper extends Component {
                         this.setPodiums(result, 'worldChampionshipsPodiums')
                         worldChampionshipsStarts++
                     }
-                    // if (result.competition.seriesMajor.id === 12) {
-                    //     this.setPodiums(result, 'fourHillsTournamentPodiums')
-                    //     fourHillsTournamentStarts++
-                    // }
                     if (result.competition.seriesMajor.id === 1) {
                         this.setPodiums(result, 'olympicGamesPodiums')
                         olympicGamesStarts++
@@ -101,12 +102,14 @@ class ShowSkiJumper extends Component {
                         skiFlyingWorldChampionshipsStarts++
                     }
                     if(result.competition.seriesMinor !== null){
-                        // if(result.competition.seriesMinor.id === 12){
-                        //     this.setPodiums(result, 'fourHillsTournamentPodiums')
-                        //     fourHillsTournamentStarts++
-                        // }
                         if (result.competition.seriesMinor.id === 9) {
-                            worldCupDebut = this.state.skiJumper.results.filter(result => result.competition.seriesMajor.id === 9)[0].competition
+
+                            if(worldCupDebut === undefined){
+                                worldCupDebut = result.competition
+                            } else if (new Date(result.competition.date1) < new Date(worldCupDebut.date1)){
+                                worldCupDebut = result.competition
+                                console.log(worldCupDebut.date1)
+                            }
                             this.setPodiums(result, 'worldCupPodiums')
                             worldCupStarts++
                         }
@@ -214,7 +217,6 @@ class ShowSkiJumper extends Component {
 
         return (
             <div style={{marginLeft: "11%", marginRight: "11%", paddingBottom: "50px"}}>
-
                 <WinsModal
                     show={this.state.showModal}
                     results={this.state.competitionsForModal}
@@ -230,7 +232,8 @@ class ShowSkiJumper extends Component {
                     <Container fluid>
                         <Col>
                             <Row>
-                                <h1 style={{marginBottom: "60px", width: "100%"}}><img
+                                <h1 style={{marginBottom: "60px", width: "100%"}}>
+                                    <img
                                     height={"100%"}
                                     className="mr-3"
                                     src={this.state.photos['jumperFlag']}
@@ -241,11 +244,17 @@ class ShowSkiJumper extends Component {
 
                         <Col>
                             <Row>
+                                {/*<img*/}
+                                {/*    height={"150px"}*/}
+                                {/*    className="mr-3"*/}
+                                {/*    src={this.state.photos['jumperPhoto']}*/}
+                                {/*    alt="Generic placeholder"*/}
+                                {/*/>*/}
                                 <img
                                     height={"150px"}
                                     className="mr-3"
-                                    src={this.state.photos['jumperPhoto']}
-                                    alt="Generic placeholder"
+                                    src={"http://localhost:8089/api/people/photo/" + this.state.skiJumper.person.id}
+                                    alt={"Generic placeholder"}
                                 />
                                 <Col style={{marginBottom: "10px"}}>
                                     <Row sm={1}>

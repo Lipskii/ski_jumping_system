@@ -15,7 +15,7 @@ public class SkiJumper implements Comparable<SkiJumper> {
     @Column(name = "idski_jumper")
     private int id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_idperson")
     private Person person;
 
