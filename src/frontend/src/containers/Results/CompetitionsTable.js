@@ -42,7 +42,9 @@ const CompetitionsTable = (props) => {
                         {props.competitions.map(competition => {
                             if (((activePage - 1) * numOfCompetitions <= props.competitions.indexOf(competition)) && (props.competitions.indexOf(competition) < activePage * numOfCompetitions)) {
                                 return (
+                                    <LinkContainer to={'/showResults/' + competition.id} style={{cursor: "pointer"}}>
                                     <tr key={competition.id} id={competition.id}>
+
                                         <td>{competition.date1}</td>
 
                                         <td><img
@@ -70,19 +72,9 @@ const CompetitionsTable = (props) => {
                                             }}/> {competition.hillVersion.hill.venue.city.name} (HS: {competition.hillVersion.hillSize} m)
                                         </td>
 
-                                        <td>
-                                            <LinkContainer to={'/showResults/' + competition.id}>
-                                                <TableButton id={competition.id + "tbEdit"}
-                                                             name={competition.name}
-                                                             size="sm"
-                                                             variant={"outline-info"}
-                                                >
-                                                    Read more
-                                                </TableButton>
-                                            </LinkContainer>
-                                        </td>
 
                                     </tr>
+                                    </LinkContainer>
                                 )
                             }
                         })}

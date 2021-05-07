@@ -11,6 +11,8 @@ import Hills from "./containers/Hills/Hills";
 import ShowHill from "./containers/Hills/ShowHill";
 import ShowSeries from "./containers/Series/ShowSeries";
 import ShowChampionship from "./containers/Championships/ShowChampionship";
+import Login from "./components/Login";
+import AuthService from "./services/auth.service";
 
 const asyncVenues = asyncComponent(() => {
     return import("./containers/DB/Venues/DBVenues")
@@ -34,22 +36,43 @@ const asyncHills = asyncComponent(() => {
 
 class App extends Component {
 
-    // componentDidMount() {
-    //     AuthService.login("frontend","221plamal07")
-    //         .catch(error => console.log(error))
-    // }
+    state = {
+        currentUser: undefined,
+        showModeratorBoard: false
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentUser: undefined,
+            showModeratorBoard: false
+        };
+    }
+
+    componentDidMount() {
+        const user = AuthService.getCurrentUser();
+
+        if (user) {
+            this.setState({
+                currentUser: user,
+                showModeratorBoard: user.roles.includes("ROLE_MODERATOR"),
+            });
+        }
+    }
+
 
     render() {
-        // AuthService.login("frontend","221plamal07")
-        //     .catch(error => console.log(error))
-        const routes = (
+        console.log("APP")
+        console.log(this.state)
+
+        const routesModerator = (
             <Switch>
-                <Route path="/dbVenues" component={asyncVenues}/>
                 <Route path="/dbCompetitions" component={asyncCompetitions}/>
                 <Route path="/dbClubs" component={asyncSkiClubs}/>
                 <Route path="/dbHills" component={asyncHills}/>
                 <Route path="/dbJury" component={asyncJury}/>
                 <Route path="/dbAthletes" component={asyncAthletes}/>
+                <Route path="/dbVenues" component={asyncVenues}/>
                 <Route path="/skiJumpers" component={SkiJumpers}/>
                 <Route path="/showSeries/:series" component={ShowSeries}/>
                 <Route path="/showChampionships/:championship" component={ShowChampionship}/>
@@ -57,15 +80,30 @@ class App extends Component {
                 <Route path="/hill/:hill" exact component={ShowHill}/>
                 <Route path="/showResults/:competition" exact component={ShowResults}/>
                 <Route path="/skiJumper/:skiJumper" exact component={ShowSkiJumper}/>
-                <Route path="/"  component={Results}/>
+                <Route path="/" component={Results}/>
                 <Route component={NotFound}/>
             </Switch>
+        )
+
+        const routesBasicUser = (
+        <Switch>
+            <Route exact path="/login" component={Login}/>
+            <Route path="/skiJumpers" component={SkiJumpers}/>
+            <Route path="/showSeries/:series" component={ShowSeries}/>
+            <Route path="/showChampionships/:championship" component={ShowChampionship}/>
+            <Route path="/hills" component={Hills}/>
+            <Route path="/hill/:hill" exact component={ShowHill}/>
+            <Route path="/showResults/:competition" exact component={ShowResults}/>
+            <Route path="/skiJumper/:skiJumper" exact component={ShowSkiJumper}/>
+            <Route path="/" component={Results}/>
+            <Route component={NotFound}/>
+        </Switch>
         )
 
 
         return (
             <Layout>
-                {routes}
+                {this.state.showModeratorBoard ? routesModerator : routesBasicUser}
             </Layout>
         )
     }
