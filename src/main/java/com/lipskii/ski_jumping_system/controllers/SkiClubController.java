@@ -10,10 +10,8 @@ import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -60,16 +58,9 @@ public class SkiClubController {
     }
 
     @PutMapping("/{skiClubId}")
-    public ResponseEntity<SkiClub> updateSkiClub(@PathVariable("skiClubId") int skiClubId, @RequestBody SkiClub skiClub)
-            throws ResourceNotFoundException {
-        if (skiClubService.findById(skiClubId).isPresent()) {
-            skiClub.setId(skiClubId);
-            skiClubService.save(skiClub);
-        } else {
-            throw new ResourceNotFoundException("No ski club found for id: " + skiClubId);
-        }
+    public SkiClub updateSkiClub(@PathVariable("skiClubId") int skiClubId, @RequestBody SkiClub skiClub){
+        return skiClubService.updateSkiClub(skiClubId,skiClub);
 
-        return ResponseEntity.ok(skiClub);
     }
 
 

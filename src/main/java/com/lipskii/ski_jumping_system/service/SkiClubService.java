@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -26,11 +27,9 @@ public class SkiClubService implements ServiceInterface {
         return skiClubRepository.findAll();
     }
 
-    public List<SkiClub> get(Specification<SkiClub> spec, Sort sort){
-        return skiClubRepository.findAll(spec,sort);
+    public List<SkiClub> get(Specification<SkiClub> spec, Sort sort) {
+        return skiClubRepository.findAll(spec, sort);
     }
-
-
 
 
     @Override
@@ -50,14 +49,23 @@ public class SkiClubService implements ServiceInterface {
         skiClubRepository.delete(skiClub);
     }
 
-   public List<SkiClub> findAllByCountry(Country country){
+    public List<SkiClub> findAllByCountry(Country country) {
         return skiClubRepository.findAllByCityRegionCountryOrderByName(country);
-   }
+    }
 
-    public List<SkiClub> findAllByCity(City city){
+    public List<SkiClub> findAllByCity(City city) {
         return skiClubRepository.findAllByCityOrderByName(city);
     }
 
 
+    public SkiClub updateSkiClub(int skiClubId, SkiClub skiClub) {
+        if (skiClubRepository.findById(skiClubId).isPresent()) {
+            skiClub.setId(skiClubId);
+            skiClubRepository.save(skiClub);
+        } else {
+            throw new ResourceNotFoundException("No ski club found for id: " + skiClubId);
+        }
 
+        return skiClub;
+    }
 }

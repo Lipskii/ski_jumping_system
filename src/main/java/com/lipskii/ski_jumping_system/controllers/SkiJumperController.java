@@ -8,7 +8,6 @@ import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -63,16 +62,10 @@ public class SkiJumperController {
 
     @PutMapping(value = "/{skiJumperId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public SkiJumper updateSkiJumper(@RequestBody SkiJumper skiJumper, @PathVariable("skiJumperId") int skiJumperId) throws ResourceNotFoundException {
+    public SkiJumper updateSkiJumper(@RequestBody SkiJumper skiJumper, @PathVariable("skiJumperId") int skiJumperId) {
 
-        if (skiJumperService.findById(skiJumperId).isPresent()) {
-            skiJumper.setId(skiJumperId);
-            skiJumperService.save(skiJumper);
-        } else {
-            throw new ResourceNotFoundException("No jumper found for id: " + skiJumperId);
-        }
+        return skiJumperService.updateSkiJumper(skiJumperId,skiJumper);
 
-        return skiJumper;
     }
 
 

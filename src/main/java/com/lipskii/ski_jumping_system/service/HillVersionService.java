@@ -34,8 +34,10 @@ public class HillVersionService implements ServiceInterface {
     }
 
     public List<HillRecordDTO> getHillRecords(int hillVersionId) {
+
         List<Result> results = new ArrayList<>();
         List<TeamResultIndividual> teamResultIndividuals = new ArrayList<>();
+
         for(int i = 1; i<12; i++){
             if(i != 7 && i != 8){
                 if(i == 2 || i == 4 || i == 6 || i == 11){

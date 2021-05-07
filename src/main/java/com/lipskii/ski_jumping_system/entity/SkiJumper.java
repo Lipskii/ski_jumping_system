@@ -78,14 +78,6 @@ public class SkiJumper implements Comparable<SkiJumper> {
         this.skis = skis;
     }
 
-    public BigDecimal getAll_time_points() {
-        return all_time_points;
-    }
-
-    public void setAll_time_points(BigDecimal all_time_points) {
-        this.all_time_points = all_time_points;
-    }
-
     public SkiClub getSkiClub() {
         return skiClub;
     }
@@ -109,14 +101,6 @@ public class SkiJumper implements Comparable<SkiJumper> {
     public void setResults(List<Result> results) {
         this.results = results;
     }
-//
-//    public List<TeamResult> getTeamResults() {
-//        return teamResults;
-//    }
-//
-//    public void setTeamResults(List<TeamResult> teamResults) {
-//        this.teamResults = teamResults;
-//    }
 
     @Override
     public int compareTo(SkiJumper o) {

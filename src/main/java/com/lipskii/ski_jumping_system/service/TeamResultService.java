@@ -23,12 +23,12 @@ import java.util.Optional;
 @Service
 public class TeamResultService implements ServiceInterface {
 
-    TeamResultRepository teamResultRepository;
-    CompetitionService competitionService;
-    CountryService countryService;
-    SkiJumperService skiJumperService;
-    TeamOverallStandingService teamOverallStandingService;
-    TeamResultIndividualService teamResultIndividualService;
+    private final TeamResultRepository teamResultRepository;
+    private final CompetitionService competitionService;
+    private final CountryService countryService;
+    private final  SkiJumperService skiJumperService;
+    private final TeamOverallStandingService teamOverallStandingService;
+    private final TeamResultIndividualService teamResultIndividualService;
 
     @Autowired
     public TeamResultService(TeamResultRepository teamResultRepository,
@@ -78,21 +78,6 @@ public class TeamResultService implements ServiceInterface {
         teamOverallStandingService.calculateNationsCupStandings(competition.getSeriesMajor().getId(),competition.getSeason().getSeason());
     }
 
-//    public void saveTeamResult(String link, Competition competition){
-//        link = link.replace("%3A", ":");
-//        link = link.replace("%2F", "/");
-//        link = link.replace("%3F", "?");
-//
-//        if (!competition.getTeamResults().isEmpty()) {
-//            for (TeamResult teamResult : competition.getTeamResults()) {
-//                teamResultRepository.deleteById(teamResult.getId());
-//            }
-//        }
-//        List<FetchedTeamResultObject> fetchedTeamResultObjects = fetchResults(link);
-//        saveeTeamResult(link,competition, fetchedTeamResultObjects);
-//        teamResultIndividualService.saveByTeamResult()
-//    }
-
     @Transactional
     public void saveTeamResult(String link, Competition competition){
         link = link.replace("%3A", ":");
@@ -111,22 +96,6 @@ public class TeamResultService implements ServiceInterface {
             teamResult.setCountry(countryService.findByCode(fetchedTeamResultObject.getCountryCode()));
             teamResult.setTeamResultsIndividual(new ArrayList<>());
 
-//            SkiJumper skiJumper1 = skiJumperService.findByCode(String.valueOf(fetchedTeamResultObject.getSkiJumper1Code()));
-//            if(skiJumper1 != null){
-//                teamResult.setSkiJumper1(skiJumper1);
-//            }
-//            SkiJumper skiJumper2 = skiJumperService.findByCode(String.valueOf(fetchedTeamResultObject.getSkiJumper2Code()));
-//            if(skiJumper2 != null){
-//                teamResult.setSkiJumper2(skiJumper2);
-//            }
-//            SkiJumper skiJumper3 = skiJumperService.findByCode(String.valueOf(fetchedTeamResultObject.getSkiJumper3Code()));
-//            if(skiJumper3 != null){
-//                teamResult.setSkiJumper3(skiJumper3);
-//            }
-//            SkiJumper skiJumper4 = skiJumperService.findByCode(String.valueOf(fetchedTeamResultObject.getSkiJumper4Code()));
-//            if(skiJumper4 != null){
-//                teamResult.setSkiJumper4(skiJumper4);
-//            }
 
             teamResult.setTotalPoints(BigDecimal.valueOf(fetchedTeamResultObject.getTotalPoints()));
 

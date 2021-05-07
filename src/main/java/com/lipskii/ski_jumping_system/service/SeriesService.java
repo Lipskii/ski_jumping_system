@@ -1,7 +1,6 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.SeriesRepository;
-import com.lipskii.ski_jumping_system.entity.OverallStanding;
 import com.lipskii.ski_jumping_system.entity.Series;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

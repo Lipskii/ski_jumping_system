@@ -1,14 +1,13 @@
 package com.lipskii.ski_jumping_system.service;
 
-import com.lipskii.ski_jumping_system.dao.PersonRepository;
 import com.lipskii.ski_jumping_system.dao.SkiJumperRepository;
 import com.lipskii.ski_jumping_system.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +30,7 @@ public class SkiJumperService implements ServiceInterface {
         return skiJumperRepository.findAll(spec, sort);
     }
 
-    public List<SkiJumper> findAllByCountry(Country country){
+    public List<SkiJumper> findAllByCountry(Country country) {
         return skiJumperRepository.findAllByPersonCountryOrderByPerson(country);
     }
 
@@ -40,7 +39,7 @@ public class SkiJumperService implements ServiceInterface {
         return skiJumperRepository.findById(id);
     }
 
-    public SkiJumper findByCode(String code){
+    public SkiJumper findByCode(String code) {
         return skiJumperRepository.findByFisCode(code);
     }
 
@@ -49,7 +48,7 @@ public class SkiJumperService implements ServiceInterface {
         return skiJumperRepository.save((SkiJumper) obj);
     }
 
-   // @Transactional
+    // @Transactional
     @Override
     public void deleteById(int id) {
         skiJumperRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("ski jumper does not exist!"));
@@ -57,4 +56,14 @@ public class SkiJumperService implements ServiceInterface {
         System.out.println(skiJumperRepository.findById(id).isPresent());
     }
 
+    public SkiJumper updateSkiJumper(int skiJumperId, SkiJumper skiJumper) {
+        if (skiJumperRepository.findById(skiJumperId).isPresent()) {
+            skiJumper.setId(skiJumperId);
+            skiJumperRepository.save(skiJumper);
+        } else {
+            throw new ResourceNotFoundException("No jumper found for id: " + skiJumperId);
+        }
+
+        return skiJumper;
+    }
 }

@@ -22,21 +22,18 @@ public class TeamOverallStandingService implements ServiceInterface {
     private final TeamResultService teamResultService;
     private final PointsScaleValueService pointsScaleValueService;
     private final SeriesService seriesService;
-    private final OverallStandingService overallStandingService;
 
     @Autowired
     public TeamOverallStandingService(TeamOverallStandingRepository overallStandingRepository,
                                       @Lazy ResultService resultService,
                                       TeamResultService teamResultService,
                                       PointsScaleValueService pointsScaleValueService,
-                                      @Lazy OverallStandingService overallStandingService,
                                       SeriesService seriesService) {
         this.teamOverallStandingRepository = overallStandingRepository;
         this.resultService = resultService;
         this.pointsScaleValueService = pointsScaleValueService;
         this.teamResultService = teamResultService;
         this.seriesService = seriesService;
-        this.overallStandingService = overallStandingService;
     }
 
     @Override
@@ -141,15 +138,15 @@ public class TeamOverallStandingService implements ServiceInterface {
     }
 
     private PointsScaleValue getPointScaleValueByRank(List<PointsScaleValue> pointsScaleValues, int rank) {
-        PointsScaleValue pointsScaleValue = pointsScaleValues.stream()
+        return pointsScaleValues.stream()
                 .filter(pointsScaleValue1 -> pointsScaleValue1.getRank() == rank)
                 .findFirst()
                 .orElse(null);
-        return pointsScaleValue;
     }
 
     private void setRankingsForTeamOverallStandings(int season, Series series) {
         List<TeamOverallStanding> teamOverallStandings = teamOverallStandingRepository.findAllBySeasonSeasonAndSeriesOrderByPointsDesc(season, series);
+
         for (int i = 0; i < teamOverallStandings.size(); i++) {
             TeamOverallStanding teamOverallStanding = teamOverallStandings.get(i);
             BigDecimal formerPoints;
@@ -178,11 +175,7 @@ public class TeamOverallStandingService implements ServiceInterface {
     public void teamOverallStandingsSubtractionByIndCompetition(Competition competition) {
         Series series;
 
-        if(competition.getSeriesMajor().getId() == 9){
-            series = seriesService.findById(11).orElseThrow(() -> new ResourceNotFoundException("no series found for id = 9"));
-        } else {
-            series = seriesService.findById(11).orElseThrow(() -> new ResourceNotFoundException("no series found for id = 9")); //TODO later change it to womens nations cup
-        }
+        series = seriesService.findById(11).orElseThrow(() -> new ResourceNotFoundException("no series found for id = 9"));
 
         List<PointsScaleValue> pointsScaleValues = pointsScaleValueService.findByPointsScale(competition.getSeriesMajor().getPointsScale());
 

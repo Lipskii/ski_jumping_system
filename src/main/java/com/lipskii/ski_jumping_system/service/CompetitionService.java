@@ -9,9 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -27,7 +25,6 @@ public class CompetitionService implements ServiceInterface {
 
     @Autowired
     public CompetitionService(CompetitionRepository competitionRepository,
-                              @Lazy ResultService resultService,
                               HillService hillService,
                               @Lazy TeamOverallStandingService teamOverallStandingService) {
         this.competitionRepository = competitionRepository;
@@ -48,16 +45,8 @@ public class CompetitionService implements ServiceInterface {
         return competitionRepository.findAllBySeriesMajorIdOrderByDate1Desc(seriesId);
     }
 
-    public List<Competition> findAllBySeriesMajorIdAndSeason(int seriesId, int season){
-        return competitionRepository.findAllBySeasonSeasonAndSeriesMajorIdOrderByDate1(season, seriesId);
-    }
-
     public List<Competition> findAllBySeriesMajorAndSeason(Series series, int season){
         return competitionRepository.findAllBySeasonSeasonAndSeriesMajorOrderByDate1(season, series);
-    }
-
-    public List<Competition> findAllBySeriesMinorIdAndSeason(int seriesId, int season){
-        return competitionRepository.findAllBySeasonSeasonAndSeriesMinorIdOrderByDate1(season, seriesId);
     }
 
     public List<Competition> findAllByHillId(int hillId){
@@ -70,22 +59,6 @@ public class CompetitionService implements ServiceInterface {
         return competitionRepository.findAllBySeriesMajorIdAndHillVersionHillOrderByDate1Desc(seriesId,hill);
     }
 
-
-//    public void assignFiles(MultipartFile csvFile, Competition competition, int competitionId)
-//            throws IOException {
-//        byte[] bytesCsv = csvFile.getBytes();
-//        String csvFileName = + competitionId + "_" + competition.getDate1().toString() + ".csv";
-//        Path pathCsv = Paths.get(FilesPaths.RESULTS_PATH + csvFileName);
-//        Files.write(pathCsv, bytesCsv);
-//        competition.setCsvFile(csvFileName);
-////        byte[] bytesPdf = pdfFile.getBytes();
-////        String pdfFileName = +competitionId + "_" + competition.getDate1().toString() + ".pdf";
-////        Path pathPdf = Paths.get(FilesPaths.RESULTS_PATH + pdfFileName);
-////        Files.write(pathPdf, bytesPdf);
-////        competition.setPdfFile(pdfFileName);
-//        save(competition);
-//        resultService.saveFromCSV(csvFileName, competitionId);
-//    }
 
     @Override
     public Optional<Competition> findById(int id) {

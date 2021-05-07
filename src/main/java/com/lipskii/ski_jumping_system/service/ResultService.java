@@ -28,7 +28,6 @@ public class ResultService implements ServiceInterface {
     private final ResultRepository resultRepository;
     private final CompetitionService competitionService;
     private final SkiJumperService skiJumperService;
-    private final DisqualificationTypeService disqualificationTypeService;
     private final OverallStandingService overallStandingService;
     private final TeamOverallStandingService teamOverallStandingService;
 
@@ -36,13 +35,11 @@ public class ResultService implements ServiceInterface {
     public ResultService(ResultRepository resultRepository,
                          CompetitionService competitionService,
                          SkiJumperService skiJumperService,
-                         DisqualificationTypeService disqualificationTypeService,
                          TeamOverallStandingService teamOverallStandingService,
                          OverallStandingService overallStandingService) {
         this.resultRepository = resultRepository;
         this.competitionService = competitionService;
         this.skiJumperService = skiJumperService;
-        this.disqualificationTypeService = disqualificationTypeService;
         this.overallStandingService = overallStandingService;
         this.teamOverallStandingService = teamOverallStandingService;
     }

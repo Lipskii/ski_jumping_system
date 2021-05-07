@@ -1,7 +1,6 @@
 package com.lipskii.ski_jumping_system.dto;
 
 import com.lipskii.ski_jumping_system.entity.Competition;
-import com.lipskii.ski_jumping_system.entity.Result;
 import com.lipskii.ski_jumping_system.entity.SkiJumper;
 
 import java.math.BigDecimal;

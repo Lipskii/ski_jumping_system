@@ -2,7 +2,6 @@ package com.lipskii.ski_jumping_system.dao;
 
 import com.lipskii.ski_jumping_system.entity.City;
 import com.lipskii.ski_jumping_system.entity.Country;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -18,13 +17,9 @@ public interface CityRepository extends JpaRepository<City,Integer>, JpaSpecific
 
     List<City> findAllByRegionCountryCodeOrderByName(String code);
 
-    List<City> findAllByRegionCountryOrderByName(Country country);
-
     List<City> findAllByOrderByName();
 
     List<City> findAllByRegionCountryIdOrderByName(int countryId);
-
-    List<City> findAllBySkiClubsNotNull(Sort name);
 
     City findByName(String name);
 }

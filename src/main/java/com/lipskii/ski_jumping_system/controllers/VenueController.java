@@ -13,7 +13,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -56,16 +55,11 @@ public class VenueController {
     }
 
     @PutMapping("/{venueId}")
-    public ResponseEntity<Venue> updateVenue(@RequestBody Venue venue, @PathVariable("venueId") int venueId) throws ResourceNotFoundException {
+    public Venue updateVenue(@RequestBody Venue venue, @PathVariable("venueId") int venueId) throws ResourceNotFoundException {
 
-        if (venueService.findById(venueId).isPresent()) {
-            venue.setId(venueId);
-            venueService.save(venue);
-        } else {
-            throw new ResourceNotFoundException("No venue found for id: " + venueId);
-        }
+        return venueService.updateVenue(venueId, venue);
 
-        return ResponseEntity.ok(venue);
+
     }
 
     @DeleteMapping("/{venueId}")

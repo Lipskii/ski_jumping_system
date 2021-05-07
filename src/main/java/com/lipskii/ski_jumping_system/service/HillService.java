@@ -1,18 +1,15 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.HillRepository;
-import com.lipskii.ski_jumping_system.dto.HillRecordDTO;
 import com.lipskii.ski_jumping_system.entity.Hill;
-import com.lipskii.ski_jumping_system.entity.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +41,7 @@ public class HillService implements ServiceInterface {
 
     //TODO add or else throw
     public List<Hill> findAllByVenueId(int venueId){
-        return hillRepository.findAllByVenue(venueService.findById(venueId).get());
+        return hillRepository.findAllByVenue(venueService.findById(venueId).orElseThrow(() -> new ResourceNotFoundException("No hills in venue with id=" + venueId)));
     }
 
     @Override
@@ -63,6 +60,15 @@ public class HillService implements ServiceInterface {
     }
 
 
+    @Transactional
+    public Hill updateHill(int hillId, Hill requestHill) {
+        if (hillRepository.findById(hillId).isPresent()) {
+            requestHill.setId(hillId);
+            hillRepository.save(requestHill);
+        } else {
+            throw new ResourceNotFoundException("No hill found for id: " + hillId);
+        }
 
-
+        return requestHill;
+    }
 }

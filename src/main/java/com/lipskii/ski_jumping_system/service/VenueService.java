@@ -5,6 +5,7 @@ import com.lipskii.ski_jumping_system.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,12 +29,12 @@ public class VenueService implements ServiceInterface {
         return venueRepository.findAllByOrderByName();
     }
 
-    public List<Venue> get(Specification<Venue> spec, Sort sort){
-        return venueRepository.findAll(spec,sort);
+    public List<Venue> get(Specification<Venue> spec, Sort sort) {
+        return venueRepository.findAll(spec, sort);
     }
 
 
-    public List<Venue> findAllWithHills(){
+    public List<Venue> findAllWithHills() {
         List<Venue> venues = venueRepository.findAllByOrderByName();
         venues.removeIf(venue -> hillService.findAllByVenueId(venue.getId()).isEmpty());
         return venues;
@@ -50,7 +51,7 @@ public class VenueService implements ServiceInterface {
         return venueRepository.findById(id);
     }
 
-    public List<Venue> findAllByCity(City city){
+    public List<Venue> findAllByCity(City city) {
         return venueRepository.findAllByCityOrderByName(city);
     }
 
@@ -68,12 +69,23 @@ public class VenueService implements ServiceInterface {
     }
 
 
-    List<Venue> findAllByCountry(Country country){
+    List<Venue> findAllByCountry(Country country) {
         return venueRepository.findAllByCityRegionCountry(country);
     }
 
 
     public void delete(Venue venue) {
         venueRepository.delete(venue);
+    }
+
+    public Venue updateVenue(int venueId, Venue venue) {
+        if (venueRepository.findById(venueId).isPresent()) {
+            venue.setId(venueId);
+            venueRepository.save(venue);
+        } else {
+            throw new ResourceNotFoundException("No venue found for id: " + venueId);
+        }
+
+        return venue;
     }
 }

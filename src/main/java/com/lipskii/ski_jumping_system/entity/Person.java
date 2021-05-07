@@ -30,13 +30,8 @@ public class Person implements Comparable<Person> {
     private Gender gender;
 
     @OneToOne(mappedBy = "person", cascade={CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = true)
-   // @JsonIgnoreProperties({"person","skiClub","results","id","fisCode"})
     @JsonIgnore
     private SkiJumper skiJumper;
-
-//    @OneToOne(mappedBy = "person", orphanRemoval = true)
-//    @JsonIgnoreProperties({"person","skiClub","results"})
-//    private SkiJumper skiJumper;
 
 
     @Column(name = "birthdate")
@@ -59,9 +54,9 @@ public class Person implements Comparable<Person> {
     @JoinColumn(name = "city_idcity")
     private City city;
 
-    @JsonIgnoreProperties(value = "person", allowSetters = true)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
-    private List<Jury> juryList;
+//    @JsonIgnoreProperties(value = "person", allowSetters = true)
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
+//    private List<Jury> juryList;
 
     @Column(name = "photo")
     private String photo;
@@ -134,9 +129,6 @@ public class Person implements Comparable<Person> {
         this.city = city;
     }
 
-//    public String getPhoto() {
-//        return photo;
-//    }
 
     public Optional<String> getPhoto() {
         return Optional.ofNullable(photo);
@@ -153,15 +145,6 @@ public class Person implements Comparable<Person> {
     public void setSkiJumper(SkiJumper skiJumper) {
         this.skiJumper = skiJumper;
     }
-
-    //
-//    public List<Jury> getJuryList() {
-//        return juryList;
-//    }
-//
-//    public void setJuryList(List<Jury> juryList) {
-//        this.juryList = juryList;
-//    }
 
     @Override
     public int compareTo(Person o) {

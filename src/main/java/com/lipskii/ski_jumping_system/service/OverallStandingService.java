@@ -17,17 +17,15 @@ public class OverallStandingService implements ServiceInterface {
 
     private final OverallStandingRepository overallStandingRepository;
     private final ResultService resultService;
-    private final TeamResultService teamResultService;
     private final PointsScaleValueService pointsScaleValueService;
     private final SeriesService seriesService;
 
     @Autowired
-    public OverallStandingService(OverallStandingRepository overallStandingRepository, @Lazy ResultService resultService, TeamResultService teamResultService,
+    public OverallStandingService(OverallStandingRepository overallStandingRepository, @Lazy ResultService resultService,
                                   PointsScaleValueService pointsScaleValueService, SeriesService seriesService) {
         this.overallStandingRepository = overallStandingRepository;
         this.resultService = resultService;
         this.pointsScaleValueService = pointsScaleValueService;
-        this.teamResultService = teamResultService;
         this.seriesService = seriesService;
     }
 
@@ -39,10 +37,6 @@ public class OverallStandingService implements ServiceInterface {
 
     public List<OverallStanding> get(Specification<OverallStanding> spec, Sort sort) {
         return overallStandingRepository.findAll(spec, sort);
-    }
-
-    public List<OverallStanding> findAllBySeriesAndSeasonSeason(Series series, int season){
-        return overallStandingRepository.findAllBySeasonSeasonAndSeriesOrderByPointsDesc(season,series);
     }
 
     public void calculateStandings(int seriesId, int season) {
@@ -134,11 +128,10 @@ public class OverallStandingService implements ServiceInterface {
     }
 
     private PointsScaleValue getPointScaleValueByRank(List<PointsScaleValue> pointsScaleValues, int rank) {
-        PointsScaleValue pointsScaleValue = pointsScaleValues.stream()
+        return pointsScaleValues.stream()
                 .filter(pointsScaleValue1 -> pointsScaleValue1.getRank() == rank)
                 .findFirst()
                 .orElse(null);
-        return pointsScaleValue;
     }
 
     @Override

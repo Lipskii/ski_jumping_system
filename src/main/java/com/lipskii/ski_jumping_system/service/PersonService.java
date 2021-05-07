@@ -4,22 +4,16 @@ import com.lipskii.ski_jumping_system.bucket.BucketName;
 import com.lipskii.ski_jumping_system.dao.PersonRepository;
 import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.Person;
-import org.springframework.http.HttpHeaders;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -100,20 +94,6 @@ public class PersonService implements ServiceInterface {
         }
     }
 
-//    public ResponseEntity<byte[]> downloadPersonPhoto(int personId) {
-//        Person person = personRepository.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No person found for id " + personId));
-//        File file = new File(person.getPhoto());
-//        try {
-//            byte[] image = Files.readAllBytes(file.toPath());
-//            HttpHeaders httpHeaders = new HttpHeaders();
-//            httpHeaders.setContentType(MediaType.IMAGE_JPEG);
-//            httpHeaders.setContentLength(image.length);
-//            return new ResponseEntity<>(image,httpHeaders, HttpStatus.OK);
-//        } catch (IOException e) {
-//            throw new IllegalStateException("Failed to download photo from server ",e);
-//        }
-//    }
-
     public byte[] downloadPersonImage(int personId) {
         Person person = getPersonOrThrow(personId);
 
@@ -152,16 +132,4 @@ public class PersonService implements ServiceInterface {
             throw new IllegalStateException("Cannot upload empty file [ " + file.getSize() + "]");
         }
     }
-
-//    public Resource downloadPersonPhoto(int personId) {
-////        Person person = personRepository.findById(personId).orElseThrow(() -> new ResourceNotFoundException("No person found for id " + personId));
-////        File file = new File(person.getPhoto());
-////        try {
-////            return IOUtils.toByteArray(file.toURI());
-////        } catch (IOException e) {
-////            throw new IllegalStateException("Failed to download photo from server ",e);
-////        }
-////    }
-
-
 }

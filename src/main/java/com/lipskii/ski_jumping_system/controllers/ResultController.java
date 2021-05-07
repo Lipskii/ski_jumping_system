@@ -1,6 +1,5 @@
 package com.lipskii.ski_jumping_system.controllers;
 
-import com.lipskii.ski_jumping_system.dto.HillRecordDTO;
 import com.lipskii.ski_jumping_system.entity.*;
 import com.lipskii.ski_jumping_system.service.*;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
@@ -11,7 +10,6 @@ import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -67,7 +65,7 @@ public class ResultController {
     }
 
     @PutMapping("/{resultId}")
-    public Result updateResult(@RequestBody Result result, @PathVariable("resultId") int resultId) { ;
+    public Result updateResult(@RequestBody Result result, @PathVariable("resultId") int resultId) {
         resultService.updateResult(result,resultId);
         return result;
     }

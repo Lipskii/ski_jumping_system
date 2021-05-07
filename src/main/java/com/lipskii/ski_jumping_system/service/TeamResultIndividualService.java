@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class TeamResultIndividualService implements ServiceInterface {
 
-    private TeamResultIndividualRepository teamResultIndividualRepository;
+    private final TeamResultIndividualRepository teamResultIndividualRepository;
 
     @Autowired
     public TeamResultIndividualService(TeamResultIndividualRepository teamResultIndividualRepository) {

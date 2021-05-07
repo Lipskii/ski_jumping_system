@@ -1,9 +1,6 @@
 package com.lipskii.ski_jumping_system.controllers;
 
-import com.lipskii.ski_jumping_system.dto.HillRecordDTO;
-import com.lipskii.ski_jumping_system.entity.Result;
 import com.lipskii.ski_jumping_system.entity.TeamResult;
-import com.lipskii.ski_jumping_system.service.ResultService;
 import com.lipskii.ski_jumping_system.service.TeamResultService;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.GreaterThanOrEqual;

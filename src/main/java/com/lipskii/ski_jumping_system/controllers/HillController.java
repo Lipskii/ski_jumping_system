@@ -8,10 +8,9 @@ import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -57,16 +56,8 @@ public class HillController {
     }
 
     @PutMapping("/{hillId}")
-    public ResponseEntity<Hill> updateHill(@PathVariable("hillId") int hillId, @RequestBody Hill requestHill) throws ResourceNotFoundException {
-
-        if (hillService.findById(hillId).isPresent()) {
-            requestHill.setId(hillId);
-            hillService.save(requestHill);
-        } else {
-            throw new ResourceNotFoundException("No hill found for id: " + hillId);
-        }
-
-        return ResponseEntity.ok(requestHill);
+    public Hill updateHill(@PathVariable("hillId") int hillId, @RequestBody Hill requestHill) {
+        return hillService.updateHill(hillId,requestHill);
     }
 
     @GetMapping("/{venueId}")

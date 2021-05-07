@@ -1,8 +1,6 @@
 package com.lipskii.ski_jumping_system.controllers;
 
-import com.lipskii.ski_jumping_system.entity.PointsScale;
 import com.lipskii.ski_jumping_system.entity.PointsScaleValue;
-import com.lipskii.ski_jumping_system.service.PointsScaleService;
 import com.lipskii.ski_jumping_system.service.PointsScaleValueService;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;

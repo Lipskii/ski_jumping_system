@@ -14,5 +14,4 @@ public interface JuryRepository extends JpaRepository<Jury,Integer>, JpaSpecific
 
     List<Jury> findAllByPersonCountryId(int countryId);
 
-    List<Jury> findAllByJuryTypeId(int juryTypeId);
 }

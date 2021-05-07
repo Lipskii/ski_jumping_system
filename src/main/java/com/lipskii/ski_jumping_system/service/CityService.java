@@ -3,7 +3,6 @@ package com.lipskii.ski_jumping_system.service;
 import com.lipskii.ski_jumping_system.dao.CityRepository;
 
 import com.lipskii.ski_jumping_system.entity.City;
-import com.lipskii.ski_jumping_system.entity.Country;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -47,10 +46,6 @@ public class CityService implements ServiceInterface {
     @Override
     public City save(Object obj) {
         return cityRepository.save((City) obj);
-    }
-
-    public List<City> findCitiesByCountry(Country country){
-        return cityRepository.findAllByRegionCountry(country);
     }
 
     @Override
