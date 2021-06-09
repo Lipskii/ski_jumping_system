@@ -1,4 +1,4 @@
-package com.lipskii.ski_jumping_system.db_data;
+package com.lipskii.ski_jumping_system.fetcheddata;
 
 public class FetchedResultsObject {
     private int rank;

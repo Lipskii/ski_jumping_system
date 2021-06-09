@@ -1,7 +1,7 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.ResultRepository;
-import com.lipskii.ski_jumping_system.db_data.FetchedResultsObject;
+import com.lipskii.ski_jumping_system.fetcheddata.FetchedResultsObject;
 import com.lipskii.ski_jumping_system.entity.Competition;
 import com.lipskii.ski_jumping_system.entity.Result;
 import com.lipskii.ski_jumping_system.entity.Series;

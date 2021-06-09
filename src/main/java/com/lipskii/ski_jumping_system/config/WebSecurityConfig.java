@@ -30,8 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
             new AntPathRequestMatcher("/api/**", HttpMethod.GET.name()),
-            new AntPathRequestMatcher("/api/auth/signin", HttpMethod.POST.name()),
-            new AntPathRequestMatcher("/api/auth/signup", HttpMethod.POST.name())
+            new AntPathRequestMatcher("/api/auth/signin", HttpMethod.POST.name())//,
+          //  new AntPathRequestMatcher("/api/auth/signup", HttpMethod.POST.name())
     );
 
     private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);

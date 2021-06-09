@@ -29,7 +29,7 @@ public class Person implements Comparable<Person> {
     @JoinColumn(name = "gender_idgender")
     private Gender gender;
 
-    @OneToOne(mappedBy = "person", cascade={CascadeType.REFRESH, CascadeType.DETACH}, orphanRemoval = true)
+    @OneToOne(mappedBy = "person", cascade={CascadeType.REFRESH}, orphanRemoval = true) // , CascadeType.DETACH
     @JsonIgnore
     private SkiJumper skiJumper;
 

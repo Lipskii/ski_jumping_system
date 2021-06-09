@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.*;
 
 
@@ -25,13 +24,11 @@ public class ResultController {
 
     private final ResultService resultService;
 
-
     @Autowired
     public ResultController( ResultService resultService) {
         this.resultService = resultService;
     }
 
-    @Transactional
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<Result> getResults(
@@ -54,11 +51,6 @@ public class ResultController {
         return resultService.get(spec, Sort.by(Sort.Direction.ASC, "competition.date1"));
     }
 
-    @GetMapping("/{competitionId}")
-    public List<Result> getResultsByCompetitionId(@PathVariable("competitionId") int competitionId) {
-        return resultService.findAllByCompetitionId(competitionId);
-    }
-
     @PostMapping("/link/{competitionId}")
     public void uploadResultsLink(@RequestBody String link, @PathVariable("competitionId") int competitionId){
         resultService.saveFromLink(link, competitionId);
@@ -69,6 +61,5 @@ public class ResultController {
         resultService.updateResult(result,resultId);
         return result;
     }
-
 
 }

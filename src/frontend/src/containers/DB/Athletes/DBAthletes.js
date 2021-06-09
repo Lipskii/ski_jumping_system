@@ -140,6 +140,7 @@ class DBAthletes extends Component {
     }
 
     deleteAthlete = () => {
+
         axios.delete("/api/skiJumpers/" + this.state.athleteToDelete.id)
             .then(res => console.log(res))
             .catch(error => console.log(error))
@@ -148,9 +149,11 @@ class DBAthletes extends Component {
                     showDeleteModal: false,
                 }, () => this.filter())
             })
+
     }
 
     postAthlete = (values) => {
+        console.log("POST PERSON")
         console.log(values)
         let successful = true
         let modalText = values.firstName + " " + values.lastName + " added."
@@ -163,6 +166,7 @@ class DBAthletes extends Component {
             city: this.state.cities.find(city => city.id === parseInt(values.cityId))
         })
             .then(res => {
+                console.log("POST SKIJUMPER")
                 console.log(res)
                 axios.post('api/skiJumpers', {
                     person: res.data,

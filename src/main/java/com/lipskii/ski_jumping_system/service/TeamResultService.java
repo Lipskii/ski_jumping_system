@@ -1,7 +1,7 @@
 package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.TeamResultRepository;
-import com.lipskii.ski_jumping_system.db_data.FetchedTeamResultObject;
+import com.lipskii.ski_jumping_system.fetcheddata.FetchedTeamResultObject;
 import com.lipskii.ski_jumping_system.entity.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

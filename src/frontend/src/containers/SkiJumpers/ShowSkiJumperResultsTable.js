@@ -15,7 +15,6 @@ const ShowSkiJumperTable = (props) => {
                 <tbody>
                 {props.results.sort(
                     function compareResultsSeasons(a, b) {
-
                         return Date.parse(b.competition.date1) - Date.parse(a.competition.date1)
                     })
                     .map(result => (

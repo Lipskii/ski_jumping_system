@@ -112,12 +112,13 @@ const SkiClubForm = (props) => {
                                </StyledDiv2Right1200>
 
                            </Modal.Body>
-
-
                 </Form>
                 </Modal>
             )}
             </Formik>
+
+
+
         </React.Fragment>
     )
 }

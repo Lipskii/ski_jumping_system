@@ -13,7 +13,7 @@ import AddResultsModal from "./AddResultsModal";
 import AddQualificationsModal from "./AddQualificationsModal";
 import CompetitionFormModal from "./CompetitionFormModal";
 import TeamResultsModal from "./TeamResultsModal";
-import EditResultsModal from "./EditResultsModal";
+import AdjustResultsModal from "./AdjustResultsModal";
 
 
 class DBCompetitions extends Component {
@@ -545,7 +545,7 @@ class DBCompetitions extends Component {
                 /> : null}
 
                 {this.state.showEditResultsModal ?
-                <EditResultsModal
+                <AdjustResultsModal
                     show={this.state.showEditResultsModal}
                     onHide={() => this.setState({
                         showEditResultsModal: false,
@@ -710,25 +710,11 @@ class DBCompetitions extends Component {
                                                                     </TableButton>
                                                                 : null
                                                             }
-                                                            {competition.results.length > 0  ?
-                                                                <TableButton id={competition.id + "tbEdit"}
-                                                                             name={competition.name}
-                                                                             size="sm"
-                                                                             variant={"outline-info"}
-                                                                             onClick={() => this.setState({
-                                                                                 showEditResultsModal: true,
-                                                                                 competitionToResults: competition
-                                                                             })}>
-                                                                    Edit results
-                                                                </TableButton>
-                                                                : null
-                                                            }
-
 
                                                         </td>
                                                         <td>{competition.hillVersion.hill.name}</td>
                                                         <td>{competition.team ? <div>Team</div> : <div>Ind.</div>}</td>
-                                                        <td style={{textAlign: "center"}}>
+                                                        <td style={{textAlign: "left"}}>
                                                             <TableButton id={competition.id}
                                                                          name={competition.name}
                                                                          size="sm"
@@ -758,10 +744,15 @@ class DBCompetitions extends Component {
                                                                              }>
                                                                     Update results
                                                                 </TableButton> :
-                                                                <TableButton id={competition.id + "tbEdit"}
+                                                                <Button id={competition.id + "tbEdit"}
                                                                              name={competition.name}
                                                                              size="sm"
                                                                              variant={"warning"}
+                                                                        style={{
+                                                                            marginTop: "3px",
+                                                                            marginRight: "10px",
+                                                                            width: "108px"
+                                                                        }}
                                                                              onClick={() => {
                                                                                  this.setState({
                                                                                      showAddResultsModal: true,
@@ -770,7 +761,20 @@ class DBCompetitions extends Component {
                                                                              }
                                                                              }>
                                                                     Add results
-                                                                </TableButton>}
+                                                                </Button>}
+                                                            {competition.results.length > 0  ?
+                                                                <TableButton id={competition.id + "tbEdit"}
+                                                                             name={competition.name}
+                                                                             size="sm"
+                                                                             variant={"outline-info"}
+                                                                             onClick={() => this.setState({
+                                                                                 showEditResultsModal: true,
+                                                                                 competitionToResults: competition
+                                                                             })}>
+                                                                    Adjust results
+                                                                </TableButton>
+                                                                : null
+                                                            }
 
                                                             {/*{competition.qualification !== null ?*/}
                                                             {/*    <TableButton id={competition.id}*/}

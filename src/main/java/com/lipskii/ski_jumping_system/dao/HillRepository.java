@@ -13,3 +13,5 @@ public interface HillRepository extends JpaRepository<Hill,Integer>, JpaSpecific
 
     List<Hill> findAllByVenue(Venue venue);
 }
+
+

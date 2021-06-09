@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.*;
 
-
+//TODO usunąć z każdego GET transactional
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/hills")
 @org.springframework.web.bind.annotation.RestController
@@ -30,7 +30,6 @@ public class HillController {
         this.hillService = hillService;
     }
 
-    @Transactional
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<Hill> getCompetitions(

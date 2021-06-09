@@ -29,16 +29,6 @@ public class CompetitionController {
         this.competitionService = competitionService;
     }
 
-    @GetMapping("/hill/{hillId}")
-    public List<Competition> getCompetitionsByHill(@PathVariable("hillId") int hillId) {
-        return competitionService.findAllByHillId(hillId);
-    }
-
-    @GetMapping("/hillAndSeries/{hillId}&{seriesId}")
-    public List<Competition> getCompetitionsByHillAndSeries(@PathVariable("seriesId") int seriesId, @PathVariable("hillId") int hillId) {
-        return competitionService.findAllBySeriesAndHillId(hillId, seriesId);
-    }
-
     @Transactional
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
@@ -60,16 +50,6 @@ public class CompetitionController {
         return competitionService.get(spec, Sort.by(Sort.Direction.DESC, "date1"));
     }
 
-    @GetMapping("/series/{seriesId}")
-    public List<Competition> getCompetitionsBySeries(@PathVariable("seriesId") int seriesId) {
-        return competitionService.findAllBySeriesId(seriesId);
-    }
-
-    @GetMapping("/season/{seasonId}")
-    public List<Competition> getCompetitionsBySeason(@PathVariable("seasonId") int seasonId) {
-        return competitionService.findAllBySeasonId(seasonId);
-    }
-
     @PostMapping("")
     public Competition addCompetition(@RequestBody Competition competition) {
         competitionService.save(competition);
@@ -85,6 +65,5 @@ public class CompetitionController {
     public void deleteCompetition(@PathVariable("competitionId") int competitionId) {
         competitionService.deleteById(competitionId);
     }
-
 }
 

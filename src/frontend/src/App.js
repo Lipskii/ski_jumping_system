@@ -77,9 +77,9 @@ class App extends Component {
                 <Route path="/showSeries/:series" component={ShowSeries}/>
                 <Route path="/showChampionships/:championship" component={ShowChampionship}/>
                 <Route path="/hills" component={Hills}/>
-                <Route path="/hill/:hill" exact component={ShowHill}/>
-                <Route path="/showResults/:competition" exact component={ShowResults}/>
-                <Route path="/skiJumper/:skiJumper" exact component={ShowSkiJumper}/>
+                <Route path="/hill/:hill" component={ShowHill}/>
+                <Route path="/showResults/:competition" component={ShowResults}/>
+                <Route path="/skiJumper/:skiJumper" component={ShowSkiJumper}/>
                 <Route path="/" component={Results}/>
                 <Route component={NotFound}/>
             </Switch>
@@ -92,10 +92,10 @@ class App extends Component {
             <Route path="/showSeries/:series" component={ShowSeries}/>
             <Route path="/showChampionships/:championship" component={ShowChampionship}/>
             <Route path="/hills" component={Hills}/>
-            <Route path="/hill/:hill" exact component={ShowHill}/>
-            <Route path="/showResults/:competition" exact component={ShowResults}/>
-            <Route path="/skiJumper/:skiJumper" exact component={ShowSkiJumper}/>
-            <Route path="/" component={Results}/>
+            <Route path="/hill/:hill"  component={ShowHill}/>
+            <Route path="/showResults/:competition"  component={ShowResults}/>
+            <Route path="/skiJumper/:skiJumper"  component={ShowSkiJumper}/>
+            <Route exact path="/" component={Results}/>
             <Route component={NotFound}/>
         </Switch>
         )
@@ -109,4 +109,4 @@ class App extends Component {
     }
 }
 
-export default withRouter(App);
+export default App;

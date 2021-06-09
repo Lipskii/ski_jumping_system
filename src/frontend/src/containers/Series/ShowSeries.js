@@ -86,7 +86,7 @@ class ShowSeries extends Component {
             })
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps, prevState) {
         if (this.props.match.params.series !== prevProps.match.params.series) {
             this.setState({
                 pageLoading: true

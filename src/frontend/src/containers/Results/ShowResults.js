@@ -84,6 +84,7 @@ class ShowResults extends Component {
                                     borderRadius: "10px",
                                     paddingLeft: "10px",
                                 }}>
+                                    {/*TODO przenieść to do osobnych komponentów ->	CompetitionBasicInfo i	CompetitionDetailedInfo*/}
                                     <div style={{marginBottom: "20px", height: "20%"}}>
                                         <AccordionWithPadding defaultActiveKey="0">
                                             <Card>

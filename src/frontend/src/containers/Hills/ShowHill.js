@@ -3,7 +3,7 @@ import axios from "axios";
 import Loader from "react-loader-spinner";
 import {Col, Container, Row} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
-import ShowHillVersionTable from "./ShowHillVersionTable";
+import ShowHillVersionsTable from "./ShowHillVersionsTable";
 import ShowHillCompetitionsTable from "./ShowHillCompetitionsTable";
 
 
@@ -21,7 +21,7 @@ class ShowHill extends Component {
 
     componentDidMount() {
         axios.all([
-            axios.get("/api/hills?id=" + this.props.match.params.hill),
+            axios.get("/api/hills?id=" + this.props.match.params.hill ),
             axios.get("/api/competitions?hillId=" + this.props.match.params.hill)
         ])
             .then(axios.spread((
@@ -204,7 +204,7 @@ class ShowHill extends Component {
                             </Row>
                         </Col>
 
-                        <ShowHillVersionTable
+                        <ShowHillVersionsTable
                             hillVersions={this.state.hill.hillVersions}
                         />
 

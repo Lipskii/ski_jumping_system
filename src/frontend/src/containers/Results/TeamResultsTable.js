@@ -1,6 +1,6 @@
 import {Table} from "react-bootstrap";
 import React from "react";
-import TeamResultsTableCountryRow from "./TeamResultsTableCountryRow";
+import TeamResultsTableCountryRow from "./TeamResultsTableCountryData";
 import {Link} from "react-router-dom";
 
 const TeamResultsTable = (props) => {

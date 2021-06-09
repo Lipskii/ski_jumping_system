@@ -2,7 +2,7 @@ import {Modal, Table} from "react-bootstrap";
 import React from "react";
 
 
-const WinsModal = (props) => {
+const PodiumsModal = (props) => {
 
     let winsCount = -1
     return (
@@ -73,4 +73,4 @@ const WinsModal = (props) => {
 
 }
 
-export default WinsModal
+export default PodiumsModal

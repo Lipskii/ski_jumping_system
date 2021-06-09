@@ -28,12 +28,14 @@ class NewPersonModal extends Component {
 
 
     componentDidMount() {
-        axios.get("/api/genders")
+
+        axios.get("genders")
             .then(res => this.setState({
                 genders: res.data
             }))
             .catch(error => console.log(error))
             .finally(() => this.updateCities())
+
     }
 
     updateCities = () => {
@@ -55,6 +57,7 @@ class NewPersonModal extends Component {
     onSubmit = (values) => {
 
         let successful = true
+
         axios.post('api/people', {
             firstName: values.firstName,
             lastName: values.lastName,
@@ -84,6 +87,7 @@ class NewPersonModal extends Component {
                     showAddingModal: false,
                 })
             })
+
     }
 
 

@@ -68,6 +68,12 @@ public class Result {
     @Column(name = "first_round_total")
     private BigDecimal firstRoundTotal;
 
+    @Column(name = "first_round_wind")
+    private BigDecimal firstRoundWind;
+
+    @Column(name = "first_round_wind_points")
+    private BigDecimal firstRoundWindPoints;
+
     @Column(name = "first_round_rank")
     private int firstRoundRank;
 
@@ -113,6 +119,12 @@ public class Result {
     @Column(name = "second_round_rank")
     private int secondRoundRank;
 
+    @Column(name = "second_round_wind")
+    private BigDecimal secondRoundWind;
+
+    @Column(name = "second_round_wind_points")
+    private BigDecimal secondRoundWindPoints;
+
     @Column(name = "third_round_speed")
     private BigDecimal thirdRoundSpeed;
 
@@ -154,6 +166,12 @@ public class Result {
 
     @Column(name = "third_round_rank")
     private int thirdRoundRank;
+
+    @Column(name = "third_round_wind")
+    private BigDecimal thirdRoundWind;
+
+    @Column(name = "third_round_wind_points")
+    private BigDecimal thirdRoundWindPoints;
 
     @Column(name = "fourth_round_speed")
     private BigDecimal fourthRoundSpeed;
@@ -197,6 +215,12 @@ public class Result {
     @Column(name = "fourth_round_rank")
     private int fourthRoundRank;
 
+    @Column(name = "fourth_round_wind")
+    private BigDecimal fourthRoundWind;
+
+    @Column(name = "fourth_round_wind_points")
+    private BigDecimal fourthRoundWindPoints;
+
     @Column(name = "total_points")
     private BigDecimal totalPoints;
 
@@ -206,69 +230,69 @@ public class Result {
     public Result() {
     }
 
-    public Result(Competition competition, SkiJumper skiJumper, DisqualificationType disqualificationType, BigDecimal firstRoundSpeed, BigDecimal firstRoundDistance, BigDecimal firstRoundDistancePoints, BigDecimal firstRoundJudgeA, BigDecimal firstRoundJudgeB, BigDecimal firstRoundJudgeC, BigDecimal firstRoundJudgeD, BigDecimal firstRoundJudgeE, BigDecimal firstRoundJudgePoints, BigDecimal firstRoundGate, boolean firstRoundGateCoachRequest, BigDecimal firstRoundGatePoints, BigDecimal firstRoundTotal, int firstRoundRank, BigDecimal secondRoundSpeed, BigDecimal secondRoundDistance, BigDecimal secondRoundDistancePoints, BigDecimal secondRoundJudgeA, BigDecimal secondRoundJudgeB, BigDecimal secondRoundJudgeC, BigDecimal secondRoundJudgeD, BigDecimal secondRoundJudgeE, BigDecimal secondRoundJudgePoints, BigDecimal secondRoundGate, boolean secondRoundGateCoachRequest, BigDecimal secondRoundGatePoints, BigDecimal secondRoundTotal, int secondRoundRank, BigDecimal thirdRoundSpeed, BigDecimal thirdRoundDistance, BigDecimal thirdRoundDistancePoints, BigDecimal thirdRoundJudgeA, BigDecimal thirdRoundJudgeB, BigDecimal thirdRoundJudgeC, BigDecimal thirdRoundJudgeD, BigDecimal thirdRoundJudgeE, BigDecimal thirdRoundJudgePoints, BigDecimal thirdRoundGate, boolean thirdRoundGateCoachRequest, BigDecimal thirdRoundGatePoints, BigDecimal thirdRoundTotal, int thirdRoundRank, BigDecimal fourthRoundSpeed, BigDecimal fourthRoundDistance, BigDecimal fourthRoundDistancePoints, BigDecimal fourthRoundJudgeA, BigDecimal fourthRoundJudgeB, BigDecimal fourthRoundJudgeC, BigDecimal fourthRoundJudgeD, BigDecimal fourthRoundJudgeE, BigDecimal fourthRoundJudgePoints, BigDecimal fourthRoundGate, boolean fourthRoundGateCoachRequest, BigDecimal fourthRoundGatePoints, BigDecimal fourthRoundTotal, int fourthRoundRank, BigDecimal totalPoints, int totalRank) {
-        this.competition = competition;
-        this.skiJumper = skiJumper;
-        this.disqualificationType = disqualificationType;
-        this.firstRoundSpeed = firstRoundSpeed;
-        this.firstRoundDistance = firstRoundDistance;
-        this.firstRoundDistancePoints = firstRoundDistancePoints;
-        this.firstRoundJudgeA = firstRoundJudgeA;
-        this.firstRoundJudgeB = firstRoundJudgeB;
-        this.firstRoundJudgeC = firstRoundJudgeC;
-        this.firstRoundJudgeD = firstRoundJudgeD;
-        this.firstRoundJudgeE = firstRoundJudgeE;
-        this.firstRoundJudgePoints = firstRoundJudgePoints;
-        this.firstRoundGate = firstRoundGate;
-        this.firstRoundGateCoachRequest = firstRoundGateCoachRequest;
-        this.firstRoundGatePoints = firstRoundGatePoints;
-        this.firstRoundTotal = firstRoundTotal;
-        this.firstRoundRank = firstRoundRank;
-        this.secondRoundSpeed = secondRoundSpeed;
-        this.secondRoundDistance = secondRoundDistance;
-        this.secondRoundDistancePoints = secondRoundDistancePoints;
-        this.secondRoundJudgeA = secondRoundJudgeA;
-        this.secondRoundJudgeB = secondRoundJudgeB;
-        this.secondRoundJudgeC = secondRoundJudgeC;
-        this.secondRoundJudgeD = secondRoundJudgeD;
-        this.secondRoundJudgeE = secondRoundJudgeE;
-        this.secondRoundJudgePoints = secondRoundJudgePoints;
-        this.secondRoundGate = secondRoundGate;
-        this.secondRoundGateCoachRequest = secondRoundGateCoachRequest;
-        this.secondRoundGatePoints = secondRoundGatePoints;
-        this.secondRoundTotal = secondRoundTotal;
-        this.secondRoundRank = secondRoundRank;
-        this.thirdRoundSpeed = thirdRoundSpeed;
-        this.thirdRoundDistance = thirdRoundDistance;
-        this.thirdRoundDistancePoints = thirdRoundDistancePoints;
-        this.thirdRoundJudgeA = thirdRoundJudgeA;
-        this.thirdRoundJudgeB = thirdRoundJudgeB;
-        this.thirdRoundJudgeC = thirdRoundJudgeC;
-        this.thirdRoundJudgeD = thirdRoundJudgeD;
-        this.thirdRoundJudgeE = thirdRoundJudgeE;
-        this.thirdRoundJudgePoints = thirdRoundJudgePoints;
-        this.thirdRoundGate = thirdRoundGate;
-        this.thirdRoundGateCoachRequest = thirdRoundGateCoachRequest;
-        this.thirdRoundGatePoints = thirdRoundGatePoints;
-        this.thirdRoundTotal = thirdRoundTotal;
-        this.thirdRoundRank = thirdRoundRank;
-        this.fourthRoundSpeed = fourthRoundSpeed;
-        this.fourthRoundDistance = fourthRoundDistance;
-        this.fourthRoundDistancePoints = fourthRoundDistancePoints;
-        this.fourthRoundJudgeA = fourthRoundJudgeA;
-        this.fourthRoundJudgeB = fourthRoundJudgeB;
-        this.fourthRoundJudgeC = fourthRoundJudgeC;
-        this.fourthRoundJudgeD = fourthRoundJudgeD;
-        this.fourthRoundJudgeE = fourthRoundJudgeE;
-        this.fourthRoundJudgePoints = fourthRoundJudgePoints;
-        this.fourthRoundGate = fourthRoundGate;
-        this.fourthRoundGateCoachRequest = fourthRoundGateCoachRequest;
-        this.fourthRoundGatePoints = fourthRoundGatePoints;
-        this.fourthRoundTotal = fourthRoundTotal;
-        this.fourthRoundRank = fourthRoundRank;
-        this.totalPoints = totalPoints;
-        this.totalRank = totalRank;
-    }
+//    public Result(Competition competition, SkiJumper skiJumper, DisqualificationType disqualificationType, BigDecimal firstRoundSpeed, BigDecimal firstRoundDistance, BigDecimal firstRoundDistancePoints, BigDecimal firstRoundJudgeA, BigDecimal firstRoundJudgeB, BigDecimal firstRoundJudgeC, BigDecimal firstRoundJudgeD, BigDecimal firstRoundJudgeE, BigDecimal firstRoundJudgePoints, BigDecimal firstRoundGate, boolean firstRoundGateCoachRequest, BigDecimal firstRoundGatePoints, BigDecimal firstRoundTotal, int firstRoundRank, BigDecimal secondRoundSpeed, BigDecimal secondRoundDistance, BigDecimal secondRoundDistancePoints, BigDecimal secondRoundJudgeA, BigDecimal secondRoundJudgeB, BigDecimal secondRoundJudgeC, BigDecimal secondRoundJudgeD, BigDecimal secondRoundJudgeE, BigDecimal secondRoundJudgePoints, BigDecimal secondRoundGate, boolean secondRoundGateCoachRequest, BigDecimal secondRoundGatePoints, BigDecimal secondRoundTotal, int secondRoundRank, BigDecimal thirdRoundSpeed, BigDecimal thirdRoundDistance, BigDecimal thirdRoundDistancePoints, BigDecimal thirdRoundJudgeA, BigDecimal thirdRoundJudgeB, BigDecimal thirdRoundJudgeC, BigDecimal thirdRoundJudgeD, BigDecimal thirdRoundJudgeE, BigDecimal thirdRoundJudgePoints, BigDecimal thirdRoundGate, boolean thirdRoundGateCoachRequest, BigDecimal thirdRoundGatePoints, BigDecimal thirdRoundTotal, int thirdRoundRank, BigDecimal fourthRoundSpeed, BigDecimal fourthRoundDistance, BigDecimal fourthRoundDistancePoints, BigDecimal fourthRoundJudgeA, BigDecimal fourthRoundJudgeB, BigDecimal fourthRoundJudgeC, BigDecimal fourthRoundJudgeD, BigDecimal fourthRoundJudgeE, BigDecimal fourthRoundJudgePoints, BigDecimal fourthRoundGate, boolean fourthRoundGateCoachRequest, BigDecimal fourthRoundGatePoints, BigDecimal fourthRoundTotal, int fourthRoundRank, BigDecimal totalPoints, int totalRank) {
+//        this.competition = competition;
+//        this.skiJumper = skiJumper;
+//        this.disqualificationType = disqualificationType;
+//        this.firstRoundSpeed = firstRoundSpeed;
+//        this.firstRoundDistance = firstRoundDistance;
+//        this.firstRoundDistancePoints = firstRoundDistancePoints;
+//        this.firstRoundJudgeA = firstRoundJudgeA;
+//        this.firstRoundJudgeB = firstRoundJudgeB;
+//        this.firstRoundJudgeC = firstRoundJudgeC;
+//        this.firstRoundJudgeD = firstRoundJudgeD;
+//        this.firstRoundJudgeE = firstRoundJudgeE;
+//        this.firstRoundJudgePoints = firstRoundJudgePoints;
+//        this.firstRoundGate = firstRoundGate;
+//        this.firstRoundGateCoachRequest = firstRoundGateCoachRequest;
+//        this.firstRoundGatePoints = firstRoundGatePoints;
+//        this.firstRoundTotal = firstRoundTotal;
+//        this.firstRoundRank = firstRoundRank;
+//        this.secondRoundSpeed = secondRoundSpeed;
+//        this.secondRoundDistance = secondRoundDistance;
+//        this.secondRoundDistancePoints = secondRoundDistancePoints;
+//        this.secondRoundJudgeA = secondRoundJudgeA;
+//        this.secondRoundJudgeB = secondRoundJudgeB;
+//        this.secondRoundJudgeC = secondRoundJudgeC;
+//        this.secondRoundJudgeD = secondRoundJudgeD;
+//        this.secondRoundJudgeE = secondRoundJudgeE;
+//        this.secondRoundJudgePoints = secondRoundJudgePoints;
+//        this.secondRoundGate = secondRoundGate;
+//        this.secondRoundGateCoachRequest = secondRoundGateCoachRequest;
+//        this.secondRoundGatePoints = secondRoundGatePoints;
+//        this.secondRoundTotal = secondRoundTotal;
+//        this.secondRoundRank = secondRoundRank;
+//        this.thirdRoundSpeed = thirdRoundSpeed;
+//        this.thirdRoundDistance = thirdRoundDistance;
+//        this.thirdRoundDistancePoints = thirdRoundDistancePoints;
+//        this.thirdRoundJudgeA = thirdRoundJudgeA;
+//        this.thirdRoundJudgeB = thirdRoundJudgeB;
+//        this.thirdRoundJudgeC = thirdRoundJudgeC;
+//        this.thirdRoundJudgeD = thirdRoundJudgeD;
+//        this.thirdRoundJudgeE = thirdRoundJudgeE;
+//        this.thirdRoundJudgePoints = thirdRoundJudgePoints;
+//        this.thirdRoundGate = thirdRoundGate;
+//        this.thirdRoundGateCoachRequest = thirdRoundGateCoachRequest;
+//        this.thirdRoundGatePoints = thirdRoundGatePoints;
+//        this.thirdRoundTotal = thirdRoundTotal;
+//        this.thirdRoundRank = thirdRoundRank;
+//        this.fourthRoundSpeed = fourthRoundSpeed;
+//        this.fourthRoundDistance = fourthRoundDistance;
+//        this.fourthRoundDistancePoints = fourthRoundDistancePoints;
+//        this.fourthRoundJudgeA = fourthRoundJudgeA;
+//        this.fourthRoundJudgeB = fourthRoundJudgeB;
+//        this.fourthRoundJudgeC = fourthRoundJudgeC;
+//        this.fourthRoundJudgeD = fourthRoundJudgeD;
+//        this.fourthRoundJudgeE = fourthRoundJudgeE;
+//        this.fourthRoundJudgePoints = fourthRoundJudgePoints;
+//        this.fourthRoundGate = fourthRoundGate;
+//        this.fourthRoundGateCoachRequest = fourthRoundGateCoachRequest;
+//        this.fourthRoundGatePoints = fourthRoundGatePoints;
+//        this.fourthRoundTotal = fourthRoundTotal;
+//        this.fourthRoundRank = fourthRoundRank;
+//        this.totalPoints = totalPoints;
+//        this.totalRank = totalRank;
+//    }
 
     public int getId() {
         return id;
@@ -766,6 +790,70 @@ public class Result {
 
     public void setTotalRank(int totalRank) {
         this.totalRank = totalRank;
+    }
+
+    public BigDecimal getFirstRoundWind() {
+        return firstRoundWind;
+    }
+
+    public void setFirstRoundWind(BigDecimal firstRoundWind) {
+        this.firstRoundWind = firstRoundWind;
+    }
+
+    public BigDecimal getFirstRoundWindPoints() {
+        return firstRoundWindPoints;
+    }
+
+    public void setFirstRoundWindPoints(BigDecimal firstRoundWindPoints) {
+        this.firstRoundWindPoints = firstRoundWindPoints;
+    }
+
+    public BigDecimal getSecondRoundWind() {
+        return secondRoundWind;
+    }
+
+    public void setSecondRoundWind(BigDecimal secondRoundWind) {
+        this.secondRoundWind = secondRoundWind;
+    }
+
+    public BigDecimal getSecondRoundWindPoints() {
+        return secondRoundWindPoints;
+    }
+
+    public void setSecondRoundWindPoints(BigDecimal secondRoundWindPoints) {
+        this.secondRoundWindPoints = secondRoundWindPoints;
+    }
+
+    public BigDecimal getThirdRoundWind() {
+        return thirdRoundWind;
+    }
+
+    public void setThirdRoundWind(BigDecimal thirdRoundWind) {
+        this.thirdRoundWind = thirdRoundWind;
+    }
+
+    public BigDecimal getThirdRoundWindPoints() {
+        return thirdRoundWindPoints;
+    }
+
+    public void setThirdRoundWindPoints(BigDecimal thirdRoundWindPoints) {
+        this.thirdRoundWindPoints = thirdRoundWindPoints;
+    }
+
+    public BigDecimal getFourthRoundWind() {
+        return fourthRoundWind;
+    }
+
+    public void setFourthRoundWind(BigDecimal fourthRoundWind) {
+        this.fourthRoundWind = fourthRoundWind;
+    }
+
+    public BigDecimal getFourthRoundWindPoints() {
+        return fourthRoundWindPoints;
+    }
+
+    public void setFourthRoundWindPoints(BigDecimal fourthRoundWindPoints) {
+        this.fourthRoundWindPoints = fourthRoundWindPoints;
     }
 
     @Override

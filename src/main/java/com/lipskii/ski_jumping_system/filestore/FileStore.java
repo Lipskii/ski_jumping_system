@@ -1,4 +1,4 @@
-package com.lipskii.ski_jumping_system.service;
+package com.lipskii.ski_jumping_system.filestore;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;

@@ -26,7 +26,7 @@ class Toolbar extends Component {
     render() {
         return (
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed="top">
-                <LinkContainer to="/results">
+                <LinkContainer to="/">
                     <Navbar.Brand href="/">Ski Jumping Stats</Navbar.Brand>
                 </LinkContainer>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav"/>

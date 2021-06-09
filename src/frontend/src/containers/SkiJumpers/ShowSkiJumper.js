@@ -3,7 +3,7 @@ import axios from "axios";
 import Loader from "react-loader-spinner";
 import {Col, Container, Row, Tab, Table, Tabs} from "react-bootstrap";
 import ShowSkiJumperResultsTable from "./ShowSkiJumperResultsTable";
-import WinsModal from "./WinsModal";
+import PodiumsModal from "./PodiumsModal";
 import OverallStandingsTable from "./OverallStandingsTable";
 
 class ShowSkiJumper extends Component {
@@ -217,7 +217,7 @@ class ShowSkiJumper extends Component {
 
         return (
             <div style={{marginLeft: "11%", marginRight: "11%", paddingBottom: "50px"}}>
-                <WinsModal
+                <PodiumsModal
                     show={this.state.showModal}
                     results={this.state.competitionsForModal}
                     modalLoading={this.state.modalLoading}
@@ -307,6 +307,7 @@ class ShowSkiJumper extends Component {
                                 </Col>
 
                                 <Col>
+                                    {/*TODO move it to different file called MajorResultsTable*/}
                                     <Table striped size={"sm"} hover>
                                         <th><h6>Major Individual starts</h6></th>
                                         <th style={{textAlign: "center"}}>Starts</th>

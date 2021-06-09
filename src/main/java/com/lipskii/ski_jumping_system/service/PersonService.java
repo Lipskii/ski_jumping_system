@@ -4,6 +4,7 @@ import com.lipskii.ski_jumping_system.bucket.BucketName;
 import com.lipskii.ski_jumping_system.dao.PersonRepository;
 import com.lipskii.ski_jumping_system.entity.Country;
 import com.lipskii.ski_jumping_system.entity.Person;
+import com.lipskii.ski_jumping_system.filestore.FileStore;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

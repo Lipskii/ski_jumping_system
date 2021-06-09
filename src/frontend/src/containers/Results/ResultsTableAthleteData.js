@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-const ResultsTableAthleteRow = (props) => {
+const ResultsTableAthleteData = (props) => {
 
     const [flag, setFlag] = useState('')
 
@@ -26,4 +26,4 @@ const ResultsTableAthleteRow = (props) => {
     )
 }
 
-export default ResultsTableAthleteRow
+export default ResultsTableAthleteData

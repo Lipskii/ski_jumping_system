@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {Modal} from "react-bootstrap";
 import EditableTable from "./EditResultsTable";
 
-const EditResultsModal = (props) => {
+const AdjustResultsModal = (props) => {
     useEffect(() => console.log(props))
 
     return (
@@ -19,4 +19,4 @@ const EditResultsModal = (props) => {
     )
 }
 
-export default EditResultsModal
+export default AdjustResultsModal

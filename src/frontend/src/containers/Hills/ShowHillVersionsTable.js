@@ -2,7 +2,7 @@ import React from "react";
 import {Header5} from "../../components/StyledComponents";
 import {Table} from "antd";
 
-const ShowHillVersionTable = (props) => {
+const ShowHillVersionsTable = (props) => {
 
     const columns = [
         {
@@ -180,5 +180,5 @@ const ShowHillVersionTable = (props) => {
     )
 }
 
-export default ShowHillVersionTable
+export default ShowHillVersionsTable
 

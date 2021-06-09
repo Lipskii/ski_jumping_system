@@ -22,3 +22,4 @@ const asyncComponent = (importComponent) => {
 }
 
 export default asyncComponent;
+

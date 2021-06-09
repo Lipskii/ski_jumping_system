@@ -2,7 +2,6 @@ package com.lipskii.ski_jumping_system.entity;
 
 import com.fasterxml.jackson.annotation.*;
 
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class Hill {
 
     @JsonIgnoreProperties(value = "hill", allowSetters = true)
     @OrderBy("validSince DESC ")
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "hill") //,orphanRemoval=true
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "hill")
     private List<HillVersion> hillVersions;
 
     public Hill() {
