@@ -21,7 +21,7 @@ const OverallStandingsTable = (props) => {
                     </td>
                     {props.overallStandings.map(overallStanding => (
                         <td>
-                            {overallStanding.ranking}.
+                            {overallStanding.ranking !== 0 ? <>{overallStanding.ranking}.</> : <>-</>}
                         </td>
                     ))}
                 </tr>

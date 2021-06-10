@@ -45,7 +45,7 @@ public class CompetitionController {
                     @Spec(path = "hillVersion.hill.venue.id", params = "venueId", spec = Equal.class),
                     @Spec(path = "hillVersion.hill.sizeOfHill.id", params = "sizeOfHillId", spec = Equal.class),
                     @Spec(path = "r", params = "hasResults", spec = NotNull.class),
-                    @Spec(path="date1", params= "after" ,spec= LessThanOrEqual.class)
+                    @Spec(path="date1", params= "after" ,spec= GreaterThanOrEqual.class)
             }) Specification<Competition> spec) {
         return competitionService.get(spec, Sort.by(Sort.Direction.DESC, "date1"));
     }

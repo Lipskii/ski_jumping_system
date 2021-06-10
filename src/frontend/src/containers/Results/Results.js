@@ -29,13 +29,13 @@ class Results extends Component {
         console.log(Date())
         let today = new Date(),
             date = today.getFullYear() + '-' + ("0" + (today.getMonth() + 1)).slice(-2) + '-' + ("0" + today.getDate()).slice(-2);
-        console.log(date)
+        console.log('/api/competitions?hasResults=false&after=' + date)
 
         axios.all([
             axios.get('/api/cities'),
             axios.get('/api/competitions?seriesMajorId=9&season=2021'),
             axios.get('/api/competitions?hasResults=true'),
-            axios.get('/api/competitions?hasResults=false&after=' + date),
+            axios.get('/api/competitions?after=' + date),
             axios.get('/api/countries'),
             axios.get('/api/hills'),
             axios.get('/api/seasons'),

@@ -185,11 +185,9 @@ const ChampionshipEditionsTable = (props) => {
             winnerLargeHill: winnerLargeHill,
             silverMedalistLargeHill: silverMedalistLargeHill,
             bronzeMedalistLargeHill: bronzeMedalistLargeHill,
-            name: edition.competitions[0].hillVersion.hill.venue.city.name + " " + edition.competitions[0].date1.slice(0, 4),
             countryCode: edition.city.region.country.code,
             competitions: edition.competitions,
             editionInfo: editionInfo,
-            competitionsInfo: editionInfo,
             ...edition
         })
     }

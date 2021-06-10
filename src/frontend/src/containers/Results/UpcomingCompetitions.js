@@ -18,14 +18,13 @@ const UpcomingCompetitions = (props) => {
                     <ListGroup variant="flush">
                         {props.competitions.slice(0, 5).reverse().map(competition => (
                             <ListGroup.Item style={{fontSize: "14px"}}
-                                            key={competition.id}><b>{competition.date1}</b> {competition.seriesMajor.name} - {competition.hillVersion.hill.venue.city.name}
-                                <img
+                                            key={competition.id}><b>{competition.date1} </b> {competition.seriesMajor.name} - {competition.hillVersion
+                                .hill.venue.city.name} <img
                                     alt={competition.hillVersion.hill.venue.city.region.country.code}
                                     src={'./flags/' + competition.hillVersion.hill.venue.city.region.country.code + '.png'}
                                     style={{height: "15px", marginRight: "5px"}}/>
-                                <small>(HS:{competition.hillVersion.hillSize} m)</small></ListGroup.Item>
+                                <small> (HS:{competition.hillVersion.hillSize} m)</small></ListGroup.Item>
                         ))}
-                        <ListGroup.Item></ListGroup.Item>
                     </ListGroup>
                     </Accordion.Collapse>
                 </Card>

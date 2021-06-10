@@ -7,7 +7,7 @@ const ShowSkiJumperTable = (props) => {
 
     return (
         <div style={{marginTop: "20px", width: "100%"}}>
-            <Table borderless striped hover size={"sm"}>
+            <Table borderless hover size={"sm"}>
                 <th>Rank</th>
                 <th>Series</th>
                 <th>Date</th>
@@ -21,10 +21,10 @@ const ShowSkiJumperTable = (props) => {
                         <tr>
                             <td>{result.totalRank > 3 ?
                                 <div>
-                                    {result.totalRank !== 999 ? <div>{result.totalRank}.</div>  : <div>DSQ</div>}
+                                    {result.totalRank !== 999 ? <div>{result.totalRank}.</div> : <div>DSQ</div>}
                                 </div>
                                 : <b>{result.totalRank}.</b>
-                                }</td>
+                            }</td>
                             <td>{result.competition.date1}</td>
                             <td><a href={"/showResults/" + result.competition.id}
                                    style={{color: "black"}}> {result.competition
@@ -33,35 +33,32 @@ const ShowSkiJumperTable = (props) => {
                             </a></td>
                             <td>
                                 <img
-                                height={24}
-                                className="mr-3"
-                                src={props.photos['result_' + result.id]}
-                                alt="Generic placeholder"/>
+                                    height={24}
+                                    className="mr-3"
+                                    src={props.photos['result_' + result.id]}
+                                    alt="Generic placeholder"/>
                                 <Link to={"/hill/" + result.competition.hillVersion.hill.id} style={{color: "black"}}>
                                     {result.competition.hillVersion.hill.venue.city.name} (HS: {result.competition.hillVersion.hillSize} m)
                                 </Link>
                             </td>
-                            {result.firstRoundDistance !== null ?
+                            {result.firstRoundDistance !== null && result.firstRoundDistance !== 0 ?
                                 <td>
-                                    {result.firstRoundDistance !== 0 ? <div>{result.firstRoundDistance} m</div> : null}
-                                </td> : null}
+                                    {result.firstRoundDistance} m
+                                </td> : <td>-</td>}
 
-                            {result.secondRoundDistance !== null ?
+                            {result.secondRoundDistance !== null && result.secondRoundDistance !== 0 ?
                                 <td>
-                                    {result.secondRoundDistance !== 0 ?
-                                        <div>{result.secondRoundDistance} m</div> : null}
-                                </td> : null}
+                                    {result.secondRoundDistance} m
+                                </td> : <td>-</td>}
 
-                            {result.thirdRoundDistance !== null ?
+                            {result.thirdRoundDistance !== null && result.thirdRoundDistance !== 0 ?
                                 <td>
-                                    {result.thirdRoundDistance !== 0 ?
-                                        <div>{result.thirdRoundDistance} m</div> : null}
-                                </td> : null}
+                                    {result.thirdRoundDistance} m
+                                </td> : null }
 
-                            {result.fourthRoundDistance !== null ?
+                            {result.fourthRoundDistance !== null && result.fourthRoundDistance !== 0 ?
                                 <td>
-                                    {result.fourthRoundDistance !== 0 ?
-                                        <div>{result.fourthRoundDistance} m</div> : null}
+                                    {result.fourthRoundDistance} m
                                 </td> : null}
 
                             {result.totalPoints !== null ?

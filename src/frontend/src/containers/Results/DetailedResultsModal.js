@@ -129,19 +129,19 @@ const DetailedResultsModal = (props) => {
                     :
                     null
                 }
-
+                {props.result.secondRoundDistance !== null && props.result.secondRoundDistance !== 0 ?
+                    <>
                 {props.result.secondRoundSpeed !== null ?
                     <tr>
                         <td>2. round speed</td>
                         <td>{props.result.secondRoundSpeed} km/h</td>
                     </tr> : null
                 }
-                {props.result.secondRoundDistance !== null ?
                     <tr>
                         <td>2. round distance</td>
                         <td>{props.result.secondRoundDistance} m</td>
-                    </tr> : null
-                }
+                    </tr>
+
                 {props.result.secondRoundDistancePoints !== null ?
                     <tr>
                         <td>2. round distance points</td>
@@ -246,9 +246,10 @@ const DetailedResultsModal = (props) => {
                     :
                     null
                 }
+                    </> : null}
 
-                {props.result.thirdRoundDistance !== null ?
-                    <div>
+                {props.result.thirdRoundDistance !== null && props.result.thirdRoundDistance !== 0 ?
+                    <>
                         {props.result.thirdRoundSpeed === null ?
                             <tr>
                                 <td>3. round speed</td>
@@ -365,10 +366,10 @@ const DetailedResultsModal = (props) => {
                             :
                             null
                         }
-                    </div>: null}
+                    </>: null}
 
-                {props.result.fourthRoundDistance !== null ?
-                    <div>
+                {props.result.fourthRoundDistance !== null && props.result.fourthRoundDistance !== 0 ?
+                    <>
                         {props.result.fourthRoundSpeed === null ?
                             <tr>
                                 <td>4. round speed</td>
@@ -485,7 +486,7 @@ const DetailedResultsModal = (props) => {
                             :
                             null
                         }
-                    </div>: null}
+                    </>: null}
 
 
                 </tbody>
