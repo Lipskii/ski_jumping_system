@@ -140,21 +140,25 @@ class DBAthletes extends Component {
     }
 
     deleteAthlete = () => {
-
         axios.delete("/api/skiJumpers/" + this.state.athleteToDelete.id)
-            .then(res => console.log(res))
-            .catch(error => console.log(error))
-            .finally(() => {
+            .then(() => {
                 this.setState({
-                    showDeleteModal: false,
-                }, () => this.filter())
+                    showCompletedModal: true,
+                    completedModalText:  this.state.athleteToDelete.person.firstName + " " + this.state.athleteToDelete.person.lastName + " deleted.",
+                    completedModalStatus: true,
+                    showDeleteModal: false
+                },()=> this.filter())
             })
-
+            .catch(() => {
+                this.setState({
+                    showCompletedModal: true,
+                    completedModalText: "Something went wrong, try again.",
+                    completedModalStatus: false,
+                })
+            })
     }
 
     postAthlete = (values) => {
-        console.log("POST PERSON")
-        console.log(values)
         let successful = true
         let modalText = values.firstName + " " + values.lastName + " added."
         axios.post('/api/people', {

@@ -1,46 +1,15 @@
-import React, {useState} from "react";
-import {Button, Modal} from "react-bootstrap";
-import axios from "axios";
-import AddingModal from "../../../components/Modals/AddingModal";
-import CompletedModal from "../../../components/Modals/CompletedModal";
+import React from "react";
+import {Modal} from "react-bootstrap";
+
 
 const HillVersionReadMoreModal = (props) => {
 
-    const [showAddingModal, setShowAddingModal] = useState(false);
-    const [showCompletedModal, setShowCompletedModal] = useState(false);
-    const [completedModalText, setCompletedModalText] = useState("");
-    const [completedModalStatus, setCompletedModalStatus] = useState(true);
-    const [showParentModal, setShowParentModal] = useState(props.show)
 
-    const deleteVersion = () => {
-        setShowAddingModal(true)
-        axios.delete("/api/hillVersions/" + props.version.id)
-            .then(() => {
-                setCompletedModalStatus(true)
-                setCompletedModalText("Hill deleted")
-            })
-            .catch(error => {
-                console.log(error)
-                setCompletedModalStatus(false)
-                setCompletedModalText("Ups, something went wrong.")
-            })
-    }
+
 
     return (
         <div>
-            <AddingModal
-                show={showAddingModal}
-                onHide={() => setShowAddingModal(true)}
-            />
-            <CompletedModal
-                show={showCompletedModal}
-                text={completedModalText}
-                onHide={() => {
-                    setShowCompletedModal(false)
-                    setCompletedModalText("")
-                }}
-                status={completedModalStatus}
-            />
+
         <Modal show={props.show} onHide={props.onHide} scrollable={true}>
             <Modal.Header closeButton>
                 <Modal.Title>{props.hill.name} (latest version)</Modal.Title>
@@ -97,14 +66,6 @@ const HillVersionReadMoreModal = (props) => {
                     <li>URL: <a href={props.version.fisCertificate} target="_blank" rel="noreferrer">click</a></li>
                 </ul>
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant={"danger"} onClick={() =>{
-                    deleteVersion()
-                    setShowAddingModal(false)
-                    setShowCompletedModal(true)
-                    setShowParentModal(false)
-                }}>DELETE</Button>
-            </Modal.Footer>
         </Modal>
         </div>
     )

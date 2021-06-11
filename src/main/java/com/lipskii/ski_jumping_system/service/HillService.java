@@ -56,7 +56,7 @@ public class HillService implements ServiceInterface {
     public void deleteById(int id) {
         Hill hill = hillRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("hill does not exist!"));
         System.out.println(hill);
-        hillRepository.delete(hill);
+        hillRepository.deleteHillById(id);
     }
 
 

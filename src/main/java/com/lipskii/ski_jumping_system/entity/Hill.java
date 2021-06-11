@@ -30,7 +30,7 @@ public class Hill {
 
     @JsonIgnoreProperties(value = "hill", allowSetters = true)
     @OrderBy("validSince DESC ")
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "hill")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "hill")
     private List<HillVersion> hillVersions;
 
     public Hill() {
@@ -81,6 +81,8 @@ public class Hill {
     public void setHillVersions(List<HillVersion> hillVersions) {
         this.hillVersions = hillVersions;
     }
+
+
 
     @Override
     public String toString() {

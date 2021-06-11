@@ -103,6 +103,27 @@ class DBHills extends Component {
         })
     }
 
+    deleteVersion = () => {
+        axios.delete("/api/hillVersions/" + this.state.hillVersionToReadMore.id)
+            .then(() => {
+                this.setState({
+                    showCompletedModal: true,
+                    completedModalText: "Version deleted.",
+                    completedModalStatus: true,
+                    showAddingModal: false
+                }, () => this.filter())
+            })
+            .catch(error => {
+                console.log(error)
+                this.setState({
+                    showCompletedModal: true,
+                    completedModalText: "Something went wrong. Please, try again.",
+                    completedModalStatus: false,
+                    showAddingModal: false
+                }, () => this.filter())
+            })
+    }
+
     postData = (values) => {
         this.setState({
             showAddingModal: true
@@ -116,6 +137,7 @@ class DBHills extends Component {
     }
 
     postNewHill = (values) => {
+
         let id = -1
         let successful = true
         const hill = {
@@ -123,7 +145,7 @@ class DBHills extends Component {
             venue: this.state.venues.find(venue => venue.id === parseInt(this.state.selectedVenueId)),
             sizeOfHill: this.state.sizesOfHill.find(size => size.id === parseInt(values.sizeOfHillId))
         }
-
+        console.log(hill)
         axios.post("/api/hills", {...hill})
             .then(response => {
                 id = response.data.id
@@ -354,6 +376,7 @@ class DBHills extends Component {
                                     hillsLoading: true,
                                     selectedHillName: "",
                                     selectedHillId: "",
+                                    selectedVenueId: parseInt(e.target.value)
                                 }, () => this.filter())}
                         >
                             <option value={""} disabled>Choose...</option>
@@ -406,6 +429,14 @@ class DBHills extends Component {
                                                                 {hillVersion.validSince} / {hillVersion.validUntil} (K: {hillVersion.kPoint} m,
                                                                 HS: {hillVersion.hillSize} m)
                                                             </Button>
+                                                            <Button
+                                                                variant={"danger"}
+                                                                size={"sm"}
+                                                                onClick={() =>{
+                                                                    this.setState({
+                                                                        hillVersionToReadMore: hillVersion
+                                                                    },() => this.deleteVersion() )
+                                                            }}>DELETE</Button>
                                                         </li>
                                                     ))}
                                                     <small>Click on version to read more</small>
