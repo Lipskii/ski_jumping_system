@@ -19,7 +19,7 @@ public class JuryCompetition {
     private Competition competition;
 
     @ManyToOne//(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnoreProperties(value = {"jurysCompetition"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"juryCompetition"}, allowSetters = true)
     @JoinColumn(name = "jury_idjury")
     private Jury jury;
 

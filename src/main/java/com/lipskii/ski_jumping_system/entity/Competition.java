@@ -218,6 +218,10 @@ public class Competition {
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "competition", cascade = {CascadeType.PERSIST})
     private Qualification qualification;
 
+    @JsonIgnoreProperties(value = "competition", allowSetters = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "competition")
+    private List<JuryCompetition> juryCompetition;
+
     @Column(name = "is_team")
     private boolean isTeam;
 
@@ -800,6 +804,14 @@ public class Competition {
 
     public void setTeam(boolean team) {
         isTeam = team;
+    }
+
+    public List<JuryCompetition> getJuryCompetition() {
+        return juryCompetition;
+    }
+
+    public void setJuryCompetition(List<JuryCompetition> juryCompetition) {
+        this.juryCompetition = juryCompetition;
     }
 
     @Override

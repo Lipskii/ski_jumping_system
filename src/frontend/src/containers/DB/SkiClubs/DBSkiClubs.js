@@ -17,7 +17,7 @@ class DBSkiClubs extends Component {
         citiesForForm: [],
         cities: [],
         clubs: [],
-        clubsLoading: false,
+        clubsLoading: true,
         clubToEdit: '',
         clubToDelete: '',
         completedModalStatus: false,
@@ -49,6 +49,7 @@ class DBSkiClubs extends Component {
                     clubs: clubsData.data,
                     citiesForForm: citiesData.data,
                     cities: citiesData.data,
+                    clubsLoading: false,
                 })
             }))
             .catch(error => console.log(error))

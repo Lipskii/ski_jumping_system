@@ -132,6 +132,6 @@ export const ShowNewCityFormButton = styled(Button)`
 
 export const TableButton = styled(Button)`
   margin-top: 3px;
-  margin-right: 10px;
+  margin-right: 5px;
  // width: 85px;
 `

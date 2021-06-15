@@ -10,6 +10,7 @@ import EditHillModal from "../../../components/Modals/EditHillModal";
 import Loader from "react-loader-spinner";
 import AddingModal from "../../../components/Modals/AddingModal";
 import CompletedModal from "../../../components/Modals/CompletedModal";
+import UploadHillPhotoModal from "./UploadHillPhotoModal";
 
 
 class DBHills extends Component {
@@ -38,6 +39,7 @@ class DBHills extends Component {
         showAddingModal: false,
         showDeleteModal: false,
         showEditModal: false,
+        showUploadPhotoModal: false,
         showReadMoreModal: false,
         showCompletedModal: false,
         completedModalText: "",
@@ -73,11 +75,17 @@ class DBHills extends Component {
             axios.get('/api/hills?countryId=' + this.state.filterCountryId + "&venueId=" + this.state.filterVenueId),
         ])
             .then(axios.spread((venuesData, citiesData, skiClubsData, hillsData) => {
+                let hills
+                if(this.state.filterVenueId !== null && this.state.filterVenueId !== '' ){
+                    hills = hillsData.data
+                }else {
+                    hills = []
+                }
                 this.setState({
                     venues: venuesData.data,
                     clubs: skiClubsData.data,
                     cities: citiesData.data,
-                    hills: hillsData.data,
+                    hills: hills,
                     venuesLoading: false,
                     hillsLoading: false
                 })
@@ -107,9 +115,9 @@ class DBHills extends Component {
         axios.delete("/api/hillVersions/" + this.state.hillVersionToReadMore.id)
             .then(() => {
                 this.setState({
-                    showCompletedModal: true,
                     completedModalText: "Version deleted.",
                     completedModalStatus: true,
+                    showCompletedModal: true,
                     showAddingModal: false
                 }, () => this.filter())
             })
@@ -276,6 +284,30 @@ class DBHills extends Component {
             })
     }
 
+    uploadPhoto = (values) => {
+        const formData = new FormData();
+        formData.append('file', values.file)
+        axios.post('/api/hills/photo/' + values.hill.id, formData)
+            .then(() => {
+                this.setState({
+                    showCompletedModal: true,
+                    completedModalText: "Photo update successful.",
+                    completedModalStatus: true,
+                    showUploadPhotoModal: false,
+                    showAddingModal: false,
+                },() => this.filter())
+            })
+            .catch(error => {
+                console.log(error)
+                this.setState({
+                    showCompletedModal: true,
+                    completedModalText: "Photo update unsuccessful.",
+                    completedModalStatus: false,
+                    showAddingModal: false,
+                },() => this.filter())
+            })
+    }
+
     deleteHill = () => {
         axios.delete("/api/hills/" + this.state.hillToDelete.id)
             .then(res => console.log(res))
@@ -305,6 +337,7 @@ class DBHills extends Component {
                 <CompletedModal
                     show={this.state.showCompletedModal}
                     text={this.state.completedModalText}
+                    status={this.state.completedModalStatus}
                     onHide={() => this.setState({
                         showCompletedModal: false,
                         completedModalText: ""
@@ -443,7 +476,7 @@ class DBHills extends Component {
                                                 </ul> :
                                                 <small>Hill doesn't have versions yet</small>}
                                         </td>
-                                        <td width={"300px"}>
+                                        <td>
                                             <TableButton id={hill.id} name={hill.name} size="sm"
                                                          onClick={e => this.handleAddVersionButton(e)}>
                                                 Add version
@@ -468,6 +501,29 @@ class DBHills extends Component {
                                                     showEditModal: false
                                                 })}
                                                 onSubmit={this.editHill}
+                                            />
+                                            <TableButton id={hill.id} name={hill.name} variant={"info"} size="sm"
+                                                         onClick={e => {
+                                                             this.setState({
+                                                                 selectedHillName: e.target.name,
+                                                                 selectedHillId: e.target.id,
+                                                                 showUploadPhotoModal: true,
+                                                             })
+                                                         }}
+                                            >
+                                                Upload Photo
+                                            </TableButton>
+                                            <UploadHillPhotoModal
+                                                hill={hill}
+                                                show={this.state.showUploadPhotoModal}
+                                                onSubmit={(values) => {
+                                                    this.setState({
+                                                        showAddingModal: true
+                                                    },()=> this.uploadPhoto(values))
+                                                }}
+                                                onHide={() => this.setState({
+                                                    showUploadPhotoModal: false
+                                                })}
                                             />
                                             <TableButton id={hill.id} name={hill.name} variant={"danger"} size="sm"
                                                          onClick={e => {

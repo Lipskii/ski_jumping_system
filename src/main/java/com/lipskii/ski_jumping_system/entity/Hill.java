@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 
 @Entity
@@ -17,6 +18,9 @@ public class Hill {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "photo")
+    private String photo;
 
     @JsonIgnoreProperties(value = {"hills","skiClub"}, allowSetters = true)
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
@@ -64,6 +68,14 @@ public class Hill {
 
     public void setVenue(Venue venue) {
         this.venue = venue;
+    }
+
+    public Optional<String> getPhoto() {
+        return Optional.ofNullable(photo);
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public SizeOfHill getSizeOfHill() {

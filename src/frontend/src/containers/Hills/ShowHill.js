@@ -116,10 +116,10 @@ class ShowHill extends Component {
                         <Col>
                             <Row>
                                 <img
-                                    height={"250px"}
+                                    height={"150px"}
                                     className="mr-3"
-                                    src={this.state.photos['hillPhoto']}
-                                    alt="Generic placeholder"
+                                    src={"http://localhost:8089/api/hills/photo/" + this.state.hill.id}
+                                    alt={"Generic placeholder"}
                                 />
                                 <Col style={{marginBottom: "10px"}}>
                                     {this.state.latestHillVersion !== '' ?

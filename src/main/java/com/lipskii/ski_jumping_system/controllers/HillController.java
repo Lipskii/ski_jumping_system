@@ -9,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.util.*;
 
 //TODO usunąć z każdego GET transactional
@@ -52,6 +53,22 @@ public class HillController {
     public Hill addHill(@RequestBody Hill hill) {
         hillService.save(hill);
         return hill;
+    }
+
+    @PostMapping(
+            value = "/photo/{hillId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces=  MediaType.APPLICATION_JSON_VALUE
+    )
+    public void uploadHillPhoto(@RequestParam("file") MultipartFile file, @PathVariable("hillId") int hillId)
+            throws ResourceNotFoundException {
+        hillService.uploadHillPhoto(file,hillId);
+
+    }
+
+    @GetMapping(value = "/photo/{hillId}")
+    public byte[] downloadPersonPhoto(@PathVariable("hillId") int hillId) {
+        return hillService.downloadHillPhoto(hillId);
     }
 
     @PutMapping("/{hillId}")
