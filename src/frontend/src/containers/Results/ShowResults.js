@@ -84,7 +84,6 @@ class ShowResults extends Component {
                                     borderRadius: "10px",
                                     paddingLeft: "10px",
                                 }}>
-                                    {/*TODO przenieść to do osobnych komponentów ->	CompetitionBasicInfo i	CompetitionDetailedInfo*/}
                                     <div style={{marginBottom: "20px", height: "20%"}}>
                                         <AccordionWithPadding defaultActiveKey="0">
                                             <Card>
@@ -132,6 +131,197 @@ class ShowResults extends Component {
                                                             <label style={{marginRight: "5px"}}>Date:</label>
                                                             <b>{this.state.competition.date1}</b>
                                                         </ListGroup.Item>
+                                                        {this.state.competition.date2 !== null ?
+                                                        <ListGroup.Item>
+                                                            <label style={{marginRight: "5px"}}>Date 2:</label>
+                                                            <b>{this.state.competition.date2}</b>
+                                                        </ListGroup.Item> : null}
+                                                        {this.state.competition.juryCompetition.map(juryCompetition => (
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>{juryCompetition.jury.juryType.juryType}:</label>
+                                                                <b>{juryCompetition.jury.person.firstName} {juryCompetition.jury.person.lastName}, {juryCompetition.jury.person.country.code}</b>
+                                                            </ListGroup.Item>
+                                                        ))}
+                                                        {this.state.competition.gateFactor !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>Gate factor:</label>
+                                                                <b>{this.state.competition.gateFactor}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.meterValue !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>Meter value:</label>
+                                                                <b>{this.state.competition.meterValue}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.windFactorFront !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>Wind factor front:</label>
+                                                                <b>{this.state.competition.windFactorFront}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.windFactorTail !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>Wind factor tail:</label>
+                                                                <b>{this.state.competition.windFactorTail}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.firstRoundBaseGate !== null && this.state.competition.firstRoundBaseGate !== 0 ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>1. round base gate:</label>
+                                                                <b>{this.state.competition.firstRoundBaseGate}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.firstRoundAirTempStart !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>1. round air temperature at start: </label>
+                                                                <b>{this.state.competition.firstRoundAirTempStart} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.firstRoundAirTempFinish !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>1. round air temperature at finish:</label>
+                                                                <b>{this.state.competition.firstRoundAirTempFinish} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.firstRoundSnowTempStart !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>1. round snow temperature at start:</label>
+                                                                <b>{this.state.competition.firstRoundSnowTempStart} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.firstRoundSnowTempFinish !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>1. round snow temperature at finish:</label>
+                                                                <b>{this.state.competition.firstRoundSnowTempFinish} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.firstRoundAvgWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>1. round average wind speed:</label>
+                                                                <b>{this.state.competition.firstRoundAvgWind} m/s</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.firstRoundMaxWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>1. round maximal wind speed:</label>
+                                                                <b>{this.state.competition.firstRoundMaxWind} m/s</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.firstRoundMinWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>1. round minimal wind speed:</label>
+                                                                <b>{this.state.competition.firstRoundMinWind} m/s</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.secondRoundBaseGate !== null && this.state.competition.secondRoundBaseGate !== 0 ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>2. round base gate:</label>
+                                                                <b>{this.state.competition.secondRoundBaseGate}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.secondRoundAirTempStart !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>2. round air temperature at start: </label>
+                                                                <b>{this.state.competition.secondRoundAirTempStart} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.secondRoundAirTempFinish !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>2. round air temperature at finish:</label>
+                                                                <b>{this.state.competition.secondRoundAirTempFinish} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.secondRoundSnowTempStart !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>2. round snow temperature at start:</label>
+                                                                <b>{this.state.competition.secondRoundSnowTempStart} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.secondRoundSnowTempFinish !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>2. round snow temperature at finish:</label>
+                                                                <b>{this.state.competition.secondRoundSnowTempFinish} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.secondRoundAvgWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>2. round average wind speed:</label>
+                                                                <b>{this.state.competition.secondRoundAvgWind} m/s</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.secondRoundMaxWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>2. round maximal wind speed:</label>
+                                                                <b>{this.state.competition.secondRoundMaxWind} m/s</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.secondRoundMinWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>2. round minimal wind speed:</label>
+                                                                <b>{this.state.competition.secondRoundMinWind} m/s</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.thirdRoundBaseGate !== null && this.state.competition.thirdRoundBaseGate !== 0 ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>3. round base gate:</label>
+                                                                <b>{this.state.competition.thirdRoundBaseGate}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.thirdRoundAirTempStart !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>3. round air temperature at start: </label>
+                                                                <b>{this.state.competition.thirdRoundAirTempStart} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.thirdRoundAirTempFinish !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>3. round air temperature at finish:</label>
+                                                                <b>{this.state.competition.thirdRoundAirTempFinish} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.thirdRoundSnowTempStart !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>3. round snow temperature at start:</label>
+                                                                <b>{this.state.competition.thirdRoundSnowTempStart} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.thirdRoundSnowTempFinish !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>3. round snow temperature at finish:</label>
+                                                                <b>{this.state.competition.thirdRoundSnowTempFinish} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.thirdRoundAvgWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>3. round average wind speed:</label>
+                                                                <b>{this.state.competition.thirdRoundAvgWind} m/s</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.thirdRoundMaxWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>3. round maximal wind speed:</label>
+                                                                <b>{this.state.competition.thirdRoundMaxWind} m/s</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.thirdRoundMinWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>3. round minimal wind speed:</label>
+                                                                <b>{this.state.competition.thirdRoundMinWind} m/s</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.fourthRoundBaseGate !== null && this.state.competition.fourthRoundBaseGate !== 0 ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>4. round base gate:</label>
+                                                                <b>{this.state.competition.fourthRoundBaseGate}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.fourthRoundAirTempStart !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>4. round air temperature at start: </label>
+                                                                <b>{this.state.competition.fourthRoundAirTempStart} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.fourthRoundAirTempFinish !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>4. round air temperature at finish:</label>
+                                                                <b>{this.state.competition.fourthRoundAirTempFinish} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.fourthRoundSnowTempStart !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>4. round snow temperature at start:</label>
+                                                                <b>{this.state.competition.fourthRoundSnowTempStart} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.fourthRoundSnowTempFinish !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>4. round snow temperature at finish:</label>
+                                                                <b>{this.state.competition.fourthRoundSnowTempFinish} {"\u2103"}</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.fourthRoundAvgWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>4. round average wind speed:</label>
+                                                                <b>{this.state.competition.fourthRoundAvgWind} m/s</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.fourthRoundMaxWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>4. round maximal wind speed:</label>
+                                                                <b>{this.state.competition.fourthRoundMaxWind} m/s</b>
+                                                            </ListGroup.Item> : null}
+                                                        {this.state.competition.fourthRoundMinWind !== null  ?
+                                                            <ListGroup.Item>
+                                                                <label style={{marginRight: "5px"}}>4. round minimal wind speed:</label>
+                                                                <b>{this.state.competition.fourthRoundMinWind} m/s</b>
+                                                            </ListGroup.Item> : null}
                                                     </ListGroup>
                                                 </Accordion.Collapse>
                                             </Card>

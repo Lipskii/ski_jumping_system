@@ -2,7 +2,10 @@ package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.JuryCompetitionRepository;
 import com.lipskii.ski_jumping_system.entity.JuryCompetition;
+import com.lipskii.ski_jumping_system.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +24,10 @@ public class JuryCompetitionService implements ServiceInterface {
     @Override
     public List<JuryCompetition> findAll() {
         return juryCompetitionRepository.findAll();
+    }
+
+    public List<JuryCompetition> get(Specification<JuryCompetition> spec, Sort sort){
+        return juryCompetitionRepository.findAll(spec,sort);
     }
 
     @Override

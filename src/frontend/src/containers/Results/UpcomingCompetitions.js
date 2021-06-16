@@ -1,5 +1,6 @@
 import {Accordion, Card, ListGroup} from "react-bootstrap";
 import React from "react";
+import {LinkContainer} from "react-router-bootstrap";
 
 const UpcomingCompetitions = (props) => {
 
@@ -15,15 +16,19 @@ const UpcomingCompetitions = (props) => {
                     </Accordion.Toggle>
                     {/*<Card.Header></Card.Header>*/}
                     <Accordion.Collapse eventKey={props.eventKey}>
+
                     <ListGroup variant="flush">
                         {props.competitions.slice(0, 5).reverse().map(competition => (
+                            <LinkContainer to={'/showResults/' + competition.id} style={{cursor: "pointer"}}>
                             <ListGroup.Item style={{fontSize: "14px"}}
                                             key={competition.id}><b>{competition.date1} </b> {competition.seriesMajor.name} - {competition.hillVersion
                                 .hill.venue.city.name} <img
                                     alt={competition.hillVersion.hill.venue.city.region.country.code}
                                     src={'./flags/' + competition.hillVersion.hill.venue.city.region.country.code + '.png'}
                                     style={{height: "15px", marginRight: "5px"}}/>
-                                <small> (HS:{competition.hillVersion.hillSize} m)</small></ListGroup.Item>
+                                <small> (HS:{competition.hillVersion.hillSize} m)</small>
+                            </ListGroup.Item>
+                            </LinkContainer>
                         ))}
                     </ListGroup>
                     </Accordion.Collapse>

@@ -3,7 +3,13 @@ import axios from "axios";
 import AddingModal from "../../../components/Modals/AddingModal";
 import CompletedModal from "../../../components/Modals/CompletedModal";
 import DeleteModal from "../../../components/Modals/DeleteModal";
-import {Header3, Header5, StyledDivCentered1200, TableButton} from "../../../components/StyledComponents";
+import {
+    Header3,
+    Header5,
+    StyledDivCentered1200,
+    StyledDivCentered1400,
+    TableButton
+} from "../../../components/StyledComponents";
 import Loader from "react-loader-spinner";
 import {Button, Pagination, Table} from "react-bootstrap";
 import CompetitionReadMoreModal from "./CompetitionReadMoreModal";
@@ -14,6 +20,7 @@ import AddQualificationsModal from "./AddQualificationsModal";
 import CompetitionFormModal from "./CompetitionFormModal";
 import TeamResultsModal from "./TeamResultsModal";
 import AdjustResultsModal from "./AdjustResultsModal";
+import JuryFormModal from "./JuryFormModal";
 
 
 class DBCompetitions extends Component {
@@ -28,6 +35,7 @@ class DBCompetitions extends Component {
         competitionsLoading: true,
         competitionToForm: '',
         competitionToDelete: '',
+        competitionToJuryModal: '',
         competitionToResults: '',
         countries: [],
         editing: false,
@@ -36,6 +44,8 @@ class DBCompetitions extends Component {
         hills: [],
         hillVersions: [],
         judges: [],
+        jury: [],
+        juryFormData: [],
         raceDirectors: [],
         results: [],
         seasons: [],
@@ -50,6 +60,7 @@ class DBCompetitions extends Component {
         filterVenueId: '',
         showAddResultsModal: false,
         showDeleteModal: false,
+        showJuryForm: false,
         showReadMoreModal: false,
         showResultsModal: false,
         showTeamResultsModal: false,
@@ -74,6 +85,7 @@ class DBCompetitions extends Component {
             axios.get('/api/jury?juryTypeId=7'),
             axios.get('/api/jury?juryTypeId=1'),
             axios.get('/api/jury?juryTypeId=2'),
+            axios.get('/api/jury'),
             // axios.get('/api/results'),
             axios.get('/api/seasons'),
             axios.get('/api/series'),
@@ -93,6 +105,7 @@ class DBCompetitions extends Component {
                                 judgesData,
                                 raceDirectorsData,
                                 technicalDelegatesData,
+                                juryData,
                                 seasonsData,
                                 seriesData,
                                 venuesData,
@@ -108,6 +121,7 @@ class DBCompetitions extends Component {
                     equipmentControllers: controllersData.data,
                     hills: hillsData.data,
                     hillVersions: hillVersionsData.data,
+                    jury: juryData.data,
                     judges: judgesData.data,
                     raceDirectors: raceDirectorsData.data,
                     seasons: seasonsData.data,
@@ -179,6 +193,85 @@ class DBCompetitions extends Component {
         )
         competition["team"] = false
         return competition
+    }
+
+    setCompetitionsJuryToFormWithValues = (competition) => {
+        let raceDirectorId
+        let assistantRDId
+        let technicalDelegateId
+        let assistantTDId
+        let chiefOfCompetitionId
+        let judgeAId
+        let judgeBId
+        let judgeCId
+        let judgeDId
+        let judgeEId
+        if(competition.raceDirector !== null){
+            raceDirectorId = competition.raceDirector.id
+        } else {
+            raceDirectorId = ''
+        }
+        if(competition.assistantRD !== null){
+            assistantRDId = competition.assistantRD.id
+        } else {
+            assistantRDId = ''
+        }
+        if(competition.technicalDelegate !== null){
+            technicalDelegateId = competition.technicalDelegate.id
+        } else {
+            technicalDelegateId = ''
+        }
+        if(competition.assistantTD !== null){
+            assistantTDId = competition.assistantTD.id
+        } else {
+            assistantTDId = ''
+        }
+        if(competition.chiefOfCompetition !== null){
+            chiefOfCompetitionId = competition.chiefOfCompetition.id
+        } else {
+            chiefOfCompetitionId = ''
+        }
+        if(competition.judgeA !== null){
+            judgeAId = competition.judgeA.id
+        } else {
+            judgeAId = ''
+        }
+        if(competition.judgeB !== null){
+            judgeBId = competition.judgeB
+        } else {
+            judgeBId  = ''
+        }
+        if(competition.judgeC  !== null){
+            judgeCId = competition.judgeC
+        } else {
+            judgeCId = ''
+        }
+        if(competition.judgeD !== null){
+            judgeDId = competition.judgeD
+        } else {
+            judgeDId = ''
+        }
+        if(competition.judgeE !== null){
+            judgeEId = competition.judgeE
+        } else {
+            judgeEId = ''
+        }
+        this.setState({
+            juryFormData: {
+                competition: competition,
+                raceDirectorId: raceDirectorId,
+                assistantRD: assistantRDId,
+                technicalDelegate: technicalDelegateId,
+                assistantTD: assistantTDId,
+                chiefOfCompetition: chiefOfCompetitionId,
+                judgeA: judgeAId,
+                judgeB: judgeBId,
+                judgeC: judgeCId,
+                judgeD: judgeDId,
+                judgeE: judgeEId
+            },
+            showJuryForm: true
+        })
     }
 
     postCompetition = (values) => {
@@ -554,9 +647,24 @@ class DBCompetitions extends Component {
                     competition={this.state.competitionToResults}
                 /> : null}
 
+                {this.state.showJuryForm ?
+                <JuryFormModal
+                    jury={this.state.jury}
+                    competition={this.state.competitionToJuryModal}
+                    show={this.state.showJuryForm}
+                    onHide={() => {
+                        this.filter()
+                        this.setState({
+                        showJuryForm: false,
+                    })}}
+                />: null}
+
+
+
+
                 <Header3>Competitions</Header3>
 
-                <StyledDivCentered1200>
+                <StyledDivCentered1400>
                     {/*Select Country*/}
                     <strong>Filter</strong>
                     <SelectInputForm
@@ -730,6 +838,20 @@ class DBCompetitions extends Component {
                                                                          }>
                                                                 Edit
                                                             </TableButton>
+                                                            <TableButton id={competition.id}
+                                                                         name={competition.name}
+                                                                         size="sm"
+                                                                         variant={"outline-secondary"}
+                                                                         onClick={() => {
+                                                                             this.setState({
+                                                                                 competitionToJuryModal: competition,
+                                                                                 showJuryForm: true
+                                                                             })
+                                                                         }
+                                                                         }>
+                                                                Jury
+                                                            </TableButton>
+
                                                             {competition.results.length > 0 || competition.teamResults.length > 0 ?
                                                                 <TableButton id={competition.id + "tbEdit"}
                                                                              name={competition.name}
@@ -776,33 +898,6 @@ class DBCompetitions extends Component {
                                                                 : null
                                                             }
 
-                                                            {/*{competition.qualification !== null ?*/}
-                                                            {/*    <TableButton id={competition.id}*/}
-                                                            {/*                 name={competition.name}*/}
-                                                            {/*                 size="sm"*/}
-                                                            {/*                 variant={"outline-info"}*/}
-                                                            {/*                 onClick={() => {*/}
-                                                            {/*                     this.setState({*/}
-                                                            {/*                         showQualificationsModal: true,*/}
-                                                            {/*                         qualificationsCompetition: competition,*/}
-                                                            {/*                     })*/}
-                                                            {/*                 }*/}
-                                                            {/*                 }>*/}
-                                                            {/*        Edit qualifying*/}
-                                                            {/*    </TableButton> :*/}
-                                                            {/*    <TableButton id={competition.id}*/}
-                                                            {/*                 name={competition.name}*/}
-                                                            {/*                 size="sm"*/}
-                                                            {/*                 variant={"outline-warning"}*/}
-                                                            {/*                 onClick={() => {*/}
-                                                            {/*                     this.setState({*/}
-                                                            {/*                         showQualificationsModal: true,*/}
-                                                            {/*                         qualificationsCompetition: competition,*/}
-                                                            {/*                     })*/}
-                                                            {/*                 }*/}
-                                                            {/*                 }>*/}
-                                                            {/*        Add qualifiying*/}
-                                                            {/*    </TableButton>}*/}
                                                             <TableButton id={competition.id + "tbDelete"}
                                                                          name={competition.name} size="sm"
                                                                          variant={"danger"}
@@ -877,7 +972,7 @@ class DBCompetitions extends Component {
                     /> : null}
 
 
-                </StyledDivCentered1200>
+                </StyledDivCentered1400>
 
 
             </React.Fragment>

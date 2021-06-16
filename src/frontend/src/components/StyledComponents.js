@@ -77,6 +77,11 @@ export const StyledDivCentered1200 = styled.div`
   max-width: 1300px;
 `
 
+export const StyledDivCentered1400 = styled.div`
+  margin: auto;
+  max-width: 1400px;
+`
+
 export const StyledDiv1 = styled.div`
   margin: auto;
   max-width: 500px;
