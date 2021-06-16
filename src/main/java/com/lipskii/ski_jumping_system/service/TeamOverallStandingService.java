@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
-//TODO CLEANUP CODE (Nations cup etc.)
+
 @Service
 public class TeamOverallStandingService implements ServiceInterface {
 

@@ -29,7 +29,7 @@ public class CompetitionController {
         this.competitionService = competitionService;
     }
 
-    @Transactional
+
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<Competition> getCompetitions(

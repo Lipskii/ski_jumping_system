@@ -28,7 +28,7 @@ public class SkiJumperController {
         this.skiJumperService = skiJumperService;
     }
 
-    @Transactional
+
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<SkiJumper> getSkiJumpers(

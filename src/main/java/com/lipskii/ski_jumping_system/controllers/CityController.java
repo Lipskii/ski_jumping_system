@@ -31,7 +31,7 @@ public class CityController {
         this.cityService = cityService;
     }
 
-    @Transactional
+
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<City> getCities(

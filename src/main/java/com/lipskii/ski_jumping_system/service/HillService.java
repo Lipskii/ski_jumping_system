@@ -45,7 +45,7 @@ public class HillService implements ServiceInterface {
         return hillRepository.findById(id);
     }
 
-    //TODO add or else throw
+
     public List<Hill> findAllByVenueId(int venueId){
         return hillRepository.findAllByVenue(venueService.findById(venueId).orElseThrow(() -> new ResourceNotFoundException("No hills in venue with id=" + venueId)));
     }

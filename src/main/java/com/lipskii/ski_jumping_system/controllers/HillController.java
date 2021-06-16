@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
-//TODO usunąć z każdego GET transactional
+
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/hills")
 @org.springframework.web.bind.annotation.RestController

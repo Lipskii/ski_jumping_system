@@ -30,7 +30,7 @@ public class TeamResultController {
         this.teamResultService = teamResultService;
     }
 
-    @Transactional
+
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<TeamResult> getResults(

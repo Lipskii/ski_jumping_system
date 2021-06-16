@@ -31,7 +31,7 @@ public class OverallStandingController {
         this.overallStandingService = overallStandingService;
     }
 
-    @Transactional
+
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<OverallStanding> getOverallStandings(

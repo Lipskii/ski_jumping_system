@@ -31,7 +31,7 @@ public class PointsScaleController {
         this.pointsScaleService = pointsScaleService;
     }
 
-    @Transactional
+
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<PointsScale> getPointsScale(

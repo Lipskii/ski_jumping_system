@@ -31,7 +31,7 @@ public class SkiClubController {
         this.skiClubService = skiClubService;
     }
 
-    @Transactional
+
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<SkiClub> getSkiClubs(
