@@ -2,7 +2,6 @@ package com.lipskii.ski_jumping_system.service;
 
 import com.lipskii.ski_jumping_system.dao.JuryCompetitionRepository;
 import com.lipskii.ski_jumping_system.entity.JuryCompetition;
-import com.lipskii.ski_jumping_system.entity.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;

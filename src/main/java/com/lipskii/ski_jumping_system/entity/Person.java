@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -53,10 +52,6 @@ public class Person implements Comparable<Person> {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "city_idcity")
     private City city;
-
-//    @JsonIgnoreProperties(value = "person", allowSetters = true)
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "person")
-//    private List<Jury> juryList;
 
     @Column(name = "photo")
     private String photo;

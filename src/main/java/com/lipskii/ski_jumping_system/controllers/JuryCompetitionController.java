@@ -1,20 +1,16 @@
 package com.lipskii.ski_jumping_system.controllers;
 
 import com.lipskii.ski_jumping_system.entity.JuryCompetition;
-import com.lipskii.ski_jumping_system.entity.Person;
 import com.lipskii.ski_jumping_system.service.JuryCompetitionService;
-import com.lipskii.ski_jumping_system.service.PersonService;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.List;

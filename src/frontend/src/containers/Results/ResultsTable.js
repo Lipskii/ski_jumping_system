@@ -1,4 +1,4 @@
-import {Button, Table} from "react-bootstrap";
+import {Table} from "react-bootstrap";
 import React, {useState} from "react";
 import ResultsTableAthleteData from "./ResultsTableAthleteData";
 import DetailedResultsModal from "./DetailedResultsModal";

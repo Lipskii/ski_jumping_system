@@ -1,6 +1,5 @@
 import {Pagination, Table} from "react-bootstrap";
 import React, {useState} from "react";
-import {TableButton} from "../../components/StyledComponents";
 import fisLogo from "../../assets/fis_logo.png";
 import Loader from "react-loader-spinner";
 import {LinkContainer} from "react-router-bootstrap";

@@ -3,7 +3,6 @@ package com.lipskii.ski_jumping_system.service;
 import com.lipskii.ski_jumping_system.bucket.BucketName;
 import com.lipskii.ski_jumping_system.dao.HillRepository;
 import com.lipskii.ski_jumping_system.entity.Hill;
-import com.lipskii.ski_jumping_system.entity.Person;
 import com.lipskii.ski_jumping_system.filestore.FileStore;
 import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;

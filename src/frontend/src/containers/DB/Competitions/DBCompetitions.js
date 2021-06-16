@@ -6,7 +6,6 @@ import DeleteModal from "../../../components/Modals/DeleteModal";
 import {
     Header3,
     Header5,
-    StyledDivCentered1200,
     StyledDivCentered1400,
     TableButton
 } from "../../../components/StyledComponents";

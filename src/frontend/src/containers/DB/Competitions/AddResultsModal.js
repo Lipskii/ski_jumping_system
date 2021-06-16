@@ -28,10 +28,7 @@ const AddResultsModal = (props) => {
                     props.onSubmit(values)
                 }}
             >{({
-                   handleSubmit,
-                   setFieldValue,
-                   touched,
-                   errors
+                   handleSubmit
                }) => (
                 <Modal show={props.show} size={"m"} scrollable={true} onHide={props.onHide}>
                     <Modal.Header closeButton>
