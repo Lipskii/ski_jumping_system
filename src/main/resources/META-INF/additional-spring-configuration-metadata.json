@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.data.jpa.entity.packages-to-scan",
+      "type": "java.lang.String",
+      "description": "Description for spring.data.jpa.entity.packages-to-scan."
+  }
+] }
