@@ -1,4 +1,4 @@
-NOTE: This instruction is valid only until the application is deployed on server that is yet to be dermined.
+NOTE: This instruction is valid only until the application is deployed on service that is yet to be dermined.
 
 How to run it:
 
