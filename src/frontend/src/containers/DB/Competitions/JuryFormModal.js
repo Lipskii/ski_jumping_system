@@ -17,6 +17,7 @@ const JuryFormModal = (props) => {
 
     const addJuryCompetition = () => {
         setShowAddingModal(true)
+        console.log()
         axios.post("/api/juryCompetition", {
             jury: props.jury.find(jury => jury.id === parseInt(selectedJuryId)),
             competition: competition

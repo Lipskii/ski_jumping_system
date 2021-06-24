@@ -239,7 +239,7 @@ class DBSkiClubs extends Component {
                         <option value={""}>All cities</option>
                         {this.state.cities.map(city => (
                             <option key={city.id} value={city.id}
-                                    name={city.name}>{city.name}, {city.region.country.code}</option>
+                                    name={city.name}>{city.name}, </option>  //{city.region.country.code}
                         ))}
                     </SelectInputForm>
 

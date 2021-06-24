@@ -204,6 +204,7 @@ class DBAthletes extends Component {
                     completedModalText: modalText,
                     completedModalStatus: successful,
                     showAddingModal: false,
+                    editAthlete: false,
                 }, () => this.filter())
             })
     }
